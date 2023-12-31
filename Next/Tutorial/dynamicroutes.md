@@ -24,3 +24,29 @@ export async function getAllPostIds() {
   - リクエストごとに`getStaticPaths`が実行される
 - 本番の場合
   - ビルド時に`getStaticPaths`が実行される
+ 
+## fallbackについて
+- `true`の時、server errorが返される
+- `false`の時、404エラーになる
+
+## catch allnroutes
+- `...`動的ルートは括弧内に3つのドットを追加することで全てのパスをキャッチすることができる
+- `pages/posts/[...id].js`に一致する。｀posts/a`,`postst/a/b/c`にも一致する
+- 以上のことを行うために以下のように`getStaticPaths`の値として配列を返す必要がある
+```javascript
+return [
+  {
+    params: {
+      // Statically Generates /posts/a/b/c
+      id: ['a', 'b', 'c'],
+    },
+  },
+  //...
+];
+```
+
+```javascript
+export async function getStaticProps({ params }) {
+  // params.id will be like ['a', 'b', 'c']
+}
+```
