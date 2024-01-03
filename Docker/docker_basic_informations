@@ -1,7 +1,0 @@
-# Dockerの基本::基本コマンド  
-## imageを取得ビルドする
-### レジストリより取得する`docker image pull`
-```bash
-# DockerHubから任意のDockerイメージ(imagename)を取得する場合
-$ docker image pull imagename
-```
