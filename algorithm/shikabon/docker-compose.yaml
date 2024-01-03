@@ -1,0 +1,9 @@
+version: '3'
+services:
+  shikabon:
+    build:
+      context: .
+      dockerfile: dockerfile
+    tty: true
+    volumes:
+      - .:/app
