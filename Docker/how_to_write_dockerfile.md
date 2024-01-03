@@ -40,6 +40,30 @@ $ CMD ["apachectl","-D","FOREGROUND"]
 ### `COPY`
 - ホストやローカルのファイルやディレクトリをdockerイメージにコピーする
 - 具体的な使い方として、ソースコードやconfigファイルはローカルで作成してコピーさせる
+```dockerfile
+# 書式：　COPY [コピー元][コピー先] 
+①ファイルをファイルに
+$ COPY　index.html /mydir/index.html 
+②ファイルをディレクトリ以下に
+$ COPY　index.html　/mydir/ 
+③ディレクトリをディレクトリに            
+$ COPY src/ /mydir/
+```
 
+### `ENV`
+- dockerfile内で環境変数を設定することができる
+- 設定された環境変数はdockerfileにて利用できる
+- また作成されたdockerイメージから作成される全てのコンテナ内で利用可能
+```dockerfile
+# 書式：　ENV [キー]　＝　[値] 
+$ ENV MYSQL_USER=admin
+$ ENV MYSQL_PASSWORD=password
+```
 
-- 
+### `WORKDIR`
+- コマンドを実行する作業ディレクトリを指定する
+```dockerfile
+# 書式：　WORKDIR [ディレクトリのパス] 
+$ WORKDIR /app
+```
+- `WORKDIR`を利用することでdockerfileが読みやすくなりパスを何度も書く手間が省ける
