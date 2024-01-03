@@ -1,5 +1,5 @@
 # TIL
-## Todais I Learned
+## Todays I Learned
 
 ## What is repository
 - Main contens is insight sumary in studying or reading.
