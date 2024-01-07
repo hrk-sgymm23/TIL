@@ -22,6 +22,7 @@ result = INF
 for a in A:
     count = how_many_times(a)
     # how_many_timesにて求めた値が以前how_many_timesで求めた値より小さければresult更新
+    # 下記をif文でも実装可能であるが、if文を減らす意識をすることでバグの混入を防ぐことができる
     result = min(result, count)
 
 print(result)
