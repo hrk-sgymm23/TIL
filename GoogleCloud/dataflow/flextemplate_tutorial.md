@@ -60,3 +60,24 @@ $ bq --location=asia-northeast1 mk \
       url:STRING,review:STRING,last_date:TIMESTAMP,score:FLOAT,first_date:TIMESTAMP,num_reviews:INTEGER
 ```
 
+## FlexTemplate環境構築
+### ArtifactRegistry作成
+```bash
+$ gcloud artifacts repositories create dataflow-sample \
+    --repository-format=docker \
+    --location=asia-northeast1 \
+    --async
+API [artifactregistry.googleapis.com] not enabled on project [data-process-sample]. Would you like to enable and retry (this will
+take a few minutes)? (y/N)?  y
+
+Enabling service [artifactregistry.googleapis.com] on project [data-process-sample]...
+Operation "operations/acat.p2-775779819731-f1a6493b-d3d8-4d58-8afd-7053ea1b2225" finished successfully.
+Create request issued for: [dataflow-sample]
+Check operation [projects/data-process-sample/locations/asia-northeast1/operations/e5d53fac-5be6-49cd-a914-986d0ca1c080] for status.
+```
+### ArtifactRegistryへの認証
+```bash
+$ gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+```
+
+
