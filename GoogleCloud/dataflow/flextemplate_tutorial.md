@@ -80,4 +80,37 @@ Check operation [projects/data-process-sample/locations/asia-northeast1/operatio
 $ gcloud auth configure-docker asia-northeast1-docker.pkg.dev
 ```
 
+### コードをclone
+```bash
+$ git clone git@github.com:hrk-sgymm23/flextemplate_sandbox.git
+```
+
+## FlexTemplate作成
+###  FlexTemplate biuld
+```bash
+$ gcloud dataflow flex-template build gs://dataflow-sample-20230116/samples/dataflow/templates/streaming-beam-sql.json \
+     --image-gcr-path "asia-northeast1-docker.pkg.dev/data-process-sample/dataflow-sample/dataflow/streaming-beam-sql:latest" \
+     --sdk-language "PYTHON" \
+     --flex-template-base-image "PYTHON3" \
+     --metadata-file "metadata.json" \
+     --py-path "." \
+     --env "FLEX_TEMPLATE_PYTHON_PY_FILE=streaming_beam.py" \
+     --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
+```
+
+### 実行
+```bash
+$ gcloud dataflow flex-template run "streaming-beam-`date +%Y%m%d-%H%M%S`" \
+    --template-file-gcs-location "gs://dataflow-sample-20230116/samples/dataflow/templates/streaming-beam-sql.json" \
+    --parameters input_subscription="projects/data-process-sample/subscriptions/subscription-sample" \
+    --parameters output_table="data-process-sample:data_set_sample_20240116.teable_sample" \
+    --region "us-central1"
+```
+
+### トピックへメッセージをパブリッシュ
+```bash
+$ gcloud pubsub topics publish topic-sample --message '{"url": "https://beam.apache.org/", "review": "positive"}'
+$ gcloud pubsub topics publish topic-sample --message '{"url": "https://beam.apache.org/", "review": "negative"}'
+```
+
 
