@@ -21,12 +21,21 @@ G = [[] for i in range(N)]
 for i in range(M):
     u, v = map(int, input().split())
 
-    # 頂点番号を0始まりにする
+    # 繰り返しの添字に合わせるため、頂点番号を0始まりにする
     u -= 1
     v -= 1
     # グラフに辺を追加
+    # 頂点隣接リストの作成
+    # uとの隣接リストにvを追加
     G[u].append(v)
+    # vとの隣接リストにリストにuを追加
     G[v].append(u)
+
+    print('u' + str(u))
+    print('v' + str(v))
+
+    print('G[u]' + str(G[u]))
+    print('G[V]' + str(G[v]))
 
 # 初期状態の各頂点の色を入力
 col = list(map(int, input().split()))
@@ -41,6 +50,7 @@ for i in range(Q):
     print(col[x])
 
     if t == 1:
+        print(G[x])
         for v in G[x]:
             col[v] = col[x]
     else:
