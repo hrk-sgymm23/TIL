@@ -21,7 +21,7 @@ G = [[] for i in range(N)]
 for i in range(M):
     u, v = map(int, input().split())
 
-    # 繰り返しの添字に合わせるため、頂点番号を0始まりにする
+    # 配列の添字に合わせるため、頂点番号を0始まりにする
     u -= 1
     v -= 1
     # グラフに辺を追加
@@ -31,26 +31,30 @@ for i in range(M):
     # vとの隣接リストにリストにuを追加
     G[v].append(u)
 
-    print('u' + str(u))
-    print('v' + str(v))
+    # 入力例の場合の隣接リスト
+    # G = {0:[1], 1:[0,2], 2:[1]} # 実際の値は＋１
 
-    print('G[u]' + str(G[u]))
-    print('G[V]' + str(G[v]))
+for i, neighbors in enumerate(G):
+    print(f"{i}: {neighbors}")
 
 # 初期状態の各頂点の色を入力
 col = list(map(int, input().split()))
 
+print(list(G.values()))
+
 # 各クエリへ回答
 for i in range(Q):
     t, x, *y = map(int, input().split())
-    # 頂点番号を0始まりにする
+    # 頂点番号を配列の添字に合わせるため、0始まりにする
     x -= 1
 
     # 頂点xの色を出力
     print(col[x])
 
     if t == 1:
-        print(G[x])
+        # 頂点xに隣接する頂点vに対して頂点vの色を頂点xに上書きする
+        # 例の入力の場合vの値は2
+        # G[x] = [0,2]...0~2まで実行
         for v in G[x]:
             col[v] = col[x]
     else:
