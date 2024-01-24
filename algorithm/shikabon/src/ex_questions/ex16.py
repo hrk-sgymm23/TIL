@@ -13,8 +13,9 @@ S = input()
 cs = [0] * (N+1)
 for i in range(1,N):
     # インデックス0の値は処理しないためi+1
-    # 
     cs[i + 1] = cs[i] + (S[i-1:i+1] == "AC")
+# 入力例の場合　[0, 0, 1, 1, 2, 2, 2, 3, 3]
+print(cs)
 
 for q in range(Q):
     # 区間を取得
