@@ -21,3 +21,29 @@
 # 問題の解釈
 # (作った数列のb番目)-(作った数列のa番目)=cの時　得点dをもらえる
 # 全ての条件Qの中で一番最大得点をもらえるような数列Aを作り実際にもらえる特典を示せ
+from itertools import combinations_with_replacement
+
+N, M, Q = map(int,input().split())
+
+a = [0] * Q
+b = [0] * Q
+c = [0] * Q
+d = [0] * Q
+
+for q in range(Q):
+    a[q], b[q], c[q], d[q] = map(int,input().split())
+
+    a[q] -= 1
+    b[q] -= -1
+
+def calc_score(A):
+    score = 0
+    for ai, bi, ci, di in zip(a, b, c, d):
+        if A[bi] - A[ai] == ci:
+            score += di
+        return score
+
+for A in combinations_with_replacement(range(1, M+1), N):
+    result = max(result, calc_score(A))
+
+print(result)
