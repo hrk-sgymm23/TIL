@@ -21,7 +21,7 @@
 # 問題の解釈
 # (作った数列のb番目)-(作った数列のa番目)=cの時　得点dをもらえる
 # 全ての条件Qの中で一番最大得点をもらえるような数列Aを作り実際にもらえる特典を示せ
-from itertools import combinations_with_replacement
+from itertools import combinations_with_replacement as combi
 
 N, M, Q = map(int,input().split())
 
@@ -32,18 +32,27 @@ d = [0] * Q
 
 for q in range(Q):
     a[q], b[q], c[q], d[q] = map(int,input().split())
-
+    # 数列Aの添字を0スタートにする
     a[q] -= 1
-    b[q] -= -1
+    b[q] -= 1
 
 def calc_score(A):
     score = 0
     for ai, bi, ci, di in zip(a, b, c, d):
+        print("############")
+        print(A[bi] - A[ai])
+        print(ci)
+        print(di)
+        print("############")
         if A[bi] - A[ai] == ci:
             score += di
         return score
+    
+result = 0
 
-for A in combinations_with_replacement(range(1, M+1), N):
+# >この問題で作る数列の条件は、次の数字が前の数字より小さくないことです。
+# >入力を昇順にすれば、出力も昇順になるので、この条件は勝手に満たしてくれます
+for A in combi(range(1, M+1), N):
     result = max(result, calc_score(A))
 
 print(result)
