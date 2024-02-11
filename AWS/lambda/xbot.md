@@ -29,9 +29,31 @@ https://zenn.dev/api/articles?topicname=rails&order=liked_count
 ```
 - devtoolより入手
 
-## moduleについて
-### 構造
-- `get_popular_article`
-　　- zenn apiに対してコールし記事のリストを得る
-- `choose_ai_article`
-  - 
+## 衣装予報botを作る
+### 必要なもの
+- xアカウント
+- APIキー
+  - openai
+  　　- https://openai.com/blog/openai-api
+  - twitter
+  　　- https://developer.twitter.com/en/products/twitter-api
+- エンドポイント
+ 　-　livedoor互換のもの
+    - https://weather.tsukumijima.net/api/forecast/city/130010 #地点は東京
+ 
+## 手順
+- 各アカウント作成
+  - gameil
+  - openapi
+- コードの用意(リポジトリの作成)
+  - `lambda_handler.py`
+  - `module.py`
+  - 仮想環境の作成
+- テスト
+- デプロイ
+  - レイヤーの作成
+  - コードの反映
+
+  
+
+  
