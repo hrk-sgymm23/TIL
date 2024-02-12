@@ -53,6 +53,14 @@ https://zenn.dev/api/articles?topicname=rails&order=liked_count
 - デプロイ
   - レイヤーの作成
   - コードの反映
+ 
+## コードの用意
+### 仮想環境の作成
+```
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+```
 
   
 
