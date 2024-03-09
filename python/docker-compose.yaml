@@ -1,0 +1,9 @@
+version: '3'
+services:
+  sand-box:
+    build:
+      context: .
+      dockerfile: dockerfile
+    tty: true
+    volumes:
+      - .:/app
