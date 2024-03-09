@@ -6,3 +6,7 @@
 ## GoogleCloud
 ### CloudRun
 - [Cloud Run で作るサーバーレス アーキテクチャ 23 連発 - これのときはこう！](https://zenn.dev/google_cloud_jp/articles/cloudrun-architectures)
+
+## DB
+### PostgreSQL
+- [実際に使うSQLの使い方](https://youtu.be/8S-_SypyX_Q?si=ERb3ZJd3n9kOP9BX)
