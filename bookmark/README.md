@@ -10,3 +10,7 @@
 ## DB
 ### PostgreSQL
 - [実際に使うSQLの使い方](https://youtu.be/8S-_SypyX_Q?si=ERb3ZJd3n9kOP9BX)
+
+## 基礎
+### プログラミング
+- [if文のネストを減らすための書き方](https://qiita.com/to-fmak/items/7119409fe6115703a27d)
