@@ -14,3 +14,4 @@
 ## 基礎
 ### プログラミング
 - [if文のネストを減らすための書き方](https://qiita.com/to-fmak/items/7119409fe6115703a27d)
+- [リーダブルコードの要点整理と活用法をまとめた](https://qiita.com/KNR109/items/3b14e2e8f89a33c0f959)
