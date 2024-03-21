@@ -116,9 +116,52 @@ console.log(`開始時間は${start}秒`)
 
 関数の仮引数→単位を追加した仮引数
 Start(int  `delay`)→`delay_secs`
+
 CreateCache(int `size`)→`size_mb`
-ThlotteleDownload(float `limit`)→`maxkbps`
+
+ThlotteleDownload(float `limit`)→`max_kbps`
+
 Rotate(float `angle`)→`degreees_angle`
 
+## その他の重要な情報を追加する
+**変数の名前を間違えてしまった時にバグになりそうなところだけに使う**
+- `password`→`plaintext_password`
+  - passwordはプレインテキストなので、処理する前に暗号化するべきである。
+- `comment`→`unescaped_comment`
+　　- ユーザーが入力したcommentは表示する前にエスケープする必要がある。
+- `html`→`html_utf8`
+  - htmlの文字コードをUTF-8に変えた。
+- `data`→`urlenc`
+  - 入力されたdataをURLエンコードした。
+
+## スコープが小さければ短い名前でもいい
+`m`
+```java
+if(debug) {
+  map<string, int> m;
+  LookUpNamesNumbers(&m);
+  print(m);
+}
+```
+
+## 不要な単語は投げ捨てる
+- `ConvertToString`...`ToString`
+- `DoserveLoop`...`ServeLoop`
+
+## 名前のフォーマットで情報を伝える
+- クラス名はキャメルケースで
+- 変数名はロウワーセパレーテッドで
+- クラスのメンバ変数は語尾にアンダーバー
+```c++
+static const int kMaxOpenFiles = 100;
+
+class LogReader {
+  public:
+    void OpenFile(string local_file);
+  private:
+    int offset_;
+    DISALLOW_COPY_AND_ASSIGN(LogReader)
+}
+```
 
 
