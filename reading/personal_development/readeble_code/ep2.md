@@ -103,4 +103,22 @@ for (let i = 0; i < clubs.size; i++) {
 ### アドバイス
 **`tmp`,`it`,`retval`のような汎用的な名前を使うときは、それ相応の理由を用意する**
 
+## 名前の情報を追加する
+- 例えば16進数の文字列を持つ変数について
+  - idのフォーマットが大切な場合は`hex_id`が望ましい。
+
+### 名前に情報が少ない変数
+```javascript
+var start = (new.Date()).getTime()
+console.log(`開始時間は${start}秒`)
+```
+`getTime()`ではミリ秒を返すため、`start`を`strat_ms`とする。
+
+関数の仮引数→単位を追加した仮引数
+Start(int  `delay`)→`delay_secs`
+CreateCache(int `size`)→`size_mb`
+ThlotteleDownload(float `limit`)→`maxkbps`
+Rotate(float `angle`)→`degreees_angle`
+
+
 
