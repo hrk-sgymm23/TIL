@@ -76,12 +76,108 @@ latest: digest: sha256:426c49114be3275ccec222be875384d6b01a618ebc3f0f57a9fe1cfc1
 
 ## セキュリティグループ
 ### ALB用のセキュリティグループ
-- `ecs-nginx-sg`
+- `ecs-nginx-sg2`
   - プロトコル: `HTPP`
   - インバウンドルール: `0.0.0.0/0`
  
-## ターゲットグループ
+## [ターゲットグループ](https://ap-northeast-1.console.aws.amazon.com/ec2/home?region=ap-northeast-1#TargetGroup:targetGroupArn=arn:aws:elasticloadbalancing:ap-northeast-1:730335441282:targetgroup/ecs-nginx-tg/faa7c46d2e3fe06c)
 
 
-## ロードバランサー
+### 基本的な設定
+- ターゲットタイプ
+  - ECSの場合`IPアドレス`を選ぶ
+  - 名前:`ecs-nginx-tg`
+  - プロトコル:ポート
+    - `HTPP`:`80`
+  - アドレスタイプ:`IPv4`
+  - プロトコルバージョン:`HTPP1`
+
+### IPアドレス
+- 指定しなくてよし
+以下参考
+> タスクが起動するとタスク内で起動するコンテナ(今回はnginxコンテナ)に動的にIPアドレスが割り当てられるのですが、ECSサービスが自動でターゲットグループにIPアドレスを登録してくれます。そのため、ターゲットグループに手動でIPアドレスを指定する必要はないのです。
+
+> ただし、ECSサービスを作成するときに、ターゲットタイプがIPアドレスのターゲットグループを指定する必要はあります。後ほどECSサービスを作成するときに、ここで作成したecs-target-groupを指定します。
+
+
+## [ロードバランサー](https://ap-northeast-1.console.aws.amazon.com/ec2/home?region=ap-northeast-1#LoadBalancer:loadBalancerArn=arn:aws:elasticloadbalancing:ap-northeast-1:730335441282:loadbalancer/app/ecs-nginx-alb/0bf413525f886a3e;tab=listeners)
+
+### ALB作成
+- `ecs-nginx-alb`作成
+  - スキーム:インターネット向け
+  - IPアドレスタイプ:IPv4
+  - vpc:`ecs-nginx-vpc`
+    - サブネット:`subnet-041c491b3324044a5`,`subnet-020a0a767de21c63f`
+    - セキュリティグループ:`ecs-nginx-sg2`
+    - ターゲットグループ:`ecs-nginx-tg`
+    - リスナーとルーティング:`HTTP`,`80`
+   
+
+## ECS
+
+### [タスク定義](https://ap-northeast-1.console.aws.amazon.com/ecs/v2/task-definitions/nginx-ecs-task-def/1/containers?region=ap-northeast-1)
+- 名前:`nginx-ecs-task-def`
+
+#### インフラストラクチャの要件
+- 機動タイプ:`Fargate`
+- オペレーティングシステム/アーキテクチャ: `Linux/X86_64`→`ARM/64`に変更することでMacのアーキテクチャで対応できる
+- タスクサイズ
+  - CPU:`.5vCPU`
+  - メモリ:`1GB`
+- タスクロール:なし
+- 実行ロール:新規作成
+
+#### コンテナ
+- コンテナの詳細
+  - `nginx-ecs`
+  - ECRのURI
+- ポートマッピング
+  - ポート:`80`
+  - プロトコル:`TCP`
+  - ポート名:`ecs-nginx-tcp`
+  - アプリケーションプロトコル:`HTTP`
+- リソース割当制限
+  - CPU:`0.5`
+  - GPU:`1`
+  - メモリのハード制限:`1GB`
+  - メモリのソフト制限:`1GB`
+
+### ECSサービス
+
+#### ECSクラスター
+- 名前:`ecsnginxcluster`
+- インフラストラクチャ:`Fargate`
+
+#### ECSサービス
+- 環境
+  - `ecsnginxcluster`
+  - コンピューティングオプション：`起動タイプ`,`Fargate`
+- デプロイ設定
+  - アプリケーションタイプ:`サービス`
+  - ファミリー:`nginx-ecs-task-def`
+  - サービス名:`ecs-nginx-service`
+- ネットワーキング
+  - vpc:`ecs-nginx-vpc`
+  - [サブネット](https://ap-northeast-1.console.aws.amazon.com/vpcconsole/home?region=ap-northeast-1#SubnetDetails:subnetId=subnet-0efc186a708ee71c3):`ecs-subnet`
+  - セキュリティグループ:`ecs-nginx-sg2`
+- ロードバランシング
+  - `Application Load Balancer`
+  - コンテナ:`nginx-ecs 80:80`
+  - ロードバランサー：`ecs-nginx-alb`
+  - リスナー:`80:HTTP`
+  - ターゲットグループ:`ecs-nginx-tg`
+ 
+## 成果物
+http://ecs-nginx-alb-1719510677.ap-northeast-1.elb.amazonaws.com/
+
+
+
+
+
+
+
+
+
+
+
 
