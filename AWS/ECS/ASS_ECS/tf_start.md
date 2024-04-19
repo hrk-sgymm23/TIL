@@ -174,3 +174,14 @@ ass_infra
     ├── s3.tf
     └── terraform.tfstate
 ```
+
+下記の構成が参考になりそう
+https://qiita.com/hatsu/items/8b30e68ba7252a749fe7#shared%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80
+
+## `shared`フォルダを作る
+`ass-tfstate-bucket`
+https://ap-northeast-1.console.aws.amazon.com/s3/buckets/ass-tfstate-bucket?region=ap-northeast-1&bucketType=general&tab=objects
+
+
+## `tfatate`を管理するs3を作成
+
