@@ -1,4 +1,4 @@
-# ASS ECS Nginx
+# ASS Terraform環境構築
 
 ## 参考
 - [【Rails+Docker】RailsプロジェクトのDocker化](https://zenn.dev/prune/books/28c2d690e11e45/viewer/e87aa4)
@@ -185,3 +185,17 @@ https://ap-northeast-1.console.aws.amazon.com/s3/buckets/ass-tfstate-bucket?regi
 
 ## `tfatate`を管理するs3を作成
 
+https://speakerdeck.com/yuukiyo/terraform-aws-best-practices?slide=15
+- state Lock...dynamodbを使ってリソースの変更のコンフリクトを防ぐ
+
+## `Symbolic Link`について知る
+- [TerraformにおけるDRYなディレクトリ構成](https://zenn.dev/pageo/articles/d90d89e2168061)
+
+> 各環境のディレクトリにmain.tf, provider.tf, variables.tfをコピペするのではなく、Symbolic Linkを貼ることで一元管理することができます。shared/配下のmain.tfにおいて、以下のようにmoduleを実装する必要があることには注意です
+
+- シンボリックリンクを作成
+```bash
+$ ln -s ../../../shared/version.tf
+$ ln -s ../../../shared/valiable.tf
+$ ln -s ../../../shared/variable.tf
+```
