@@ -47,5 +47,20 @@ https://dev.classmethod.jp/articles/s3-acl-error-from-202304/
 
 静的ページ表示のためACLは無効とした。
 
+## CloudFront構築時に以下エラー
+```bash
+Error: Reference to undeclared resource
+│
+│   on ../../../modules/cloudfront/main.tf line 4, in resource "aws_cloudfront_distribution" "static-www":
+│    4:         domain_name = aws_s3_bucket.main.bucket_regional_domain_name
+│
+│ A managed resource "aws_s3_bucket" "main" has not been declared in module.ass_web_cf_stg.
+```
+
+### Outputを使う
+https://dev.classmethod.jp/articles/terraform_module_coordination/
+```bash
+```
+
 
 
