@@ -57,10 +57,72 @@ Error: Reference to undeclared resource
 │ A managed resource "aws_s3_bucket" "main" has not been declared in module.ass_web_cf_stg.
 ```
 
-### Outputを使う
+## Outputを使う
 https://dev.classmethod.jp/articles/terraform_module_coordination/
-```bash
+
+## module間で値を参照したい
+
+### 今回はcloudfrontの設定にてs3のidとドメインを指定したい
+`modules/s3/output.tf`
+```terraform
+output "id" {
+    value = aws_s3_bucket.main.id
+}
+
+output "bucket_regional_domain_name" {
+    value = aws_s3_bucket.main.bucket_regional_domain_name
+}
 ```
 
+`modules/cloudfront/variable.tf`
+```terraform
+variable "s3_bucket_domain_name" {
+    description = "bucket domain name"
+    type        = string
+}
+
+variable "s3_bucket_id" {
+    description = "bucket id"
+    type        = string
+}
+```
+
+`modules/cloudfront/main.tf`
+```terraform
+resource "aws_cloudfront_distribution" "static-www" {
+    # aliases = ["${var.site_domain}"]
+    origin {
+        domain_name = var.s3_bucket_domain_name
+        origin_id   = var.s3_bucket_id
+~
+```
+
+`envirements/stg/web/s3.tf`
+```terraform
+module "ass_web_s3_stg" {
+  source      = "../../../modules/s3"
+  common_name = "${var.common_name}-${var.environment}"
+}
+```
+
+`envirements/stg/web/cloudfront.tf`
+`modules`.`s3の定義したmodule名`.`変数名`を指定する
+```terraform
+module "ass_web_cf_stg" {
+  source                = "../../../modules/cloudfront"
+  common_name           = "${var.common_name}-${var.environment}-distribusion"
+  s3_bucket_domain_name = module.ass_web_s3_stg.bucket_regional_domain_name
+  s3_bucket_id          = module.ass_web_s3_stg.id
+}
+```
+
+### CloudFrontの`viewercertificate`について
+
+```bash
+viewer_certificate {
+    # cloudfrontへのリンクを使う場合はtruebに設定
+    cloudfront_default_certificate = true
+}
+```
 
 
