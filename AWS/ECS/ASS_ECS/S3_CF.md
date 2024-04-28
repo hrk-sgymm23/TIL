@@ -124,5 +124,42 @@ viewer_certificate {
     cloudfront_default_certificate = true
 }
 ```
+## 次はs3の設定にて`aws_cloudfront_origin_access_identity.static-www.iam_arn`を参照したい
+`modules/cloudfront/output.tf`
+```terraform
+output "oai_identifiers" {
+    value = aws_cloudfront_origin_access_identity.static-www.iam_arn
+}
+```
 
+`modules/cloudfront/variable.tf`
+```terraform
+variable "oai_identifiers" {
+    description = "oai name"
+    type        = string
+}
+```
 
+`modules/cloudfront/main.tf`
+```terraform
+data "aws_iam_policy_document" "static-www" {
+    statement {
+        sid    = "Allow CloudFront"
+        effect = "Allow"
+        principals {
+            type        = "AWS"
+            # 定義したvariableを設定
+            identifiers = [var.oai_identifiers]
+        }
+~
+```
+
+`enviroments/stg/web/s3.tf`
+```terradform
+module "ass_web_s3_stg" {
+  source      = "../../../modules/s3"
+  common_name = "${var.common_name}-${var.environment}"
+  # 以下で利用
+  oai_identifiers = module.ass_web_cf_stg.oai_identifiers
+}
+```
