@@ -59,3 +59,35 @@ $ terrafform console
 > cidrsubnet("172.31.0.0/16", 8, 1)
 "172.31.1.0/24"
 ```
+
+## 諸々ネットワークの設定
+
+## ルートテーブルについて
+https://en-junior.com/routetable/#overview
+> ルートテーブルとは、VPC内（サブネット内）の通信を振り分けるルールの一覧ことです。
+> ルートテーブルはサブネットに関連付けて利用します。
+
+> 1つのサブネットには、1つのルートテーブルしか関連付けることができません。
+> つまり、1つのルートテーブルで、関連付けたいサブネットのすべてのルートを定義する必要があります。
+> ただし、異なるサブネットで同じルートテーブルを関連付けることは可能です。
+> 例えば、サブネットAとサブネットBに同じルートテーブルaを関連付けると、2つのサブネットは同じルートテーブルを用いることになります。
+
+
+
+```terraform
+resource "aws_route_table" "public" {
+  vpc_id = var.vpc_id
+  tags = {
+    Public = true
+  }
+}
+
+resource "aws_route_table" "private" {
+  for_each = toset(var.availability_zones)
+  vpc_id   = var.vpc_id
+  tags = {
+    Private = true
+    Zone    = each.value
+  }
+}
+```
