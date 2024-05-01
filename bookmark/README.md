@@ -18,3 +18,6 @@
 
 ## ネットワーク
 - [TCP/IP構造と通信](https://qiita.com/lz910201/items/3441ef3bf3a19cdbce81?utm_source=Qiita%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%B9&utm_campaign=a929ca8d64-Qiita_newsletter_612_04_03&utm_medium=email&utm_term=0_e44feaa081-a929ca8d64-45214790)
+
+## CICD
+- [STORES 予約 のデプロイフロー今昔](https://product.st.inc/entry/2023/12/15/121744)
