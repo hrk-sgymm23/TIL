@@ -91,3 +91,29 @@ resource "aws_route_table" "private" {
   }
 }
 ```
+
+## ネットワーク作成時に以下エラー
+```bash
+terraform plan
+╷
+│ Error: Unsupported attribute
+│
+│   on vpc.tf line 12, in module "ass_sbunet_stg":
+│   12:   vpc_id = module.ass_vpc_stg.id
+│     ├────────────────
+│     │ module.ass_vpc_stg is a object
+│
+│ This object does not have an attribute named "id".
+╵
+╷
+│ Error: Unsupported attribute
+│
+│   on vpc.tf line 13, in module "ass_sbunet_stg":
+│   13:   vpc_cidr_block = module.ass_vpc_stg.cidr_block
+│     ├────────────────
+│     │ module.ass_vpc_stg is a object
+│
+│ This object does not have an attribute named "cidr_block".
+╵
+```
+
