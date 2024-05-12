@@ -73,3 +73,12 @@ data "aws_iam_policy_document" "alb_log" {
 │ 	status code: 400, request id: 02210dd2-60cd-4cc4-b561-6650c06023ed
 ```
 
+## 
+`modules/alb/main.tf`
+```terraform
+resource "aws_lb" "main" {
+# 下記をfalseにすることで解決
+enable_deletion_protection = false
+~
+```
+
