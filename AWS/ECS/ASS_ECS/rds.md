@@ -39,3 +39,6 @@ resource "aws_ssm_parameter" "db_name" {
   }
 }
 ```
+
+# rds`enabled_cloudwatch_logs_exports`について
+
