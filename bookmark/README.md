@@ -21,3 +21,6 @@
 
 ## CICD
 - [STORES 予約 のデプロイフロー今昔](https://product.st.inc/entry/2023/12/15/121744)
+
+## Ruby
+- [Good first issues of TypeProf(STORES)](https://speakerdeck.com/mame/good-first-issues-of-typeprof)
