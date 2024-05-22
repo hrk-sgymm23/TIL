@@ -52,3 +52,56 @@ EC2を選択した場合に複数の選択肢があるため、今回はこち�
 ```
 
 ↑ALBのモジュールのoutputが空だった。
+
+`alb/output.tf`追記
+```terraform
+output "target_group_arn" {
+  value = aws_lb_target_group.main.arn
+}
+
+output "dns_name" {
+  value = aws_lb.main.dns_name
+}
+
+output "zone_id" {
+  value = aws_lb.main.zone_id
+}
+```
+
+```bash
+╷
+│ Error: Reference to undeclared module
+│
+│   on ecs.tf line 13, in module "ecs_stg":
+│   13:   rails_ecr_arn             = module.rails_ecr_arn
+│
+│ No module call named "rails_ecr_arn" is declared in the root module.
+╵
+╷
+│ Error: Invalid value for input variable
+│
+│   on ecs.tf line 14, in module "ecs_stg":
+│   14:   nginx_ecr_arn             = module.nginx_ecr_stg
+│
+│ The given value is not suitable for module.ecs_stg.var.nginx_ecr_arn declared at ../../../modules/ecs/variable.tf:61,1-25: string required.
+```
+モジュールの指定の仕方が違う
+
+```terraform
+  - rails_ecr_arn             = module.rails_ecr_arn
+  - nginx_ecr_arn             = module.nginx_ecr_stg
+  + rails_ecr_arn             = module.rails_ecr_arn
+  + nginx_ecr_arn             = module.nginx_ecr_stg
+```
+
+```bash
+│ Error: Reference to undeclared module
+│
+│   on ecs.tf line 15, in module "ecs_stg":
+│   15:   ssm_db_password_path      = module.ssm_db_password_path
+│
+│ No module call named "ssm_db_password_path" is declared in the root module.
+╵
+```
+
+上記に関しては例`module.rds.ssm_db_password_path`で解決
