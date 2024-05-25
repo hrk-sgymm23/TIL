@@ -38,3 +38,32 @@ $ rake greet:say_hello
 root@ef4695459bb5:/api# rake greet:say_hello
 Hello
 ```
+
+## `development.log`のログ削除
+[logディレクトリ以下にあるすべてのlogファイルを0バイトに切り詰める](https://railsdoc.com/page/rails_log_clear)
+```bash
+$ rails log:clear
+```
+
+## トランザクションについて深掘り
+[ActiveRecordのトランザクションを理解する](https://qiita.com/mtoyopet/items/67d1cff3df00aa651cb7)
+> トランザクションとは、複数のSQL文によるデータの更新を「1つの処理」とし、全てのSQLの実行が成功した時にデータベースに更新分を反映させることです。データベースの整合性を保つ目的があります。
+> 基本的に、複数のSQLを同時に実行する際はトランザクションを使う必要があります。
+
+
+## ユーザーを作成し、そのユーザーに紐づく投稿を作成するrakeファイルを作成する。
+```bash
+root@ef4695459bb5:/api# rails g task create_sample_data
+      create  lib/tasks/create_sample_data.rake
+```
+```ruby
+
+```
+
+
+
+
+
+
+
+
