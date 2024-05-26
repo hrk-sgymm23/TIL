@@ -105,6 +105,42 @@ end
 rake create_sample_data:create_sample_user_posts
 ```
 
+## `times`ブロックを使って繰り返し処理で投稿作成
+```ruby
+~
+# サンプルアカウントに紐づく投稿作成
+5.times do |i|
+    sample_location_post = sample_user.location_posts.new(
+        title: "Sample Cafe_#{i}",
+        description: "Sample Description...",
+        address: "Sample Prefecture Sample City",
+        user_id: sample_user.id
+    )
+    
+    sample_image_file = File.open(Rails.root.join("app/assets/sample_cafe_#{i}.png"))
+    sample_location_post.location_image.attach(
+        io: sample_image_file,
+        filename: 'sample_cafe.png',
+        content_type: 'image/png'
+    )
+    sample_location_post.save!
+    Rails.logger.info "#{sample_location_post.title} created!"
+end
+~
+```
+
+## DBリセット後にrakeタスク実行できるか検証
+DBリセットについて
+[rails db:reset、rails db:migrate:reset、rails db:setupの違い](https://qiita.com/ken_ta_/items/9d2dd0d032f530311d2a)
+
+### DBリセットシード込
+```bash
+$ docker-compose exec ass_api rake db:reset
+```
+### `create_sample_data:create_sample_user_posts`実行
+```bash
+$ docker-compose exec ass_api rake create_sample_data:create_sample_user_posts
+```
 
 
 
