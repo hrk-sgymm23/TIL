@@ -66,3 +66,8 @@ resource "aws_db_instance" "main" {
 12時間起動だと少しオーバーする可能性があるため、11時間起動とする。その場合11*31=341*2=６８２時間に収まる
 
 ### 11:00AM~10:00PMの起動時間は有用か、、、
+
+##EventBridgeSchedulerで実装する
+- https://envader.plus/article/250
+- https://dev.classmethod.jp/articles/amazon-eventbridge-scheduler-rds-stop/
+
