@@ -24,3 +24,8 @@
 
 ## Ruby
 - [Good first issues of TypeProf(STORES)](https://speakerdeck.com/mame/good-first-issues-of-typeprof)
+
+## Rails
+
+### RSpec
+- [[RSpec]request specでcontrollerテストをやってみる](https://qiita.com/nakachan1994/items/f62cd4d93c061e3fa6df)
