@@ -29,3 +29,6 @@
 
 ### RSpec
 - [[RSpec]request specでcontrollerテストをやってみる](https://qiita.com/nakachan1994/items/f62cd4d93c061e3fa6df)
+
+### python
+- [InstaPy PythonライブラリでInstagramの自動化をする方法](byhttps://docs.kanaries.net/ja/topics/Python/instapy)
