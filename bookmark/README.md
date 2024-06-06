@@ -32,3 +32,6 @@
 
 ### python
 - [InstaPy PythonライブラリでInstagramの自動化をする方法](https://docs.kanaries.net/ja/topics/Python/instapy)
+
+### javascript
+- [そろそろ適当に npm install するのを卒業する](https://zenn.dev/ikuraikura/articles/71b917ab11ae690e3cd7)
