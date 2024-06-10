@@ -40,5 +40,12 @@ resource "aws_ssm_parameter" "db_name" {
 }
 ```
 
-# rds`enabled_cloudwatch_logs_exports`について
+# EventBridgeSchedulerの実装
+
+[TerraformとEventBridge Schedulerを活用したEC2インスタンスの時限起動によるコスト削減](https://envader.plus/article/250)
+[AWS EventBridgeスケジューラで圧倒的コスト削減に成功した話](https://qiita.com/Nightley_dev/items/54ce272509f2a9a48b30#rds)
+
+上記を参考に実装
+
+
 
