@@ -47,5 +47,27 @@ resource "aws_ssm_parameter" "db_name" {
 
 上記を参考に実装
 
+```terraform
+locals {
+  stop_rds_schedule  = "cron(0 13 * * ? *)" // 22:00 JST
+  start_rds_schedule = "cron(0 2 * * ? *)"  // 08:00 JST
+}
 
+# Stop RDS
+resource "aws_scheduler_schedule" "rds_stop_stg" {
+  name                = "${var.common_name}-stop-scheduler-${var.enviroment}"
+  schedule_expression = local.stop_rds_schedule
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  target {
+    arn      = "arn:aws:scheduler:::aws-sdk:rds:stopDBCluster"
+    role_arn = aws_iam_role.rds_scheduler_stg.arn
+    input = jsonencode({
+      DbClusterIdentifier = aws_db_instance.main.identifier
+    })
+  }
+}
+```
 
