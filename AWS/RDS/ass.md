@@ -71,3 +71,29 @@ resource "aws_db_instance" "main" {
 - https://envader.plus/article/250
 - https://dev.classmethod.jp/articles/amazon-eventbridge-scheduler-rds-stop/
 
+#　スケジューラーが機能していない問題
+
+## SDKを正しいものを選んでいなかった
+下記のように
+`arn:aws:scheduler:::aws-sdk:rds:stopDBInstance`の`stopDBInstance`が`stopDBCluster`になっていた
+下記のようにコンソールから対象のリソースの設定名を確認する
+<img width="1440" alt="スクリーンショット 2024-06-12 0 02 36" src="https://github.com/hrk-sgymm23/TIL/assets/78539910/c5edd7d7-d7a5-4018-afbb-eca75e154301">
+
+
+```terraform
+resource "aws_scheduler_schedule" "rds_stop_stg" {
+  name                = "${var.common_name}-stop-scheduler-${var.enviroment}"
+  schedule_expression = local.stop_rds_schedule
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  target {
+    arn      = "arn:aws:scheduler:::aws-sdk:rds:stopDBInstance"
+    role_arn = aws_iam_role.rds_scheduler_stg.arn
+    input = jsonencode({
+      DbInstanceIdentifier = aws_db_instance.main.identifier
+    })
+  }
+}
+```
