@@ -125,3 +125,18 @@ data "aws_iam_policy_document" "ecs_task_execution" {
 - .policy属性は`aws_iam_policy`から取得したJSON文字列を指す。
 - `source_policy_documents`はポリシーを指定する必要がある。.policyをつけることでJSON文字列をpolicyドキュメントとして作成し含めることができる、
 
+# Rails　masterkeyを設定する
+- Railsのマスタキーいかに作成される
+  - `config/credentials.yml.enc`
+- また以下のコマンドで生成を実行可能
+```bash
+$ rails credentials:edit
+```
+
+- 上記キーをパラメータストアに含める
+```terraform
+data "aws_ssm_parameter" "rails_master_key" {
+  name = "/${var.common_name}-${var.environment}/rails-master-key"
+}
+```
+
