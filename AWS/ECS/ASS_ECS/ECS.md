@@ -104,4 +104,24 @@ output "zone_id" {
 ╵
 ```
 
-上記に関しては例`module.rds.ssm_db_password_path`で解決
+上記に関しては例`module.ass_rds_stg.ssm_db_password_path`で解決
+
+# Terraformにおけるポリシー作成について
+```terraform
+data "aws_iam_policy" "ecs_task_execution_role_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+data "aws_iam_policy_document" "ecs_task_execution" {
+  source_policy_documents = [data.aws_iam_policy.ecs_task_execution_role_policy.policy]
+  statement {
+~
+```
+
+## `[]`で囲む理由
+`source_policy_documents`は配列型の属性であるため、単一のデータであっても`[]`で囲む必要がある。
+
+## `data.aws_iam_policy.ecs_task_execution_role_policy.policy`の`.policy`の意味
+- .policy属性は`aws_iam_policy`から取得したJSON文字列を指す。
+- `source_policy_documents`はポリシーを指定する必要がある。.policyをつけることでJSON文字列をpolicyドキュメントとして作成し含めることができる、
+
