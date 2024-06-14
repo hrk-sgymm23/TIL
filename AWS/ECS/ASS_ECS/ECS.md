@@ -140,3 +140,20 @@ data "aws_ssm_parameter" "rails_master_key" {
 }
 ```
 
+# リバースプロキシ用のコンテナを立てる
+- [【ポートフォリオをECSで！】Rails×NginxアプリをFargateにデプロイするまでを丁寧に説明してみた(VPC作成〜CircleCIによる自動デプロイまで) 前編](https://qiita.com/maru401/items/8e7d32a8baded045adb2#2-nginx)
+- [Fargateにおけるpuma+Nginxのソケット通信のやり方](https://bluepixel.hatenablog.com/entry/2020/04/22/230721)
+
+
+## Dockerfile作成
+
+## custom.conf作成
+
+
+
+
+
+
+
+
+
