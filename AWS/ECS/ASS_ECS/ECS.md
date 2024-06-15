@@ -1,4 +1,4 @@
-# ECS作成
+x# ECS作成
 
 ## `aws_caller_identity`について
 [*.tf 内で AWS アカウント ID を自動参照(取得)する aws_caller_identity Data Source](https://qiita.com/gongo/items/a2b83d7402b97ef43574)
@@ -140,14 +140,78 @@ data "aws_ssm_parameter" "rails_master_key" {
 }
 ```
 
-# リバースプロキシ用のコンテナを立てる
+# リバースプロキシ用のコンテナを立てる(ECS作成)
 - [【ポートフォリオをECSで！】Rails×NginxアプリをFargateにデプロイするまでを丁寧に説明してみた(VPC作成〜CircleCIによる自動デプロイまで) 前編](https://qiita.com/maru401/items/8e7d32a8baded045adb2#2-nginx)
 - [Fargateにおけるpuma+Nginxのソケット通信のやり方](https://bluepixel.hatenablog.com/entry/2020/04/22/230721)
 
 
 ## Dockerfile作成
+```dockerfile
+FROM nginx:latest
+# for health check
+RUN apt-get update && apt-get install -y curl
+ADD custom.conf /etc/nginx/conf.d
+CMD /usr/sbin/nginx -g 'daemon off;'
+EXPOSE 80
+```
 
 ## custom.conf作成
+```custom.conf
+server {
+    listen 80 default_server;
+
+    root /usr/src/app/public;
+
+    location / {
+        try_files $uri $uri/index.html $uri.html @puma;
+    }
+
+    location @puma {
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://my_app;
+    }
+}
+
+upstream my_app {
+    server unix:///usr/src/app/tmp/sockets/puma.sock;
+}
+```
+
+## Pumaの作成
+[[Rails] Nginx × Pumaを連携させる方法](https://zenn.dev/machamp/articles/rails-puma-nginx)
+
+```custom.conf
+server {
+    listen 80 default_server;
+
+    root /usr/src/app/public;
+
+    location / {
+        try_files $uri $uri/index.html $uri.html @puma;
+    }
+
+    location @puma {
+        proxy_set_header    Host $http_host;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-Host $host;
+        proxy_set_header    X-Forwarded-Server $host;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://my_app;
+    }
+}
+
+upstream my_app {
+    server unix:///usr/src/app/tmp/sockets/puma.sock;
+}
+```
+
+# RailsのECS作成
+
+## 
 
 
 
