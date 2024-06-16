@@ -214,6 +214,42 @@ upstream my_app {
 ## 
 
 
+# ECRへpush
+
+## Nginx
+```bash
+$ cd nginx
+$ export AWS_PROFILE=root_ecs_developer
+$ export AWS_DEFAULT_REGION=ap-northeast-1
+$ aws configure list
+
+      Name                    Value             Type    Location
+      ----                    -----             ----    --------
+   profile       root_ecs_developer              env    ['AWS_PROFILE', 'AWS_DEFAULT_PROFILE']
+access_key     ****************7BPK shared-credentials-file
+secret_key     ****************g9Ps shared-credentials-file
+    region           ap-northeast-1              env    ['AWS_REGION', 'AWS_DEFAULT_REGION']
+
+$ aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com
+
+Login Succeeded
+
+$ docker build -t ass-nginx-ecr-staging .
+# タグつけ(stg)
+$ docker tag ass-nginx-ecr-staging:latest 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-nginx-ecr-staging:stg
+$ docker push 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-nginx-ecr-staging:stg
+```
+
+## Rails
+```bash
+$ cd backend
+$ docker build -t ass-rails-ecr-staging .
+$ docker tag ass-rails-ecr-staging:latest 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-rails-ecr-staging:stg
+$ docker push 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-rails-ecr-staging:stg
+```
+
+
+
 
 
 
