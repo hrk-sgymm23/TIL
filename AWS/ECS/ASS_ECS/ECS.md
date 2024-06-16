@@ -209,10 +209,7 @@ upstream my_app {
 }
 ```
 
-# RailsのECS作成
-
-## 
-
+# ECS作成
 
 # ECRへpush
 
@@ -248,7 +245,25 @@ $ docker tag ass-rails-ecr-staging:latest 730335441282.dkr.ecr.ap-northeast-1.am
 $ docker push 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-rails-ecr-staging:stg
 ```
 
+#　ECS作成
 
+##　apply時にエラー
+```bash
+ Error: creating ECS Task Definition (ass-task-def-staging): ClientException: Role is not valid
+│
+│   with module.ecs_stg.aws_ecs_task_definition.main,
+│   on ../../../modules/ecs/main.tf line 25, in resource "aws_ecs_task_definition" "main":
+│   25: resource "aws_ecs_task_definition" "main" {
+│
+```
+
+### Iamのモジュールのアウトプットが違った
+```terraform
+output "iam_role_arn" {
+- value = aws_iam_policy.main.arn
++ value = aws_iam_role.main.arn
+}
+```
 
 
 
