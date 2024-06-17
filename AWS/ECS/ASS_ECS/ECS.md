@@ -247,7 +247,7 @@ $ docker push 730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-rails-ecr-st
 
 #　ECS作成
 
-##　apply時にエラー
+##　apply時にエラー1
 ```bash
  Error: creating ECS Task Definition (ass-task-def-staging): ClientException: Role is not valid
 │
@@ -265,6 +265,70 @@ output "iam_role_arn" {
 }
 ```
 
+##　apply時にエラー2
+```bash
+│ Error: creating ECS Service (ass-staging): InvalidParameterException: Health check grace period is only valid for services configured to use load balancers
+│
+│   with module.ecs_stg.aws_ecs_service.main,
+│   on ../../../modules/ecs/main.tf line 88, in resource "aws_ecs_service" "main":
+│   88: resource "aws_ecs_service" "main" {
+│
+╵
+```
+
+### サービスのロードバランサーの設定がなかったため
+```terraform
+resource "aws_ecs_service" "main" {
+~
+  load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name = "nginx"
+    container_port = 80
+  }
+~
+```
+
+## ECSが落ちる→ログが取れない
+```
+The specified log stream does not exist.
+```
+
+```
+InternalError: failed to create container model: failed to normalize image reference "arn:aws:ecr:ap-northeast-1:730335441282:repository/ass-rails-ecr-staging:stg". Launch a new task to retry.
+```
+
+### タスク定義のイメージのパスが違う
+
+#### arnではなくURI
+
+- 誤り
+```json
+{
+~
+  "image": "arn:aws:ecr:ap-northeast-1:730335441282:repository/ass-rails-ecr-staging:stg",
+~
+}
+```
+
+- 正
+```json
+{
+~
+  "image": "730335441282.dkr.ecr.ap-northeast-1.amazonaws.com/ass-rails-ecr-staging:stg",
+~
+}
+```
+上記へ修正してもタスクは輝度しない
+
+# ECR周りを確認する
+
+<img width="706" alt="スクリーンショット 2024-06-17 23 31 58" src="https://github.com/hrk-sgymm23/TIL/assets/78539910/346754cc-50d9-4519-b5be-c1a223e5164c">
+
+## VPCエンドポイント作成orECRリソースポリシー編集
+
+### VPCエンドポイントを作成する
+- [ECRにpushしたコンテナをECSFargateで使うVPCエンドポイントTerraform例](https://qiita.com/fuubit/items/ab3f682bf59ffeb88d45)
+- 
 
 
 
