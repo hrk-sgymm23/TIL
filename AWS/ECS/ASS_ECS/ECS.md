@@ -328,8 +328,34 @@ InternalError: failed to create container model: failed to normalize image refer
 
 ### VPCエンドポイントを作成する
 - [ECRにpushしたコンテナをECSFargateで使うVPCエンドポイントTerraform例](https://qiita.com/fuubit/items/ab3f682bf59ffeb88d45)
-- 
+- [エンドポイントを使用してプライベートサブネットでECSを使用する](https://dev.classmethod.jp/articles/privatesubnet_ecs/)
 
+
+## Cloudwatchlogsへの権限はあるか？
+- 実行ロールには`CreateLogGroup`が必要
+  - しかし`AmazonECSTaskExecutionRolePolicy`が入っていない、、
+https://docs.aws.amazon.com/ja_jp/AmazonCloudWatch/latest/logs/permissions-reference-cwl.html
+
+```terraform
+data "aws_iam_policy_document" "ecs_task_execution" {
+  source_policy_documents = [data.aws_iam_policy.ecs_task_execution_role_policy.policy]
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssm:GetParameters",
+      "kms:Decrypt",
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel",
+      # 追加
+      "logs:*",
+    ]
+    resources = ["*"]
+  }
+~
+```
+ 
 
 
 
