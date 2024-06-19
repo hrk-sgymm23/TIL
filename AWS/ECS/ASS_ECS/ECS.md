@@ -355,9 +355,25 @@ data "aws_iam_policy_document" "ecs_task_execution" {
   }
 ~
 ```
+
+## 下記エラー発生
+```bash
+ResourceInitializationError: unable to pull secrets or registry auth: execution resource retrieval failed: unable to retrieve secrets from ssm: service call has been retried 5 time(s): RequestCanceled: request context canceled caused by: context deadline exceeded. Please check your task network configuration.
+```
+
+https://dev.classmethod.jp/articles/fargate_pv14_vpc_endpoint/
  
-
-
+## ログ設定を見直し
+```terraform
+"logConfiguration": {
+    "logDriver": "awslogs",
+    "options": {
+        "awslogs-group": "/ecs/ass-staging",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "ecs/ass-staging"
+    }
+},
+```
 
 
 
