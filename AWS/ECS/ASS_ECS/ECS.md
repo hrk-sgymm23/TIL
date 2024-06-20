@@ -375,6 +375,23 @@ https://dev.classmethod.jp/articles/fargate_pv14_vpc_endpoint/
 },
 ```
 
+## やはりvpcエンドポイントのセキュリティグループ群か、、
+https://zenn.dev/yoshinori_satoh/articles/ecs-fargate-vpc-endpoint
+`vpc-endpoint-security-group`のセキュリティグループのソースが`172.10.0.0/16`になっている
+それに対しECSプライベートIPは可変
+
+## セキュリティグループのポート設定ミスでした
+```terraform
+module "vpc_endpoint_security_group" {
+  source              = "../../../modules/sg"
+  security_group_name = "vpc-endpoint-security-group"
+  vpc_id              = module.ass_vpc_stg.id
+  cidr_blocks         = [module.ass_vpc_stg.cidr_block]
+  ＃ 修正
+  port                = 443
+}
+```
+
 
 
 
