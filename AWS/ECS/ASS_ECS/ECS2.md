@@ -54,6 +54,11 @@ laambdaでやろう
 ### Terraformで管理したい
 - [TerraformでAWS Lambdaをデプロイする方法](https://qiita.com/curlneko/items/15607f8ef319cc97a75e)
 
+### 次やること
+- Lambdaで簡単なコードをterraform管理できるようにする
+- 上記ができたらNatGateway作成
+- そしてNatGatewayを自動作成、自動停止するコードを実装しEventBridgeで提示実行できるようにする
+
 
 
 
