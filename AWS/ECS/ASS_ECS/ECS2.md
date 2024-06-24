@@ -27,3 +27,33 @@ resource "aws_db_instance" "main" {
 - https://techblog.forgevision.com/entry/AWS/public-ipv4-cost
 
 > 2024 年 2 月1 日以降、サービスに接続されているかどうかに関係なく、すべてのパブリック IPv4 アドレスに対して、IP あたり 0.005 USD/時間（およそ 3.6 ドル/月）の料金が発生します。日本円に換算しますと、2023 年 8 月 4 日時点の為替レートは、1 USD あたり 142.66 円となっておりますので、IP あたりおよそ 513 円/月の費用が発生することとなります。
+
+
+## NatGateway　vs VPCエンドポイント
+
+### VPCエンドポイント
+1エンドポイントにつき0.014USD/h
+- 1ヶ月10.08USD
+- ASSは5個必要なので50USD/m
+
+### NATGateway
+1ゲートウェイにつき0.062USD
+- 1ヶ月33USD
+- ASSは2個必要なので66USD
+
+### どのような構成にするか
+
+- NAT & Endpointだと帰って高くつく
+- どちらにせよエンドポイントは必要
+- NATオンリーで対応、、
+
+### NATを節約したい
+- [サーバレスでNAT Gatewayの起動・停止を管理してみた](https://www.ntt-tx.co.jp/column/dojo_aws_blog/20180411/)
+laambdaでやろう
+
+### Terraformで管理したい
+- [TerraformでAWS Lambdaをデプロイする方法](https://qiita.com/curlneko/items/15607f8ef319cc97a75e)
+
+
+
+
