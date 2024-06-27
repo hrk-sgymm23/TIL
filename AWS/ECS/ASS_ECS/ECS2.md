@@ -59,6 +59,15 @@ laambdaでやろう
 - 上記ができたらNatGateway作成
 - そしてNatGatewayを自動作成、自動停止するコードを実装しEventBridgeで提示実行できるようにする
 
+## 下記を参考にterraformでlambdaを実装
+https://zenn.dev/not75743/articles/7a7d3a2fc7e788#%E5%AE%9F%E8%A1%8C
+
+```terraform
+~
+# ファイル名.関数名
+handler = main.handler
+~
+```
 
 
 
