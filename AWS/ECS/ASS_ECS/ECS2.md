@@ -61,6 +61,7 @@ laambdaでやろう
 
 ## 下記を参考にterraformでlambdaを実装
 https://zenn.dev/not75743/articles/7a7d3a2fc7e788#%E5%AE%9F%E8%A1%8C
+https://qiita.com/TheParkSider/items/bd4dd71a282761508bd4
 
 ```terraform
 ~
@@ -68,6 +69,37 @@ https://zenn.dev/not75743/articles/7a7d3a2fc7e788#%E5%AE%9F%E8%A1%8C
 handler = main.handler
 ~
 ```
+
+### Lambda x terraformにおける環境変数について
+
+```terraform
+  filename         = var.file_name
+  source_code_hash = var.code_hash
+  function_name    = var.function_name
+  role             = aws_iam_role.lambda_role.arn
+  runtime          = "python3.9"
+  handler          = var.handler
+  # 下記を追加
+  environment {
+    variables = var.environments_variables
+  }
+}
+```
+
+### NATGWように必要な環境変数を整理
+
+#### 削除
+- ElasticIP
+- SubnetId
+- route_table_id
+- NatGatewayの値は変動するため、SDKの`decribe`でその都度値をとってくる
+
+#### 起動
+- ElasticIP
+- SubnetId
+- route_table_id
+- Natgateway Name(任意の名前)
+
 
 
 
