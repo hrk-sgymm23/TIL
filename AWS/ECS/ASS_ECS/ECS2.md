@@ -100,6 +100,18 @@ handler = main.handler
 - route_table_id
 - Natgateway Name(任意の名前)
 
+### ルートテーブルの取り扱いについて
+> はい、ルートテーブルの削除ではなく、NATゲートウェイに関連するルートを解除することは可能です。現在のコードで使用している client.delete_route は、ルートテーブル自体を削除するのではなく、特定のルートを削除しています。これにより、ルートテーブルは保持され、特定のルート（この場合はNATゲートウェイへのデフォルトルート）が削除されます。関連付けを解除するためには、ルートテーブルから特定のルートを削除するだけで十分です。既にその処理を実行するためのコードが含まれています：
 
+```terraform
+def delete_route_to_nat_gateway(route_table_id):
+    logger.info('Deleting route to NAT Gateway...')
+    
+    response = client.delete_route(
+        DestinationCidrBlock = '0.0.0.0/0',
+        RouteTableId = route_table_id
+    )
+    logger.info(response)
+```
 
 
