@@ -114,4 +114,9 @@ def delete_route_to_nat_gateway(route_table_id):
     logger.info(response)
 ```
 
+## NATGateway,サブネット、ルートテーブルの関係性を再確認
 
+- NATGateway自体にはルートテーブルを関連づけることはできない
+- 正確にはパブリックサブネットに配置されたNATGatwayを用いてプライベートサブネットないのインスタンスがインターネットにアクセスすることが可能
+
+ルートテーブルは共有できるものとして実装する
