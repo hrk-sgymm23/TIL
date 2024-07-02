@@ -120,3 +120,18 @@ def delete_route_to_nat_gateway(route_table_id):
 - 正確にはパブリックサブネットに配置されたNATGatwayを用いてプライベートサブネットないのインスタンスがインターネットにアクセスすることが可能
 
 ルートテーブルは共有できるものとして実装する
+
+## zipファイルが見つからないエラー
+```bash
+module.natgateway_stop_func.aws_lambda_function.main: Creating...
+╷
+│ Error: creating Lambda Function (ass-natgw-stop-func-staging): operation error Lambda: CreateFunction, https response error StatusCode: 400, RequestID: 008d9cc3-9e2c-439f-a684-78b305dfa9b1, InvalidParameterValueException: Uploaded file must be a non-empty zip
+│
+│   with module.natgateway_stop_func.aws_lambda_function.main,
+│   on ../../../modules/lambda/main.tf line 17, in resource "aws_lambda_function" "main":
+│   17: resource "aws_lambda_function" "main" {
+│
+```
+
+- zipファイルを開くとzipファイルが空であった
+  - かくファイル反対だった。。。
