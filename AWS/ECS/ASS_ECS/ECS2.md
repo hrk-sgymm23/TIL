@@ -135,3 +135,17 @@ module.natgateway_stop_func.aws_lambda_function.main: Creating...
 
 - zipファイルを開くとzipファイルが空であった
   - かくファイル反対だった。。。
+ 
+## AWSSDK boto3 `waiter`について
+
+https://qiita.com/kimihiro_n/items/f3ce86472152b2676004#waiter
+
+```python
+s3 = boto3.client('s3')
+
+# object ができるまで待機する waiter を作成
+waiter = s3.get_waiter('object_exists')
+
+# NewObject.txt が作成されるまで sleep する
+waiter.wait(Bucket='test_bucket', Key='NewObject.txt')
+```
