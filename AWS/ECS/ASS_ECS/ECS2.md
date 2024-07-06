@@ -149,3 +149,17 @@ waiter = s3.get_waiter('object_exists')
 # NewObject.txt が作成されるまで sleep する
 waiter.wait(Bucket='test_bucket', Key='NewObject.txt')
 ```
+
+## LambdaをEventBridgeSchedulerで制御する(Terraform)
+
+https://qiita.com/neruneruo/items/34d5092af44d79914849
+
+`target`の書き方
+```terraform
+~
+  target {
+    arn      = aws_lambda_function.example.arn
+    role_arn = aws_iam_role.eventbridge_scheduler.arn
+  }
+~
+```
