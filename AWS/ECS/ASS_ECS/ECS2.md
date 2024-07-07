@@ -163,3 +163,22 @@ https://qiita.com/neruneruo/items/34d5092af44d79914849
   }
 ~
 ```
+
+## 実際にLambda実行の際以下エラー
+```bash
+START RequestId: 186ad679-4183-4261-88b2-aa29c5ccdac4 Version: $LATEST
+[INFO]	2024-07-07T08:48:32.383Z	186ad679-4183-4261-88b2-aa29c5ccdac4	Execute to Stopping NAT Gateway...
+[INFO]	2024-07-07T08:48:32.383Z	186ad679-4183-4261-88b2-aa29c5ccdac4	Detach NatGateway Route...
+[INFO]	2024-07-07T08:48:32.716Z	186ad679-4183-4261-88b2-aa29c5ccdac4	Delete NatGateway...
+[INFO]	2024-07-07T08:48:32.790Z	186ad679-4183-4261-88b2-aa29c5ccdac4	{'NatGateways': [{'CreateTime': datetime.datetime(2024, 7, 7, 8, 43, 21, tzinfo=tzlocal()), 'NatGatewayAddresses': [{'AllocationId': 'eipalloc-0b7685e76d75fdcff', 'NetworkInterfaceId': 'eni-050585371c1e5c83f', 'PrivateIp': '172.10.0.127', 'PublicIp': '52.192.162.89', 'AssociationId': 'eipassoc-046b3ce7eaa0a340d', 'IsPrimary': True, 'Status': 'succeeded'}], 'NatGatewayId': 'nat-0e9e2c78c20df634b', 'State': 'available', 'SubnetId': 'subnet-02e9079cab760dce6', 'VpcId': 'vpc-0c5d0041a8f0d951a', 'Tags': [{'Key': 'Zone', 'Value': 'ap-northeast-1a'}], 'ConnectivityType': 'public'}], 'ResponseMetadata': {'RequestId': '2952260c-babc-44e1-bcc1-724665058d34', 'HTTPStatusCode': 200, 'HTTPHeaders': {'x-amzn-requestid': '2952260c-babc-44e1-bcc1-724665058d34', 'cache-control': 'no-cache, no-store', 'strict-transport-security': 'max-age=31536000; includeSubDomains', 'vary': 'accept-encoding', 'content-type': 'text/xml;charset=UTF-8', 'transfer-encoding': 'chunked', 'date': 'Sun, 07 Jul 2024 08:48:32 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
+2024-07-07T08:48:35.401Z 186ad679-4183-4261-88b2-aa29c5ccdac4 Task timed out after 3.02 seconds
+
+END RequestId: 186ad679-4183-4261-88b2-aa29c5ccdac4
+REPORT RequestId: 186ad679-4183-4261-88b2-aa29c5ccdac4	Duration: 3018.67 ms	Billed Duration: 3000 ms	Memory Size: 128 MB	Max Memory Used: 85 MB	Init Duration: 502.96 ms	
+```
+
+上記タイムアウト300sで解決
+
+## lambdaにてルートが紐づけられていないというエラー
+ルートテーブルにて一つのCIDRへ向く設定は一つしか作成できない
+`0.0.0.0/0`にたいし一つしかNATを紐付けられない
