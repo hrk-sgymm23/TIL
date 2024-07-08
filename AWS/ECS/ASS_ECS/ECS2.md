@@ -184,3 +184,19 @@ REPORT RequestId: 186ad679-4183-4261-88b2-aa29c5ccdac4	Duration: 3018.67 ms	Bill
 `0.0.0.0/0`にたいし一つしかNATを紐付けられない
 
 ## NAT作成の際にEIPを毎回作るのではなくTerraformで作成したものを流用する
+
+- AllocationIDをoutputに出力させ環境変数に埋め込む
+```terraform
+  environments_variables = {
+    EipId1          = local.eip_id_list[0],
+    EipId2          = local.eip_id_list[1],
+    SubnetId1       = local.subnet_list[0],
+    SubnetId2       = local.subnet_list[1],
+    RouteTableId1   = local.route_table_id_list[0],
+    RouteTableId2   = local.route_table_id_list[1],
+    NatGatewayName1 = "${var.common_name}-Nat-GW-${var.environment}-1"
+    NatGatewayName2 = "${var.common_name}-Nat-GW-${var.environment}-2"
+  }
+```
+
+停止側でElasticIPを開放してしまっていたため修正。。。
