@@ -94,3 +94,19 @@ production:
   username: <%= ENV['DB_USERNAME'] %>
   host: <%= ENV['DB_HOST'] %>
 ```
+
+https://takelg.com/terraform-aws-rds/
+
+### 最終的な設定
+`database.yaml`
+```yaml
+staging:
+  <<: *default
+  database: <%= ENV["DB_NAME"] %>
+  host: api_staging
+  username: api
+  password: <%= ENV["API_DATABASE_PASSWORD"] %>
+  host: <%= ENV["DB_ENDPOINT"] %>
+  username: <%= ENV["DB_USERNAME"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+```
