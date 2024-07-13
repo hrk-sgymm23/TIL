@@ -110,3 +110,9 @@ staging:
   username: <%= ENV["DB_USERNAME"] %>
   password: <%= ENV["DB_PASSWORD"] %>
 ```
+
+## Dockerのエントリーポイントについて理解
+https://qiita.com/ist-a-s/items/bc1628230e7ac58e09d1
+
+
+## ECS Execを使ってコンテナ内を確認する
