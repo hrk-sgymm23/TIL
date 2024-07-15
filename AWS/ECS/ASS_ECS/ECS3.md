@@ -116,3 +116,85 @@ https://qiita.com/ist-a-s/items/bc1628230e7ac58e09d1
 
 
 ## ECS Execを使ってコンテナ内を確認する
+
+```bash
+aws ecs describe-tasks \
+    --cluster ass-ecs-cluster-staging \
+    --tasks a84b852fa12b479589b4f7ea7555d326
+
+
+                        {
+                            "name": "ExecuteCommandAgent",
+                            "lastStatus": "STOPPED"
+                        }
+                    ],
+                    "cpu": "0"
+                }
+            ],
+            "cpu": "256",
+            "createdAt": "2024-07-15T11:09:23.552000+09:00",
+            "desiredStatus": "STOPPED",
+            "enableExecuteCommand": true,
+            "executionStoppedAt": "2024-07-15T11:10:31.502000+09:00",
+            "group": "service:ass-staging",
+            "healthStatus": "UNKNOWN",
+            "lastStatus": "STOPPED",
+            "launchType": "FARGATE",
+            "memory": "512",
+            "overrides": {
+                "containerOverrides": [
+                    {
+                        "name": "nginx"
+                    },
+                    {
+                        "name": "rails"
+                    }
+                ],
+                "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.4.0",
+            "platformFamily": "Linux",
+            "pullStartedAt": "2024-07-15T11:09:44.661000+09:00",
+            "pullStoppedAt": "2024-07-15T11:10:10.220000+09:00",
+            "startedBy": "ecs-svc/7195836571016647723",
+            "stopCode": "TaskFailedToStart",
+            "stoppedAt": "2024-07-15T11:11:18.301000+09:00",
+            "stoppedReason": "Task failed to start",
+            "stoppingAt": "2024-07-15T11:10:41.565000+09:00",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:ap-northeast-1:730335441282:task/ass-ecs-cluster-staging/a84b852fa12b479589b4f7ea7555d326",
+            "taskDefinitionArn": "arn:aws:ecs:ap-northeast-1:730335441282:task-definition/ass-task-def-staging:24",
+            "version": 5,
+            "ephemeralStorage": {
+                "sizeInGiB": 20
+            }
+        }
+    ],
+    "failures": []
+}
+```
+
+```bash
+
+```
+
+## Dockerファイルを作り直す
+階層を意識した
+```bash
+$ docker build -f ./docker/staging/Dockerfile --platform linux/amd64  -t ass-rails-ecr-staging .
+```
+
+
+## 起動しない理由
+
+### タスク定義のヘルスチェックのパスが違った
+```json
+      "healthCheck": {
+        "retries": 10,
+        "command": [
+          "CMD-SHELL",
+          # ここ！
+          "curl localhost:3000/api/v1/health_check",
+          "\"|| exit 1\""
+        ],
+```
