@@ -208,48 +208,15 @@ $ docker build -f ./docker/staging/Dockerfile --platform linux/amd64  -t ass-rai
 2024年7月15日 20:45 (UTC+9:00)
 nginx: [emerg] could not build server_names_hash, you should increase server_names_hash_bucket_size: 64
 -
--
-2024年7月15日 20:45 (UTC+9:00)
-2024/07/15 11:45:08 [warn] 1#1: server name "/usr/src/app/public" has suspicious symbols in /etc/nginx/conf.d/custom.conf:4
--
--
-2024年7月15日 20:45 (UTC+9:00)
-nginx: [warn] server name "/usr/src/app/public" has suspicious symbols in /etc/nginx/conf.d/custom.conf:4
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: Configuration complete; ready for start up
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
--
--
-2024年7月15日 20:45 (UTC+9:00)
-10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
--
--
-2024年7月15日 20:45 (UTC+9:00)
-10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
--
--
-2024年7月15日 20:45 (UTC+9:00)
-/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+~
+~
+~
 ```
+
+https://qiita.com/hatsu/items/22e11e94a0a981d78efa#nginxconf%E3%81%AE%E4%BD%9C%E6%88%90
+
+上記を参考に`custom.conf`を編集
+
+
+
 
