@@ -217,6 +217,22 @@ https://qiita.com/hatsu/items/22e11e94a0a981d78efa#nginxconf%E3%81%AE%E4%BD%9C%E
 
 上記を参考に`custom.conf`を編集
 
+## PumaとRailsサーバーの同時起動について調べる
+上記を解決することでコンテナにわざわざ入らなくても起動できるはず
+
+```ruby
+app_root = File.expand_path('..', __dir__)
+bind "unix://#{app_root}/tmp/sockets/puma.sock"
+```
+
+上記のunix://#{app_root}/tmp/sockets/puma.sockの実際の値がどうなるか確認
+
+`upstream`の改修
+```
+    upstream app {
+        server unix:///api/tmp/sockets/puma.sock;
+    }
+```
 
 
 
