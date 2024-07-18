@@ -234,5 +234,13 @@ bind "unix://#{app_root}/tmp/sockets/puma.sock"
     }
 ```
 
+`puma`再起動
+```bash
+$ bundle exec puma -C config/puma.rb
+```
+
+https://qiita.com/NaokiIshimura/items/7cb2390243939a34754f
+
+上記がnginxとrailsの構成パターンごとの紹介をしてくれている
 
 
