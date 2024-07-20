@@ -236,6 +236,7 @@ bind "unix://#{app_root}/tmp/sockets/puma.sock"
 
 `puma`再起動
 ```bash
+$ rm /api/tmp/pids/server.pid (rm /app/tmp/pids/server.pid)
 $ bundle exec puma -C config/puma.rb
 ```
 
@@ -243,4 +244,6 @@ https://qiita.com/NaokiIshimura/items/7cb2390243939a34754f
 
 上記がnginxとrailsの構成パターンごとの紹介をしてくれている
 
+https://bluepixel.hatenablog.com/entry/2020/04/22/230721
 
+上記参考にタスク定義見直し(ボリュームの部分)
