@@ -247,3 +247,16 @@ https://qiita.com/NaokiIshimura/items/7cb2390243939a34754f
 https://bluepixel.hatenablog.com/entry/2020/04/22/230721
 
 上記参考にタスク定義見直し(ボリュームの部分)
+
+https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/developerguide/bind-mount-examples.html
+
+公式ドキュメント
+
+## `aws_ecs_task_definition`ブロックから`volume`を指定
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition
+
+```terraform
+  volume {
+    name = "tmp"
+  }
+```
