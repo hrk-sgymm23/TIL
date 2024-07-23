@@ -260,3 +260,52 @@ https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_
     name = "tmp"
   }
 ```
+
+# 最終的なNginxの設定
+`nginx.conf`
+```
+server {
+    listen 80;
+    server_name localhost;
+    root /app/public;
+
+    location / {
+        # The try_files directive is used to check for the existence of a file before proxying
+        try_files $uri @app;
+    }
+
+    location @app {
+        proxy_pass http://app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    client_max_body_size 100m;
+    keepalive_timeout 65;
+}
+
+upstream app {
+    server unix:///app/tmp/sockets/puma.sock;
+}
+```
+
+`dockerfile`
+```
+FROM nginx:latest
+
+# for health check
+RUN apt-get update && apt-get install -y curl
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY nginx.conf /etc/nginx/conf.d
+
+CMD ["nginx", "-g", "daemon off;"]
+
+EXPOSE 80
+```
+
+**default.confの設定がリバースの設定を邪魔していた**
+
