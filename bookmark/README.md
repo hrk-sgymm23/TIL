@@ -26,6 +26,7 @@
 - [Good first issues of TypeProf(STORES)](https://speakerdeck.com/mame/good-first-issues-of-typeprof)
 
 ## Rails
+[STORES 予約 をモジュラモノリス化しました！](https://product.st.inc/entry/2024/07/02/111758)
 
 ### RSpec
 - [[RSpec]request specでcontrollerテストをやってみる](https://qiita.com/nakachan1994/items/f62cd4d93c061e3fa6df)
