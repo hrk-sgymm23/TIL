@@ -309,3 +309,25 @@ EXPOSE 80
 
 **default.confの設定がリバースの設定を邪魔していた**
 
+## タスク定義修正
+以下削除
+```json
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/${service_name}",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs/${service_name}"
+        }
+      },
+      # 以下削除
+      "entryPoint": ["sh", "-c", "while true; do sleep 60; done"],
+      "portMappings": [
+        {
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "containerPort": 3000
+        }
+      ],
+```
