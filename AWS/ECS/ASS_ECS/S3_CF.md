@@ -163,3 +163,16 @@ module "ass_web_s3_stg" {
   oai_identifiers = module.ass_web_cf_stg.oai_identifiers
 }
 ```
+
+## S3へアップロード
+
+```bash
+$ ass/frontend/app
+
+$ npm run build
+```
+
+```bash
+$ aws s3 sync --delete ./build/ s3://ass-staging
+$ aws cloudfront create-invalidation --distribution-id E2I7XFCFXR9YF6 --paths "/*"
+```
