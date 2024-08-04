@@ -43,4 +43,15 @@ node_modules
 $ npx prettier . --write
 ```
 
+`package.json/scripts`追加
+```json
+"format": "npx prettier . --write"
+```
+
+## 次やること
+(RailsプロジェクトにGitHub Actionsを導入する方法（Rspec, Rubocop）)[https://qiita.com/JZ8xNeXY/items/fef7efb5eb9495b62faf]
+- Railsのフォーマットとテスト追加
+- リモートpush時のgithub actions作成
+
+
 
