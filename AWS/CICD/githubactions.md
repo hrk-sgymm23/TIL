@@ -53,5 +53,126 @@ $ npx prettier . --write
 - Railsのフォーマットとテスト追加
 - リモートpush時のgithub actions作成
 
+## RubyCopo導入
+
+`Gemfile`
+```
+development do
+~
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+~
+end
+```
+
+```bash
+$ bundle install
+```
+
+`.rubocop_todo.yml.`作成
+```bash
+$ bundle exec rubocop --auto-gen-config
+```
+
+違反箇所確認
+```bash
+$ bundle exec rubocop
+```
+
+違反箇所修正
+```bash
+$ bundle exec rubocop --auto-correct
+```
+
+## GithhubActios WorkFlow追加
+
+`.github/workflows/static_analytics`
+
+```yml
+name: Static Analytics
+
+on:
+    push:
+
+jobs:
+    rspec:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: .
+        services:
+            mysql:
+                image: mysql:latest
+                ports:
+                    - 3306:3306
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: yes
+
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v2
+
+            - name: SetUp Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                ruby-version: 3.2.2
+                bundler-cache: true
+
+            - name: Cache NodeModules
+              uses: actions/cache@v3
+              with:
+                path: ./frontend/app/node_modules
+                key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }} # キャッシュのキーを指定します。
+                restore-keys: |
+                    ${{ runner.os }}-node-
+
+            - name: Bundler and Gem install
+              run: |
+                gem install bundler
+                bundle install
+              working-directory: ./backend/app
+
+            - name: Database craete and Migration
+              run: |
+                bundle exec rails db:create RAILS_ENV=test
+                bundle exec rails db:migrate RAILS_ENV=test
+              working-directory: ./backend/app
+
+            - name: Exec RSpec
+              run: bundle exec rspec
+              working-directory: ./backend/app
+
+    rubocop:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+              working-directory: .
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+      
+            - name: Set up Ruby
+              uses: ruby/setup-ruby@v1
+              with:
+                ruby-version: 3.2.2
+                bundler-cache: true
+            
+            - name: Bundler and Gem install
+              run: |
+                  gem install bundler
+                  bundle install
+              working-directory: ./backend/app
+
+            - name: Run rubocop
+              run: bundle exec rubocop
+              working-directory: ./backend/app
+
+```
+
+
+
+
 
 
