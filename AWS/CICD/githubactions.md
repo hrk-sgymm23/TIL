@@ -172,6 +172,46 @@ jobs:
 ```
 
 
+## PrettierをGithubActionsを導入
+`prettier`をgithubactionsに追加
+
+```yml
+    prettier:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+              working-directory: .
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: '16.15.1'
+
+            - name: Install npm
+              run: npm ci
+              working-directory: ./frontend/app
+
+            - name: run Prettier
+              run: npm run format
+              working-directory: ./frontend/app
+
+            - name: Check diff exits
+              run: |
+                git add -N .
+                git diff
+                line=`git diff | wc -l`
+                if [ $line -gt 0 ]; then
+                  echo "You need to format before commit"
+                  git diff
+                  exit -1
+                fi
+              working-directory: ./frontend/app
+```
+
+
 
 
 
