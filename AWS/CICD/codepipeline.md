@@ -6,6 +6,6 @@
 # 参考
 - [ECS用のCDパイプラインに対する考察](https://zenn.dev/reireias/articles/8e987af2762eaa#%E8%B6%A3%E6%97%A8)
   - 様々な種類の構成のパイプラインが載っている
-  - 「7. Image BuildのみGitHub Actionsでやる(複数イメージ)」がやりたいイメージ
+  - 「3. Image BuildのみGitHub Actionsでやる」がやりたいイメージ
 
 
