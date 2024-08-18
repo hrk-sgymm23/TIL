@@ -22,3 +22,9 @@
   - DBマイグレーション
   - S3からappspecとタスク定義を取得しアーティファクト化(後続の処理へ渡すための処理)
   - CodeDeployにてECSサービスを更新
+
+
+# CodeBuild作成時の課題
+
+## S3から取得するタスク定義にてタスク定義のリビジョンを動的にしたい
+- [【ECS Blue/Greenデプロイ】１タスクで複数コンテナ稼働している場合のCI/CDパイプライン構築](https://qiita.com/tarian/items/5043abe44345d448e7dc)
