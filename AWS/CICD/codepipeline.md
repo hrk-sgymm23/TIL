@@ -8,4 +8,17 @@
   - 様々な種類の構成のパイプラインが載っている
   - 「3. Image BuildのみGitHub Actionsでやる」がやりたいイメージ
 
+#　各Code~の仕組みについて理解する
 
+# CodeBuild
+
+## アーティファクトについて理解する
+
+# CodePipelineの流れ
+
+1. GithubActionsよりECRへコンテナイメージがpushされる
+2. 前項にてpushされたイメージを検知し、CodeBuildが発火
+3. CodeBuildにてECRからpushされたイメージをもとに
+  - DBマイグレーション
+  - S3からappspecとタスク定義を取得しアーティファクト化(後続の処理へ渡すための処理)
+  - CodeDeployにてECSサービスを更新
