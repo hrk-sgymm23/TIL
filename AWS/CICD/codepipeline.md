@@ -33,5 +33,10 @@
 
 今回CDにおいて変更を加えたいのは更新されたコンテナイメージのみのため、コンテナイメージの参照のみ行いたい
 
-# タスク定義ファイル(動的に値が取れるもの)とappspec.ymlをS3へ格納
+## タスク定義ファイル(動的に値が取れるもの)とappspec.ymlをS3へ格納
+
+## Deploy周りのリソース作成
+- `aws_codedeploy_app`
+- `aws_codedeploy_deployment_group`
+- ``
 
