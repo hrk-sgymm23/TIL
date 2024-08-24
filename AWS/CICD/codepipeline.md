@@ -52,5 +52,25 @@
 引用: https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/introduction.html
 
 
+## codebuildでエラー
+```bash
+Error: Error creating CodeBuild project: InvalidInputException: Invalid input: buildspec must be a valid YAML file
+```
 
+`source`周りを見直す
+```hcl
+data "local_file" "buildspec_local" {
+    filename = "${path.module}/buildspec.yml.tmpl"
+}
 
+source {
+    buildspec           = data.local_file.buildspec_local.content
+    git_clone_depth     = 0
+    insecure_ssl        = false
+    report_build_status = false
+    type                = "CODEPIPELINE"
+  }
+```
+
+https://dev.to/seifolahghaderi/terraform-aws-codebuild-embed-buildspec-yml-1ci0
+上記にてエラー解消
