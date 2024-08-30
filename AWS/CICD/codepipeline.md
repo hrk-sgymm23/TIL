@@ -82,3 +82,6 @@ https://dev.to/seifolahghaderi/terraform-aws-codebuild-embed-buildspec-yml-1ci0
 https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
 
 上記記事のようにネットワーク設定を確認する
+<img width="912" alt="スクリーンショット 2024-08-30 23 34 39" src="https://github.com/user-attachments/assets/bd19e2e8-5243-4f85-ad17-5ca242add4cf">
+
+
