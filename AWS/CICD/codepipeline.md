@@ -74,3 +74,11 @@ source {
 
 https://dev.to/seifolahghaderi/terraform-aws-codebuild-embed-buildspec-yml-1ci0
 上記にてエラー解消
+
+## Buildステージにてマイグレーションの際にエラー
+
+`Mysql2::Error::ConnectionError: Unknown server host 'ass_db' (-2) (Mysql2::Error::ConnectionError)`
+
+https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
+
+上記記事のようにネットワーク設定を確認する
