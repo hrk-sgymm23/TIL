@@ -85,3 +85,11 @@ https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
 <img width="912" alt="スクリーンショット 2024-08-30 23 34 39" src="https://github.com/user-attachments/assets/bd19e2e8-5243-4f85-ad17-5ca242add4cf">
 
 
+## CodeBuildのネットワークを設定する際にエラー
+```bash
+Error: Error creating CodeBuild project: InvalidInputException: Not authorized to perform DescribeSecurityGroups
+```
+
+上記CodeBuild用のロールに`ec2:DescribeSecurityGroups`がないためおこるエラー
+
+
