@@ -92,4 +92,12 @@ Error: Error creating CodeBuild project: InvalidInputException: Not authorized t
 
 上記CodeBuild用のロールに`ec2:DescribeSecurityGroups`がないためおこるエラー
 
+## CodebuildにてDBエラー
+https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
+
+上記記事のマイグレーションコマンドを試す
+```bash
+- docker run --rm --env RAILS_ENV=$RAILS_ENV --env SECRET_KEY_BASE=$SECRET_KEY_BASE --env DB_HOST=$DB_HOST --env DB_NAME=$DB_NAME --env DB_USERNAME=$DB_USERNAME --env DB_PASSWORD=$DB_PASSWORD $REPOSITORY_URI:latest rails db:migrate
+```
+
 
