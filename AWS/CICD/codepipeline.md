@@ -113,4 +113,7 @@ https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
 - `DB_USERNAME`
 - `DB_PASSWORD`
 
-
+　完成形
+```bash
+- docker run --rm -e RAILS_MASTER_KEY RAILS_ENV=staging DB_HOST DB_NAME DB_USERNAME DB_PASSWORD $IMAGE rails db:migrate
+```
