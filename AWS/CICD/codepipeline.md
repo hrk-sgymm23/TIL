@@ -100,4 +100,17 @@ https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
 - docker run --rm --env RAILS_ENV=$RAILS_ENV --env SECRET_KEY_BASE=$SECRET_KEY_BASE --env DB_HOST=$DB_HOST --env DB_NAME=$DB_NAME --env DB_USERNAME=$DB_USERNAME --env DB_PASSWORD=$DB_PASSWORD $REPOSITORY_URI:latest rails db:migrate
 ```
 
+現状
+```bash
+- docker run --rm -e RAILS_MASTER_KEY -e DATABASE_URL $IMAGE rails db:migrate
+```
+
+### 必要なenv
+- `RAILS_ENV`
+- `SECRET_KEY_BASE`
+- `DB_HOST`
+- `DB_NAME`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+
 
