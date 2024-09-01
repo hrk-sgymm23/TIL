@@ -117,3 +117,30 @@ https://qiita.com/matsuda-hiroki/items/fe28e681c4354a16b398
 ```bash
 - docker run --rm -e RAILS_MASTER_KEY RAILS_ENV=staging DB_HOST DB_NAME DB_USERNAME DB_PASSWORD $IMAGE rails db:migrate
 ```
+
+## DBトラブルシュート
+https://qiita.com/itoo/items/ffcf9fe2f1b825ed0720
+
+## 同じ現象の人いた
+https://github.com/brianmario/mysql2/issues/1211
+
+## RDSへ接続しコマンドを叩ける状況にしたい
+MySQL コマンドラインクライアントからの接続 (非暗号化)
+https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_ConnectToInstance.html
+
+```bash
+mysql -h ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com -P 3306 -u ass_api -p
+```
+
+下記を実行したいが踏み台が必要
+https://stackoverflow.com/questions/41200297/mysql2error-cant-connect-to-local-mysql-server-through-socket-tmp-mysql-so
+```bash
+mysql.server start
+```
+
+## 踏み台ECSを作る
+- https://qiita.com/hirooka622/items/d9ffb3aaf5fbba0a8a8d
+- https://zenn.dev/quiver/articles/1458e453118254
+
+
+
