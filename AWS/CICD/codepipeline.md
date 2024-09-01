@@ -142,5 +142,81 @@ mysql.server start
 - https://qiita.com/hirooka622/items/d9ffb3aaf5fbba0a8a8d
 - https://zenn.dev/quiver/articles/1458e453118254
 
+# 踏み台から接続
+
+runtimeidを取得
+```bash
+aws ecs describe-tasks \
+  --cluster <クラスター名> \
+  --task <タスクID>
+```
+
+```bash
+aws ecs describe-tasks \
+  --cluster ass-bastion-staging \
+  --task b5213840e42d4b39bb7dab71f87b1d49
+```
+
+d48b9c7e00b94a98aabb59e9a668bf08-607325679
+
+## SessionManagerからRDS接続
+```bash
+aws ssm start-session \
+ --target "ecs:<クラスター名>_<タスクID>_<ランタイムID> \
+ --document-name AWS-StartPortForwardingSessionToRemoteHost \
+ --parameters '{"host":["<RDSのエンドポイント>"],"portNumber":["5432"], "localPortNumber":["15441"]}'
+```
+
+```bash
+aws ssm start-session \
+ --target "ecs:ass-bastion-staging_b5213840e42d4b39bb7dab71f87b1d49_b5213840e42d4b39bb7dab71f87b1d49-607325679 \
+ --document-name AWS-StartPortForwardingSessionToRemoteHost \
+ --parameters '{"host":["ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com"],"portNumber":["3306"], "localPortNumber":["80"]}'
+```
+
+## 以下エラーでECSが起動できない
+
+```bash
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:06 INFO Checking if agent identity type OnPrem can be assumed
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:06 ERROR Agent failed to assume any identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:06 ERROR failed to get identity: failed to find agent identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:06 ERROR Error occurred when starting amazon-ssm-agent: failed to get identity: failed to find agent identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 ERROR failed to find identity, retrying: failed to find agent identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 ERROR Agent failed to assume any identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 INFO Checking if agent identity type OnPrem can be assumed
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 ERROR failed to find identity, retrying: failed to find agent identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 ERROR Agent failed to assume any identity
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 INFO Checking if agent identity type OnPrem can be assumed
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 INFO no_proxy:
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 INFO http_proxy:
+-
+2024年9月01日 23:08 (UTC+9:00)
+2024-09-01 14:08:05 INFO https_proxy:
+
+```
+
 
 
