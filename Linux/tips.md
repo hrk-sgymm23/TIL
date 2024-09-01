@@ -7,3 +7,8 @@ $ mv <元のディレクトリ名> <新しいディレクトリ名>
 ```bash
 $ sudo su
 ```
+
+## グローバルIPを知りたい時
+```bash
+$ curl inet-ip.info
+```
