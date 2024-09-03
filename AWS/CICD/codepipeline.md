@@ -220,7 +220,24 @@ aws ssm start-session \
 
 ## 上記エラーの解決に講じたこと
 - セキュリティグループに443のルール追加
-- 
+- AmazonSSMManagedInstanceCoreが必要？
+  - https://docs.aws.amazon.com/ja_jp/aws-managed-policy/latest/reference/AmazonSSMManagedInstanceCore.html
+
+ssm:*とec2:*を追加
+
+nginxのイメージだったら行けた
+`public.ecr.aws/nginx/nginx:latest`
+
+## sessionが始まらない
+```bash
+aws ssm start-session \
+ --target ecs:ass-bastion-staging_38d151a1f1d1414384ba767cf0a83bf8_38d151a1f1d1414384ba767cf0a83bf8-607325679 \
+ --document-name AWS-StartPortForwardingSessionToRemoteHost \
+ --parameters '{"host":["ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com"],"portNumber":["3306"], "localPortNumber":["80"]}'
+
+Starting session with SessionId: botocore-session-1725371830-eykx37cqw7lyrub3brtmzsi7ce
+```
+
 
 
 
