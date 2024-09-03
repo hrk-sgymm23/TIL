@@ -233,9 +233,11 @@ nginxのイメージだったら行けた
 aws ssm start-session \
  --target ecs:ass-bastion-staging_38d151a1f1d1414384ba767cf0a83bf8_38d151a1f1d1414384ba767cf0a83bf8-607325679 \
  --document-name AWS-StartPortForwardingSessionToRemoteHost \
- --parameters '{"host":["ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com"],"portNumber":["3306"], "localPortNumber":["80"]}'
+ --parameters '{"host":["ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com"],"portNumber":["3306"], "localPortNumber":["1234"]}'
 
-Starting session with SessionId: botocore-session-1725371830-eykx37cqw7lyrub3brtmzsi7ce
+Starting session with SessionId: botocore-session-1725371830-7eqsc4tj4xbw2begql7aql6qum
+Port 1234 opened for sessionId botocore-session-1725371830-7eqsc4tj4xbw2begql7aql6qum.
+Waiting for connections...
 ```
 
 
