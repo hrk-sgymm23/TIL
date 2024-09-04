@@ -241,5 +241,21 @@ Waiting for connections...
 ```
 
 
+## ECS exec実行
+```bash
+$ aws ecs execute-command --cluster ass-bastion-staging \
+    --task arn:aws:ecs:ap-northeast-1:730335441282:task/ass-bastion-staging/45a09fad81884d4fa562256f23f8808b \
+    --container bastion \
+    --interactive \
+    --command "/bin/sh"
+```
 
+pingをインストールし実行
+下記よりECSタスクよりrdsへ名前解決できている事はわかる
+```bash
+apt-get update
+apt-get install -y iputils-ping
 
+# ping ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com
+PING ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com (172.10.2.192) 56(84) bytes of data.
+```
