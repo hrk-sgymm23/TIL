@@ -296,3 +296,110 @@ https://repost.aws/ja/questions/QUvGrmH_JpQrGtkizz8kn2_Q/how-do-i-create-an-ssm-
     "systemControls": []
 }
 ```
+
+## RDSへ接続
+
+https://zenn.dev/fuku710/articles/f4ef9ffe81c3ee
+
+上記を参考に
+
+### タスク定義
+```json
+[
+    {
+      "name": "bastion",
+      "image": "alpine/socat",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "pseudoTerminal": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/bastion",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "/ecs/bastion"
+        }
+      },
+
+      "portMappings": [],
+      "command": [
+        "tcp4-listen:3306,reuseaddr,fork",
+        "tcp-connect:ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com"
+      ],
+      "environment": [
+        {
+            "name" : "MANAGED_INSTANCE_ROLE_NAME",
+            "value" : "ass-bastion-role"
+        }
+      ]
+    }
+]
+```
+
+### 実際にポートフォワード
+
+#### `aws ecs describe-tasks`でrunidを入手
+```bash
+aws ecs describe-tasks \
+  --cluster ass-bastion-staging \
+  --task 10eead7d2432426bbb054c6a334d05ce
+```
+
+#### `ssm start-session`実行
+```bash
+aws ssm start-session \
+ --target ecs:ass-bastion-staging_10eead7d2432426bbb054c6a334d05ce_10eead7d2432426bbb054c6a334d05ce-607325679 \
+ --document-name AWS-StartPortForwardingSessionToRemoteHost \
+ --parameters '{"host":["ass-staging.c3e2e24uwy59.ap-northeast-1.rds.amazonaws.com"],"portNumber":["3306"], "localPortNumber":["1234"]}'
+```
+
+下記挙動になることを確認
+```bash
+Starting session with SessionId: botocore-session-1725787224-kagek5goi6glg6dg6fpopea7na
+Port 1234 opened for sessionId botocore-session-1725787224-kagek5goi6glg6dg6fpopea7na.
+Waiting for connections...
+```
+
+別シェルでmysqlへ接続
+```bash
+$ mysql -h 127.0.0.1 -P 1234 -u ass_api -p
+
+$ show databases;\
++--------------------+
+| Database           |
++--------------------+
+| ass-staging        |
+| ass_rds_staging    |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.12 sec)
+
+$ use ass-staging;
+
+$ show tables;
++--------------------------------+
+| Tables_in_ass-staging          |
++--------------------------------+
+| active_storage_attachments     |
+| active_storage_blobs           |
+| active_storage_variant_records |
+| ar_internal_metadata           |
+| location_posts                 |
+| schema_migrations              |
+| users                          |
++--------------------------------+
+7 rows in set (0.09 sec)
+
+$ select * from location_posts;
+```
+
+ポートフォワードしたシェルで以下挙動になっていることを確認
+```bash
+Connection accepted for session [botocore-session-1725787224-kagek5goi6glg6dg6fpopea7na]
+```
+
