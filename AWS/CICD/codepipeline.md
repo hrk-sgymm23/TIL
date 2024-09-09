@@ -403,3 +403,7 @@ $ select * from location_posts;
 Connection accepted for session [botocore-session-1725787224-kagek5goi6glg6dg6fpopea7na]
 ```
 
+## TablePlusから接続
+<img width="502" alt="スクリーンショット 2024-09-09 23 18 41" src="https://github.com/user-attachments/assets/6c4be803-981a-4178-b4d3-78ddb7ee56f6">
+
+
