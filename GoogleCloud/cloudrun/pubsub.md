@@ -108,4 +108,22 @@ $ 2024-09-15 17:56:45.810 JST
 Hello Runner!
 ```
 
+# Cloudrunjobsでpubsubを試す
+
+## Artifactregistry作成
+
+```bash
+$ gcloud artifacts repositories create pyhon-cloudrun-jobs-20240915 \
+    --repository-format=docker \
+    --location=asia-northeast1
+```
+
+## コンテナイメージをビルドし、push
+
+`pubsub-jobs:stg`...`stg`タグをつけ、push
+
+```bash
+$ gcloud builds submit --tag asia-northeast1-docker.pkg.dev/python-cloudrun-435707pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg
+```
+
 
