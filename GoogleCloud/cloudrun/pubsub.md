@@ -123,7 +123,16 @@ $ gcloud artifacts repositories create pyhon-cloudrun-jobs-20240915 \
 `pubsub-jobs:stg`...`stg`タグをつけ、push
 
 ```bash
-$ gcloud builds submit --tag asia-northeast1-docker.pkg.dev/python-cloudrun-435707pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg
+$ gcloud builds submit --tag asia-northeast1-docker.pkg.dev/python-cloudrun-435707/pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg
+```
+
+## CloudRun Jobsを起動
+
+```bash
+$ gcloud run jobs create pubsub-run-jobs \
+    --image asia-northeast1-docker.pkg.dev/python-cloudrun-435707/pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg \
+    --region asia-northeast1 \
+    --set-env-vars GOOGLE_CLOUD_PROJECT=python-cloudrun-435707,PUBSUB_SUBSCRIPTION=myRunSubscription
 ```
 
 
