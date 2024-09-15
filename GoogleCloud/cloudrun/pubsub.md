@@ -135,4 +135,11 @@ $ gcloud run jobs create pubsub-run-jobs \
     --set-env-vars GOOGLE_CLOUD_PROJECT=python-cloudrun-435707,PUBSUB_SUBSCRIPTION=myRunSubscription
 ```
 
+# 個人的見解
+
+**リアルタイム...CloudRun Service**
+**バッチ...CloudRun Jobs**
+
+
+
 
