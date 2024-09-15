@@ -126,7 +126,7 @@ $ gcloud artifacts repositories create pyhon-cloudrun-jobs-20240915 \
 $ gcloud builds submit --tag asia-northeast1-docker.pkg.dev/python-cloudrun-435707/pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg
 ```
 
-## CloudRun Jobsを起動
+## CloudRun Jobsを作成
 
 ```bash
 $ gcloud run jobs create pubsub-run-jobs \
@@ -135,10 +135,20 @@ $ gcloud run jobs create pubsub-run-jobs \
     --set-env-vars GOOGLE_CLOUD_PROJECT=python-cloudrun-435707,PUBSUB_SUBSCRIPTION=myRunSubscription
 ```
 
+実行
+```bash
+$ gcloud run jobs execute pubsub-run-jobs
+```
+
 # 個人的見解
 
 **リアルタイム...CloudRun Service**
+
 **バッチ...CloudRun Jobs**
+
+# CloudRun Jobsでメール送信
+
+os.getenv
 
 
 
