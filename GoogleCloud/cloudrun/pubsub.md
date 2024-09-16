@@ -148,8 +148,34 @@ $ gcloud run jobs execute pubsub-run-jobs
 
 # CloudRun Jobsでメール送信
 
-os.getenv
+## ビルド
 
+```bash
+$ gcloud builds submit --tag asia-northeast1-docker.pkg.dev/python-cloudrun-435707/pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg
+```
+
+## CloudRun Jobs作成
+
+```bash
+$ gcloud run jobs create pubsub-run-jobs \
+    --image asia-northeast1-docker.pkg.dev/python-cloudrun-435707/pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg \
+    --region asia-northeast1 \
+    --set-env-vars SEND_ADDRESS=b1805473@planet.kanazawa-it.ac.jp,ACCOUNT=shanshanyouji259@gmail.com,PASSWORD=cvrddbommopkhnzg
+```
+
+名前は一意にするため
+
+```bash
+$ gcloud run jobs create pubsub-run-mail-jobs2 \
+    --image asia-northeast1-docker.pkg.dev/python-cloudrun-435707/pyhon-cloudrun-jobs-20240915/pubsub-jobs:stg \
+    --region asia-northeast1 \
+    --set-env-vars SEND_ADDRESS=b1805473@planet.kanazawa-it.ac.jp,ACCOUNT=shanshanyouji259@gmail.com,PASSWORD=cvrddbommopkhnzg
+```
+
+実行
+```bash
+$ gcloud run jobs execute pubsub-run-mail-jobs2
+```
 
 
 
