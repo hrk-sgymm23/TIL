@@ -110,4 +110,10 @@ $ gcloud pubsub subscriptions create firebase-cloudrun-subscription-20240917 --t
 --push-auth-service-account=cloud-run-pubsub-invoker@python-cloudrun-435707.iam.gserviceaccount.com
 ```
 
+## データ送信
+
+```bash
+$ gcloud pubsub topics publish firebase-cloudrun-topic-20240917 --message "Runner"
+```
+
 
