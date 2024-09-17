@@ -116,4 +116,50 @@ $ gcloud pubsub subscriptions create firebase-cloudrun-subscription-20240917 --t
 $ gcloud pubsub topics publish firebase-cloudrun-topic-20240917 --message "Runner"
 ```
 
+# FireStoreと統合していく
+
+## "統合"の作成
+
+下記エラー
+
+```bash
+$ gcloud beta run integrations create \
+--type=firestore \
+--service=firebase-cloudrun-20240917 \
+--region asia-northeast1
+The following APIs are not enabled on project [python-cloudrun-435707]:
+        runapps.googleapis.com
+
+Do you want to enable these APIs to continue (this will take a few minutes)? (y/N)?  y
+
+Enabling APIs on project [python-cloudrun-435707]...
+Operation "operations/acat.p2-276838580752-67fa97dd-fbe9-48ab-90ee-76e1564cde82" finished successfully.
+X Creating new Integration... Deployment started. This process will continue even if your terminal session is interrupted.
+  ✓ Saving Configuration for Integration... You can check the status with `gcloud beta run integrations describe firestore-a281`
+  X Configuring Integration... This might take up to 5 minutes.
+  ✓ Configuring Firestore...
+  . Configuring Cloud Run Service...
+Failed to create new integration.
+  To retry the deployment, use update command `gcloud beta run integrations update firestore-a281`
+ERROR: (gcloud.beta.run.integrations.create) Configuration failed with error:
+  build "projects/276838580752/locations/asia-northeast1/builds/386a5e59-56b7-44d3-b646-f7133b5f05db" failed: Resource [firestore-a281] failed with error: Error creating Database: googleapi: Error 403: The caller does not have permission
+Logs are available at https://console.cloud.google.com/cloud-build/builds;region=asia-northeast1/386a5e59-56b7-44d3-b646-f7133b5f05db?project=276838580752
+```
+
+CloudRunコンソール　 Integrations確認
+
+```bash
+ Failed: Latest deployment failed: Error creating Database: googleapi: Error 403: The caller does not have permission
+```
+
+以下権限追加
+<img width="801" alt="スクリーンショット 2024-09-18 0 04 32" src="https://github.com/user-attachments/assets/55868b08-961a-4cc3-ad2c-c565d38186b5">
+
+
+```bash
+Failed to create new integration.
+ERROR: (gcloud.beta.run.integrations.create) INVALID_ARGUMENT: The request was invalid: Invalid Config: service allows 1 binding(s), not 2
+```
+
+失敗した統合削除後`gcloud beta run integrations create`にて完了
 
