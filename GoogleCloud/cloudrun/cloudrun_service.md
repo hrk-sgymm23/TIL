@@ -161,5 +161,18 @@ Failed to create new integration.
 ERROR: (gcloud.beta.run.integrations.create) INVALID_ARGUMENT: The request was invalid: Invalid Config: service allows 1 binding(s), not 2
 ```
 
-失敗した統合削除後`gcloud beta run integrations create`にて完了
+失敗した統合削除後
+
+`gcloud beta run integrations create`にて完了
+
+
+## warning `"The request was not authenticated. Either allow unauthenticated invocations or set the proper Authorization header. Read more at https://cloud.google.com/run/docs/securing/authenticating Additional troubleshooting documentation can be found at: https://cloud.google.com/run/docs/troubleshooting#unauthorized-client"`
+
+CloudRun作成毎に書きコマンドの実行が必要
+
+```bash
+$ gcloud run services add-iam-policy-binding {CloudRun名} \
+--member=serviceAccount:cloud-run-pubsub-invoker@python-cloudrun-435707.iam.gserviceaccount.com \
+--role=roles/run.invoker
+```
 
