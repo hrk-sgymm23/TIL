@@ -219,4 +219,31 @@ To connect to the Firestore Database utilize the environment variables FIRESTORE
 You can check the status with `gcloud beta run integrations describe firestore-e1aa`
 ```
 
+## 追加コード
+```python
+
+import os
+import google.cloud.firestore
+
+dbname = os.environ['FIRESTORE_DB_NAME']
+db = google.cloud.firestore.Client(database=dbname)
+~
+results = db.collection('human').stream()
+data_list = [doc.to_dict() for doc in results]
+
+print(data_list)
+
+```
+
+## PubSub Publishして確認
+```bash
+$ gcloud pubsub topics publish firebase-cloudrun-topic-20240917 --message "Runner"
+```
+
+```bash
+[{'age': 88, 'name': 'Hiroshi'}]
+```
+
+## FireStoreの開発環境を考える
+
 
