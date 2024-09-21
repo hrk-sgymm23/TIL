@@ -177,5 +177,46 @@ $ gcloud run services add-iam-policy-binding {CloudRun名} \
 ```
 
 ## FireStoreとの接続
+新しいcloudRunで統合を作成の際エラー
+
+```bash
+gcloud beta run integrations create \
+--type=firestore \
+--service=firebase-cloudrun-20240918 \
+--region asia-northeast1 \
+--service-account=276838580752-compute@developer.gserviceaccount.com
+X Creating new Integration... Deployment started. This process will continue even if your terminal session is interrupted.
+  ✓ Saving Configuration for Integration... You can check the status with `gcloud beta run integrations describe firestore-b104`
+  X Configuring Integration... This might take up to 5 minutes.
+  ✓ Configuring Cloud Run Service...
+  ✓ Configuring Firestore...
+Failed to create new integration.
+  To retry the deployment, use update command `gcloud beta run integrations update firestore-b104`
+ERROR: (gcloud.beta.run.integrations.create) Configuration failed with error:
+  build "projects/276838580752/locations/asia-northeast1/builds/f81f341a-5e24-401d-916e-0a100985a4e5" failed: Resource [firebase-cloudrun-20240918] failed with error: Request `Create IAM Members roles/datastore.user serviceAccount:276838580752-compute@developer.gserviceaccount.com for project "python-cloudrun-435707"` returned error: Error retrieving IAM policy for project "python-cloudrun-435707": googleapi: Error 403: Cloud Resource Manager API has not been used in project 276838580752 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview?project=276838580752 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+Logs are available at https://console.cloud.google.com/cloud-build/builds;region=asia-northeast1/f81f341a-5e24-401d-916e-0a100985a4e5?project=276838580752
+```
+
+`oogleapi: Error 403: Cloud Resource Manager API has not been used in project 276838580752 before or it is disabled.`
+ResourceManagerAPIを有効化して再度実行
+
+```bash
+gcloud beta run integrations create \
+--type=firestore \
+--service=firebase-cloudrun-20240918 \
+--region asia-northeast1 \
+--service-account=276838580752-compute@developer.gserviceaccount.com
+✓ Creating new Integration... Done.
+  ✓ Saving Configuration for Integration... You can check the status with `gcloud beta run integrations describe firestore-e1aa`
+  ✓ Configuring Integration...
+  - Configuring Cloud Run Service...
+  ✓ Configuring Firestore...
+Done.
+
+[firestore] integration [firestore-e1aa] has been created successfully.
+
+To connect to the Firestore Database utilize the environment variables FIRESTORE_DB_NAME. These have been added to the Cloud Run service for you.
+You can check the status with `gcloud beta run integrations describe firestore-e1aa`
+```
 
 
