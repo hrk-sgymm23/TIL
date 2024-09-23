@@ -264,3 +264,43 @@ GoogleCloudのプロジェクトとFirebaseを連携することでエラー回�
 ```bash
 $ docker compose run --rm firebase firebase init
 ```
+
+```bash
+$ docker-compose up
+
+~
+service-firebase-1    | i  firestore: Firestore Emulator logging to firestore-debug.log
+service-firebase-1    | ✔  firestore: Firestore Emulator UI websocket is running on 9150.
+service-firebase-1    | i  ui: Emulator UI logging to ui-debug.log
+service-firebase-1    |
+service-firebase-1    | ┌─────────────────────────────────────────────────────────────┐
+service-firebase-1    | │ ✔  All emulators ready! It is now safe to connect your app. │
+service-firebase-1    | │ i  View Emulator UI at http://127.0.0.1:4000/               │
+service-firebase-1    | └─────────────────────────────────────────────────────────────┘
+service-firebase-1    |
+service-firebase-1    | ┌───────────┬──────────────┬─────────────────────────────────┐
+service-firebase-1    | │ Emulator  │ Host:Port    │ View in Emulator UI             │
+service-firebase-1    | ├───────────┼──────────────┼─────────────────────────────────┤
+service-firebase-1    | │ Firestore │ 0.0.0.0:8181 │ http://127.0.0.1:4000/firestore │
+service-firebase-1    | └───────────┴──────────────┴─────────────────────────────────┘
+service-firebase-1    |   Emulator Hub running at 127.0.0.1:4400
+service-firebase-1    |   Other reserved ports: 4500, 9150
+service-firebase-1    |
+service-firebase-1    | Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+```
+
+`http://127.0.0.1:4000/firestore/`にアクセス
+
+## Pythonからエミュレーターにアクセス
+
+```python
+# 環境変数を設定
+
+emulator_host = os.getenv('FIRESTORE_EMULATOR_HOST')
+project = os.getenv('GCLOUD_PROJECT')
+
+db = google.cloud.firestore.Client()
+```
+
+## コレクションを永続化したい
+
