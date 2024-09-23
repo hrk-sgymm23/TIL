@@ -246,4 +246,21 @@ $ gcloud pubsub topics publish firebase-cloudrun-topic-20240917 --message "Runne
 
 ## FireStoreの開発環境を考える
 
+[Firebase Local Emulator Suiteの環境をDockerで用意する](https://zenn.dev/cbcloud_blog/articles/6256f1a3d05a18)
 
+下記コマンドにて、ローカルの認証を通す。
+```bash
+$ docker-compose run --rm firebase firebase login --no-localhost
+```
+
+コンテナを実行した下際に以下エラー
+```bash
+$ Error: Extensions Emulator is running but Functions emulator is not. This should never happen.
+```
+
+GoogleCloudのプロジェクトとFirebaseを連携することでエラー回避
+
+以下を実行し、fireStoreのDB名を作成したものを選択
+```bash
+$ docker compose run --rm firebase firebase init
+```
