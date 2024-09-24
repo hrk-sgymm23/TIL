@@ -304,3 +304,12 @@ db = google.cloud.firestore.Client()
 
 ## コレクションを永続化したい
 
+
+## サービス同士で接続できていない
+`サービス名:port`で解決
+```bash
+services:
+  pubsub-app:
+    environment:
+      - FIRESTORE_EMULATOR_HOST=firebase:8181
+```
