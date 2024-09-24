@@ -313,3 +313,5 @@ services:
     environment:
       - FIRESTORE_EMULATOR_HOST=firebase:8181
 ```
+
+## 新しいディレクトリ構成で`run deploy`するとエラー
