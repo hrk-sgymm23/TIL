@@ -315,3 +315,16 @@ services:
 ```
 
 ## 新しいディレクトリ構成で`run deploy`するとエラー
+
+## ローカルとGCPでDockerfileを分ける
+gcp用ビルド
+```bash
+$ gcloud auth login
+$ gcloud config set project python-cloudrun-435707
+$ docker build  -f ./docker/run/Dockerfile -t asia-northeast1-docker.pkg.dev/python-cloudrun-435707/firebase-cloudrun-20240917/firebase-servise:stg .
+$ docker push asia-northeast1-docker.pkg.dev/python-cloudrun-435707/firebase-cloudrun-20240917/firebase-servise:stg
+```
+
+下記を参考にデプロイみなおし
+
+https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/run/pubsub
