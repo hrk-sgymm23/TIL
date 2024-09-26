@@ -328,3 +328,13 @@ $ docker push asia-northeast1-docker.pkg.dev/python-cloudrun-435707/firebase-clo
 下記を参考にデプロイみなおし
 
 https://github.com/GoogleCloudPlatform/python-docs-samples/tree/main/run/pubsub
+
+## シン　prdビルド
+```bash
+$ cd service/run/prd
+$ docker build --platform linux/amd64 -t asia-northeast1-docker.pkg.dev/python-cloudrun-435707/firebase-cloudrun-20240917/firebase-servise:latest -f Dockerfile ../../../
+$ docker push asia-northeast1-docker.pkg.dev/python-cloudrun-435707/firebase-cloudrun-20240917/firebase-servise:latest
+$ gcloud run deploy firebase-cloudrun-20240918 --image asia-northeast1-docker.pkg.dev/python-cloudrun-435707/firebase-cloudrun-20240917/firebase-servise:latest  --no-allow-unauthenticated
+# テスト
+$ gcloud pubsub topics publish firebase-cloudrun-topic-20240917 --message "Runner"
+```
