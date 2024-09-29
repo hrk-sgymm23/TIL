@@ -338,3 +338,8 @@ $ gcloud run deploy firebase-cloudrun-20240918 --image asia-northeast1-docker.pk
 # テスト
 $ gcloud pubsub topics publish firebase-cloudrun-topic-20240917 --message "Runner"
 ```
+
+## Flaskで使われているステータスコード`204`について
+> HTTPステータスコード 204 は、"No Content" という意味を持ち、レスポンスボディを返すことができないステータスコードです。つまり、204 ステータスコードを返す場合、レスポンスのボディは空でなければならないという制約があります。
+
+ノーコンテンツを表し、レスポンスを返さない。
