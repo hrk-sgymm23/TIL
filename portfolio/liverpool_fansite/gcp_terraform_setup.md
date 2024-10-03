@@ -70,4 +70,7 @@ terraform {
 }
 ```
 
+`backend.tf`を用意した後に`terraform init`で完了
+
+## Artifactまで作成　次アプリケーションコードとCloud Run作成
 
