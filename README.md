@@ -1,25 +1,15 @@
-# TIL
-## Todays I Learned
+# TIL / Latest TODO
 
-## What is repository
-- Main contens is insight sumary in studying or reading.
+## Study RoadMap Topics
 
-## Rule
-### case is studying content's personal development
-- the pairent directory nama should be the the book's category
-- the directory nama should be the name of the book
-- the md file name is Date
+https://x.com/TetsuKinomura/status/1244142407278399488/photo/4
 
-```bash
-# ex
-$ mkdir personal_development/issue_driven
-$ cd personal_development/issue_driven
-$ touch 20231212.md
-```
+![EUQU7GaU4AA5w6w](https://github.com/user-attachments/assets/4642d97a-0839-43ec-80c2-24323a96bd9b)
 
-### case is studying content's technical books or hands-on
-- the directory nama should be the name of the program laungage or srevice name
+## HackerRank
 
-```bash
-# technical books or hands-on's rule　is wip... 
-```
+https://www.hackerrank.com/dashboard
+
+## GoogleCloud PortForio
+
+https://console.cloud.google.com/welcome/new?inv=1&invt=Abdxig&project=liverpool-fansite
