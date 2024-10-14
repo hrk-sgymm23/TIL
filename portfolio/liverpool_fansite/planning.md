@@ -61,3 +61,17 @@ https://qiita.com/soiSource/items/53990fca06fb9ba1d8a7
 
 上記参考にjson読み込みから行う
 
+https://zenn.dev/google_cloud_jp/articles/a0a6b5f855fe90#%E3%83%87%E3%83%BC%E3%82%BF%E3%81%AE%E4%BD%9C%E6%88%90%E3%83%BB%E5%8F%96%E5%BE%97
+
+上記よりコレクション作成を行う
+
+コレクションとドキュメントの関係性
+```bash
+players (コレクション)
+  ├─ playerID1 (ドキュメント)
+  ├─ playerID2 (ドキュメント)
+  └─ playerID3 (ドキュメント)
+```
+
+firestore自体のデータ永続化ではなく、pythonのスクリプトをコンテナ起動時に実行することによって解決
+
