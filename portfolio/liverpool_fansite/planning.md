@@ -49,5 +49,15 @@ $ docker compose up
 ```
 
 ## FireStore データ永続化
+https://katashin.info/posts/firebase-emulator/#:~:text=Firebase%20%E3%82%A8%E3%83%9F%E3%83%A5%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC%E3%81%AE%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92,%E3%83%87%E3%83%BC%E3%82%BF%E3%82%92%E3%81%9D%E3%81%AE%E3%81%BE%E3%81%BE%E8%AA%AD%E3%81%BF%E8%BE%BC%E3%81%BF%E3%81%BE%E3%81%99%E3%80%82
 
+上記リンクを参考に
+
+# まず開発環境で選手一覧のAPIを作成する
+
+## まず開発環境にてコレクション格納を行う
+
+https://qiita.com/soiSource/items/53990fca06fb9ba1d8a7
+
+上記参考にjson読み込みから行う
 
