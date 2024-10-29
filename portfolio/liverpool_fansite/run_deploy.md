@@ -42,5 +42,96 @@ def main():
     db = firestore.client()
 ```
 
+# CloudRunをデプロイした際にSecretManager周りで403エラーになったためGUIより修正
+
+<img width="1440" alt="スクリーンショット 2024-10-29 21 16 49" src="https://github.com/user-attachments/assets/7ca58dc0-ce7f-4a31-9407-9dd33462bae2">
+
+# CloudRunデプロイした際にクレデンシャルが読み込めないエラー
+
+```hcl
+env {
+          name = "GOOGLE_APPLICATION_CREDENTIALS"
+          value_from {
+            secret_key_ref {
+              name = "liverpool-fansite-key"
+              key  = "latest"
+            }
+          }
+        }
+        env {
+          name = "FIRESTORE_DB_NAME"
+          value_from {
+            secret_key_ref {
+              name = "firestore_name"
+              key  = "latest"
+            }
+          }
+        }
+```
+
+
+## サービスアカウントにFireStoreの権限を付与しシークレットに格納するのはDB名だけにする
+```hcl
+# ServiceAccont
+# Secret Manager のアクセス権限を持つサービスアカウントを作成
+resource "google_service_account" "liverpool_fansite_sa" {
+  project      = var.project_id
+  account_id   = "${var.project_id}-sa"
+  display_name = "Liverpool Fansite Service Account"
+}
+
+# Secret Manager の読み取り権限をサービスアカウントに付与
+resource "google_project_iam_member" "secret_access" {
+  project = var.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${google_service_account.liverpool_fansite_sa.email}"
+}
+
+resource "google_project_iam_member" "firestore_admin_access" {
+  project = var.project_id
+  role    = "roles/datastore.owner"
+  member  = "serviceAccount:${google_service_account.liverpool_fansite_sa.email}"
+}
+
+# CloudRun
+resource "google_cloud_run_service" "liverpool_fansite_stg" {
+  name     = "${var.project_id}-cloudrun-stg"
+  location = var.region
+  project  = var.project_id
+
+  template {
+    spec {
+      service_account_name = google_service_account.liverpool_fansite_sa.email
+      containers {
+        image = "asia-northeast1-docker.pkg.dev/${var.project_id}/liverpool-fansite-stg/liverpool-app:latest"
+        env {
+          name = "FIRESTORE_DB_NAME"
+          value_from {
+            secret_key_ref {
+              name = "firestore_name"
+              key  = "latest"
+            }
+          }
+        }
+      }
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+```
+
+## https://liverpool-fansite-cloudrun-stg-348534837533.asia-northeast1.run.app/api/v1/playersにアクセスした際に403になる
+以下で解決
+
+
+
+
+
+
+
 
 
