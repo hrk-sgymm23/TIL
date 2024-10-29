@@ -128,6 +128,45 @@ resource "google_cloud_run_service" "liverpool_fansite_stg" {
 以下で解決
 
 
+# 別PJ間のRunとSTOREについて(GPT)
+
+```
+Cloud RunとFirestoreが別プロジェクトにある場合、Firestoreにアクセスするサービスアカウントには、Firestoreが存在するプロジェクトのIAM設定で適切な権限を与える必要があります。
+
+手順
+サービスアカウントを作成: まず、Cloud Runプロジェクトでサービスアカウントを作成します。これがFirestoreにアクセスするために使用されます。
+
+Firestoreプロジェクトでの権限付与: Firestoreが存在するプロジェクトで、Cloud RunプロジェクトのサービスアカウントにFirestoreの権限を付与します。
+
+以下はTerraformの例です：
+
+Cloud Runプロジェクトでのサービスアカウント作成
+hcl
+コードをコピーする
+resource "google_service_account" "liverpool_fansite_sa" {
+  project      = var.cloud_run_project_id  # Cloud RunのプロジェクトID
+  account_id   = "${var.cloud_run_project_id}-sa"
+  display_name = "Liverpool Fansite Service Account"
+}
+Firestoreプロジェクトでの権限付与
+Firestoreが存在するプロジェクトの設定を行います。この部分はFirestoreプロジェクトにデプロイするTerraform設定ファイル内で記述します。
+
+hcl
+コードをコピーする
+# Firestore 管理者権限をサービスアカウントに付与
+resource "google_project_iam_member" "firestore_admin_access" {
+  project = var.firestore_project_id  # FirestoreのプロジェクトID
+  role    = "roles/datastore.owner"
+  member  = "serviceAccount:${google_service_account.liverpool_fansite_sa.email}"
+}
+注意点
+プロジェクト間でのサービスアカウントのメールアドレスの使用: Firestoreプロジェクトに対して、Cloud Runプロジェクトのサービスアカウントのメールアドレスを指定して権限を付与します。このメールアドレスは、google_service_account.liverpool_fansite_sa.email で取得できます。
+
+正しいプロジェクトIDを使用すること: 各リソースの作成やIAM権限付与において、正しいプロジェクトIDを使用することが重要です。誤ったプロジェクトIDを指定すると、権限が付与されないか、他のプロジェクトに影響を及ぼす可能性があります。
+
+このように設定することで、Cloud RunからFirestoreへのアクセスが可能になります。
+```
+
 
 
 
