@@ -49,7 +49,82 @@ for user, status in users.items():
         active_users[user] = status
 ```
 
-~match文まで
+# 4.9.3.4 関数の例
+
+```python
+def standard_arg(arg):
+    print(arg)
+
+def pos_only_arg(arg, /):
+    print(arg)
+
+def kwd_only_arg(*, arg):
+    print(arg)
+
+def combined_example(pos_only, /, standard, *, kwd_only):
+    print(pos_only, standard, kwd_only)
+```
+
+## `standard_arg`はどちらでも指定可能
+
+```python
+standard_arg(2)
+2
+
+standard_arg(arg=2)
+2
+```
+
+## pos_only_arg は、 / が関数定義にあるので、引数は位置専用になります:
+
+```python
+>>> pos_only_arg(1)
+1
+>>> pos_only_arg(arg=1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: pos_only_arg() got some positional-only arguments passed as keyword arguments: 'arg'
+```
+
+## kwd_only_argはキーワード引数のみ受け付ける
+
+```python
+>>> kwd_only_arg(3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: kwd_only_arg() takes 0 positional arguments but 1 was given
+>>> kwd_only_arg(arg=3)
+3
+```
+
+## 最後の関数は3つの引数の種類を一つの関数定義の中で使用しています
+
+```python
+>>> combined_example(1, 2, kwd_only=3)
+1 2 3
+>>> combined_example(1, standard=2, kwd_only=3)
+1 2 3
+>>> combined_example(pos_only=1, standard=2, kwd_only=3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: combined_example() got some positional-only arguments passed as keyword arguments: 'pos_only'
+```
+
+# 4.9.6 ラムダ式
+```python
+def make_incrementor(n):
+    return lambda x: x + n
+
+f = make_incrementor(42)
+
+print(f(-1))
+```
+
+`make_incrementor`関数
+make_incrementorは、引数nを取り、lambda x: x + nというラムダ関数を返します。
+このラムダ関数は、引数xを取り、x + nの結果を返します。
+つまり、make_incrementor(n)を呼び出すと、xにnを加える関数が生成され、それを返します。
+
 
 
 
