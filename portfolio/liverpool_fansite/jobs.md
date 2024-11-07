@@ -154,3 +154,57 @@ resource "google_cloud_run_v2_job" "default" {
 }
 ```
 
+# アプリケーションコード
+`Dockerfile`
+```
+# Use the official Python image.
+FROM python:3.11
+
+# Allow statements and log messages to immediately appear in the Cloud Run logs
+ENV PYTHONUNBUFFERED True
+
+# Copy application dependency manifests to the container image.
+COPY ./src/requirements.txt ./
+
+# Install production dependencies.
+RUN pip install -r requirements.txt
+
+# Copy local code to the container image.
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY ./src ./
+
+# Run the message processing script on container startup.
+CMD ["python", "main.py"]
+```
+
+`main.py`
+```bash
+import os
+import google.cloud.firestore
+import json
+
+dbname = os.environ['FIRESTORE_DB_NAME']
+db = google.cloud.firestore.Client(database=dbname)
+
+
+def get_players():
+    results = db.collection('players').stream()
+    print(f"result: {results}")
+    players = [doc.to_dict() for doc in results]
+
+    players_dict = {}
+    players_dict = players
+    json.dumps(players_dict)
+
+    print(players_dict)
+
+if __name__ == '__main__':
+    get_players()
+```
+
+`requirements.txt`
+```txt
+google-cloud-firestore
+```
+
