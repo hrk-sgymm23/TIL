@@ -113,9 +113,41 @@ dict(sape=4139, guido=4127, jack=4098)
 {'sape': 4139, 'guido': 4127, 'jack': 4098}
 ```
 
+# 5.6. ループのテクニック
 
+辞書に対し`items()`メソッドを使うとキーとそれに対応するため値を取り出せる
 
+```python
+knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+for k, v in knights.items():
+    print(k, v)
 
+gallahad the pure
+robin the brave
+```
+
+配列に対し`enumerate()`を使うと要素とインデックスを取り出せる
+```python
+for i, v in enumerate(['tic', 'tac', 'toe']):
+    print(i, v)
+
+0 tic
+1 tac
+2 toe
+```
+
+シーケンスを逆方向に渡ってループするには、まずシーケンスの範囲を順方向に指定し、`reversed()`を使う。
+
+```python
+for i in reversed(range(1, 10, 2)):
+    print(i)
+
+9
+7
+5
+3
+1
+```
 
 
 
