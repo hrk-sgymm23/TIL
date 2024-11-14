@@ -52,3 +52,36 @@ func_kwargs(key1=1, key2=2, key3=3)
 ```
 
 # 7.2. ファイルを読み書きする
+
+> open() は file object を返します。大抵、 open(filename, mode, encoding=None) のように2つの位置引数と1つのキーワード引数を伴って呼び出されます。
+
+```python
+f = open('workfile', 'w', encoding="utf-8")
+```
+
+> ファイルオブジェクトを扱うときに with キーワードを使うのは良い習慣です。 その利点は、処理中に例外が発生しても必ず最後にファイルをちゃんと閉じることです。 with を使うと、同じことを try-finally ブロックを使って書くよりずっと簡潔に書けます:
+`with`を使うと自動で`close`が行われる
+```python
+with open('workfile', encoding="utf-8") as f:
+    read_data = f.read()
+
+# We can check that the file has been automatically closed.
+f.closed
+True
+```
+
+# 7.2.2. json による構造化されたデータの保存
+
+> 文字列表現からデータを再構築することは、デシリアライズ (deserializing) と呼ばれます。シリアライズされてからデシリアライズされるまでの間に、オブジェクトの文字列表現はファイルやデータの形で保存したり、ネットワークを通じて離れたマシンに送ったりすることができます。
+
+`json.dumps()`
+
+```python
+import json
+x = [1, 'simple', 'list']
+json.dumps(x)
+'[1, "simple", "list"]'
+```
+
+
+
