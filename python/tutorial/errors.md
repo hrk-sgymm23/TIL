@@ -119,4 +119,150 @@ KeyboardInterrupt
 - もし`finally`が`return`を含む場合、返される値は`try`の`return`ではなく`finally`の`return`になる
 
 
+例
+```python
+def divide(x, y):
+    try:
+        result = x / y
+    except ZeroDivisionError:
+        print("division by zero!")
+    else:
+        print("result is", result)
+    finally:
+        print("executing finally clause")
+
+divide(2, 1)
+result is 2.0
+executing finally clause
+divide(2, 0)
+division by zero!
+executing finally clause
+divide("2", "1")
+executing finally clause
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+    divide("2", "1")
+    ~~~~~~^^^^^^^^^^
+  File "<stdin>", line 3, in divide
+    result = x / y
+             ~~^~~
+TypeError: unsupported operand type(s) for /: 'str' and 'str'
+```
+
+上記より`finally`はどの場合でも実行される。
+一番最後の文字列の割り算で`TypeError`は`expect`で処理されないため、先に`finally`が実行されたのちに例外が再創出される。
+
+> 実世界のアプリケーションでは、 finally 節は(ファイルやネットワーク接続などの)外部リソースを、利用が成功したかどうかにかかわらず解放するために便利です。
+
+# 8.9. 複数の関連しない例外の送出と処理
+
+いくつか発生した例外の報告が必要なケースがある。
+
+`ExceptionGroup`は例外インスタンスのリストをまとめ、同時に創出できるようにする。
+ ExceptionGroupも例外のため他の例外と同じように捕捉できる。
+
+```python
+def f():
+    excs = [OSError('error 1'), SystemError('error 2')]
+    raise ExceptionGroup('there were problems', excs)
+
+f()
+  + Exception Group Traceback (most recent call last):
+  |   File "<stdin>", line 1, in <module>
+  |     f()
+  |     ~^^
+  |   File "<stdin>", line 3, in f
+  |     raise ExceptionGroup('there were problems', excs)
+  | ExceptionGroup: there were problems (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | OSError: error 1
+    +---------------- 2 ----------------
+    | SystemError: error 2
+    +------------------------------------
+try:
+    f()
+except Exception as e:
+    print(f'caught {type(e)}: e')
+
+caught <class 'ExceptionGroup'>: e
+
+```
+
+##  ExceptionGroupの例外の処理
+
+https://atmarkit.itmedia.co.jp/ait/articles/2211/11/news021.html
+
+### パターン１  ExceptionGroupでまとめられている個々の例外を`expesct*`節で処理する方法
+```python
+try:
+    # ExceptionGroup例外を送出するコード
+except* TypeError as e:
+    # ExceptionGroup例外に格納されているTypeError例外を処理
+except* ValueError as e:
+    # ExceptionGroup例外に格納されているValueError例外を処理
+```
+
+### パターン２　ExceptionGroup全体をまとめて処理する方法
+
+```python
+ry:
+    # ExceptionGroup例外を送出するコード
+except ExceptionGroup as eg:
+    # ExceptionGroup例外に格納されている例外を個別に取り出して処理する
+```
+
+# 8.10. ノートによって例外を充実させる
+
+例外を受け取った後に情報を追加できる。
+例外は`add_note(note)`メソッドを持ちます。
+
+例えば複数の例外を一つにまとめたいとき各エラーのコンテキスト情報を追加したい場合がある。
+
+
+```python
+def f():
+    raise OSError('operation failed')
+
+excs = []
+for i in range(3):
+    try:
+        f()
+    except Exception as e:
+        e.add_note(f'Happened in Iteration {i+1}')
+        excs.append(e)
+
+raise ExceptionGroup('We have some problems', excs)
+  + Exception Group Traceback (most recent call last):
+  |   File "<stdin>", line 1, in <module>
+  |     raise ExceptionGroup('We have some problems', excs)
+  | ExceptionGroup: We have some problems (3 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "<stdin>", line 3, in <module>
+    |     f()
+    |     ~^^
+    |   File "<stdin>", line 2, in f
+    |     raise OSError('operation failed')
+    | OSError: operation failed
+    | Happened in Iteration 1
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "<stdin>", line 3, in <module>
+    |     f()
+    |     ~^^
+    |   File "<stdin>", line 2, in f
+    |     raise OSError('operation failed')
+    | OSError: operation failed
+    | Happened in Iteration 2
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "<stdin>", line 3, in <module>
+    |     f()
+    |     ~^^
+    |   File "<stdin>", line 2, in f
+    |     raise OSError('operation failed')
+    | OSError: operation failed
+    | Happened in Iteration 3
+    +------------------------------------
+```
 
