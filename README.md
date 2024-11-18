@@ -4,7 +4,11 @@
 
 ## Write Zenn Articre Dataflow (基本的概念、データ鮮度、デプロイの仕方)
 
-
+- https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf?hl=ja#data_freshness_streaming
+- https://www.school.ctc-g.co.jp/columns/nakai2/nakai211.html
+- https://www.school.ctc-g.co.jp/columns/nakai2/nakai210.html
+- https://www.school.ctc-g.co.jp/columns/nakai2/nakai212.html
+- https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/dataflow/flex-templates/streaming_beam/streaming_beam.py
 
 ## Study RoadMap Topics
 
