@@ -1,4 +1,10 @@
-# TIL / Latest TODO
+# TIL / Latest TODO(at 2024/11/18)
+
+## Write Zenn Articre Python Tutorial
+
+## Write Zenn Articre Dataflow (基本的概念、データ鮮度、デプロイの仕方)
+
+
 
 ## Study RoadMap Topics
 
@@ -13,3 +19,5 @@ https://www.hackerrank.com/dashboard
 ## GoogleCloud PortForio
 
 https://console.cloud.google.com/welcome/new?inv=1&invt=Abdxig&project=liverpool-fansite
+
+
