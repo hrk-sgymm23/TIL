@@ -67,6 +67,102 @@ re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')
 
 つまり上記場合、全単語を調べる上で`the the`を認識し、1個目に認識した`the`へ置き換える。
 
+# 10.7. インターネットへのアクセス
+
+> インターネットにアクセスしたりインターネットプロトコルを処理したりするための多くのモジュールがあります。最も単純な2つのモジュールは、 URL からデータを取得するための urllib.request と、メールを送るための smtplib です
+
+`urllib.request`
+```python
+from urllib.request import urlopen
+with urlopen('http://worldtimeapi.org/api/timezone/etc/UTC.txt') as response:
+    for line in response:
+        line = line.decode()             # Convert bytes to a str
+        if line.startswith('datetime'):
+            print(line.rstrip())         # Remove trailing newline
+```
+
+`smtplib`
+```python
+import smtplib
+server = smtplib.SMTP('localhost')
+server.sendmail('soothsayer@example.org', 'jcaesar@example.org',
+"""To: jcaesar@example.org
+From: soothsayer@example.org
+
+Beware the Ides of March.
+""")
+server.quit()
+```
+
+# 10.9. データ圧縮
+
+```python
+import zlib
+s = b'witch which has which witches wrist watch'
+len(s)
+41
+```
+
+# 11.4. マルチスレッディング
+
+> スレッド処理 (threading) とは、順序的な依存関係にない複数のタスクを分割するテクニックです。スレッドは、ユーザの入力を受け付けつつ、背後で別のタスクを動かすようなアプリケーションの応答性を高めます。同じような使用例として、I/O を別のスレッドの計算処理と並列して動作させるというものがあります。
+
+```python
+import threading, zipfile
+
+class AsyncZip(threading.Thread):
+    def __init__(self, infile, outfile):
+        threading.Thread.__init__(self)
+        self.infile = infile
+        self.outfile = outfile
+
+    def run(self):
+        f = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
+        f.write(self.infile)
+        f.close()
+        print('Finished background zip of:', self.infile)
+
+background = AsyncZip('mydata.txt', 'myarchive.zip')
+background.start()
+print('The main program continues to run in foreground.')
+
+background.join()    # Wait for the background task to finish
+print('Main program waited until background was done.')
+```
+
+- `class AsyncZip(threading.Thread):`を継承して`AsyncZip`クラスを作成
+- `__init__`...入出力ファイルを設定、`threading.Thread.`スーパークラスのコンストラクタを作成
+- `def run(self):`にてzipファイル作成と作成完了のログを出す設定
+- `background = AsyncZip('mydata.txt', 'myarchive.zip') background.start()`にてインスタンス作成とスレッド作成
+  - `background.start()`にて`run()`が走る
+- `background.join() print('Main program waited until background was done.')` にてメインスレッドの処理待ちその後ログ出力
+
+# リスト操作のためのツール
+
+`array`
+
+```python
+from array import array
+a = array('H', [4000, 10, 700, 22222])
+sum(a)
+26932
+a[1:3]
+array('H', [10, 700])
+```
+
+- `arrray(typecode, いてれーた)`
+  - `typecode`...配列内のデータ型を指定する1文字のコード。
+    - `H`...符号なし2バイト
+  - いてれーた...配列の初期値となるリストやタプルなどのシーケンス。
 
 
+`collections.deque`
+> collections モジュールでは、 deque オブジェクトを提供しています。リスト型に似ていますが、データの追加と左端からの取り出しが速く、その一方で中間にある値の参照は遅くなります。こうしたオブジェクトはキューや木構造の幅優先探索の実装に向いています
+```python
+from collections import deque
+d = deque(["task1", "task2", "task3"])
+d.append("task4")
+print("Handling", d.popleft())
+Handling task1
+```
 
