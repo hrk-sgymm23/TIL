@@ -166,3 +166,5 @@ print("Handling", d.popleft())
 Handling task1
 ```
 
+-　`d.popleft()`にて左端の要素を取り出しそれ以外を削除
+
