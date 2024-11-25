@@ -55,6 +55,35 @@ combs
 
 ## 5.1.4. ネストしたリストの内包表記
 
+
+長さ4のリスト3つからなる、3x4 の matrix について考える
+```python
+matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+]
+```
+
+下のリスト内包表記は、matrix の行と列を入れ替える
+```python
+[[row[i] for row in matrix] for i in range(4)]
+[[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+```
+
+下記コードと等価になる
+```python
+transposed = []
+for i in range(4):
+    # the following 3 lines implement the nested listcomp
+    transposed_row = []
+    for row in matrix:
+        transposed_row.append(row[i])
+    transposed.append(transposed_row)
+
+transposed
+```
+
 備考`zip`関数
 ```python
 >>> for item in zip([1, 2, 3], ['sugar', 'spice', 'everything nice']):
