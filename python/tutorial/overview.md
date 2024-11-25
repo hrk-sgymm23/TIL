@@ -120,6 +120,14 @@ f = make_incrementor(42)
 print(f(-1))
 ```
 
+リスト各要素を2倍に
+```python
+>>> numbers = [1, 2, 3, 4, 5]
+>>> doubled = list(map(lambda x: x * 2, numbers))
+>>> print(doubled)
+[2, 4, 6, 8, 10]
+```
+
 `make_incrementor`関数
 make_incrementorは、引数nを取り、lambda x: x + nというラムダ関数を返します。
 このラムダ関数は、引数xを取り、x + nの結果を返します。
