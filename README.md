@@ -1,7 +1,5 @@
 # TIL / Latest TODO(at 2024/11/18)
 
-## Write Zenn Articre Python Tutorial
-
 ## Write Zenn Articre Dataflow (基本的概念、データ鮮度、デプロイの仕方)
 
 - https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf?hl=ja#data_freshness_streaming
