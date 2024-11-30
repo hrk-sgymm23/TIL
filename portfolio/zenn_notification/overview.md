@@ -21,9 +21,14 @@
 - Python
 
 ### ツール
+- Gmail API
 - Chatgpt API
+- GitHubActions
 
 
 ## 参考
+- [Pythonを使って、Gmailを送信する方法](https://note.com/noa813/n/nde0116fcb03f)
 - [【AWS】Lambdaを使用しDynamoDBに読み書きする](https://zenn.dev/enumura/articles/71d88d98bc7052)
 - [React + API Gateway + Lambda + DynamoDBでTodoアプリ](https://qiita.com/chain792/items/97d5dfd5a1b40ac63e05)
+- [Github Actionsを使ってAWS Lambdaを自動デプロイしてみた](https://qiita.com/hasesho/items/c5100eeb3393b412d816)
+- [【X(Twitter) Bot】Ｘの運用がめんどくさい全ての人へ](https://zenn.dev/enterrocken/articles/e6ae6ddcc121d8)
