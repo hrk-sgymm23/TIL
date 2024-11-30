@@ -22,3 +22,8 @@
 
 ### ツール
 - Chatgpt API
+
+
+## 参考
+- [【AWS】Lambdaを使用しDynamoDBに読み書きする](https://zenn.dev/enumura/articles/71d88d98bc7052)
+- [React + API Gateway + Lambda + DynamoDBでTodoアプリ](https://qiita.com/chain792/items/97d5dfd5a1b40ac63e05)
