@@ -19,6 +19,7 @@
 
 ### 言語
 - Python
+- Go
 
 ### ツール
 - Gmail API
