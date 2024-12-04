@@ -167,6 +167,52 @@ func main() {
 }
 ```
 
+## Zero values
+
+https://go-tour-jp.appspot.com/basics/12
+
+変数に初期値を与えずに宣言すると、ゼロ値( zero value )が与えられます。
+
+ゼロ値は型によって以下のように与えられます:
+
+数値型(int,floatなど): 0
+bool型: false
+string型: "" (空文字列( empty string ))
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i int
+	var f float64
+	var b bool
+	var s string
+	fmt.Printf("%v %v %v %q\n", i, f, b, s)
+}
+// 0 0 false ""
+```
+
+## Type conversions
+
+https://go-tour-jp.appspot.com/basics/13
+
+変数 v 、型 T があった場合、 T(v) は、変数 v を T 型へ変換します。
+
+```go
+var i int = 42
+var f float64 = float64(i)
+var u uint = uint(f)
+```
+上記は以下のように書くことができる
+```go
+i := 42
+f := float64(i)
+u := uint(f)
+```
+
+
 
 
 
