@@ -213,8 +213,83 @@ u := uint(f)
 ```
 
 
-## Type inference
+## Type inference(型推論)
 
 https://go-tour-jp.appspot.com/basics/14
 
+明示的な型を指定せずに変数を宣言する場合( := や var = のいずれか)、変数の型は右側の変数から型推論されます。
+右側の変数が型を持っている場合、左側の新しい変数は同じ型になる。
 
+```go
+var i int
+j := i // j is an int
+```
+
+```go
+i := 42           // int
+f := 3.142        // float64
+g := 0.867 + 0.5i // complex128
+```
+
+## Constants
+
+https://go-tour-jp.appspot.com/basics/15
+
+定数( constant )は、 const キーワードを使って変数と同じように宣言する。
+定数は、文字(character)、文字列(string)、boolean、数値(numeric)のみで使える。
+なお、定数は `:=` を使って宣言できない。
+
+```go
+package main
+
+import "fmt"
+
+const Pi = 3.14
+
+func main() {
+	const World = "世界"
+	fmt.Println("Hello", World)
+	fmt.Println("Happy", Pi, "Day")
+
+	const Truth = true
+	fmt.Println("Go rules?", Truth)
+}
+
+// Hello 世界
+// Happy 3.14 Day
+// Go rules? true
+```
+
+## Numeric Constants
+
+https://go-tour-jp.appspot.com/basics/16
+
+数値の定数は、高精度な 値 ( values )です。
+型のない定数は、その状況によって必要な型を取ることになる。
+
+
+```go
+package main
+
+import "fmt"
+
+const (
+    Big = 1 << 100   // 1を左に100ビットシフト（巨大な数）
+    Small = Big >> 99 // Bigを右に99ビットシフト（結果は1 << 1、つまり2）
+)
+
+func needInt(x int) int { return x*10 + 1 }
+func needFloat(x float64) float64 {
+	return x * 0.1
+}
+
+func main() {
+	fmt.Println(needInt(Small))
+	fmt.Println(needFloat(Small))
+	fmt.Println(needFloat(Big))	
+}
+
+// 21
+// 0.2
+// 1.2676506002282295e+29
+```
