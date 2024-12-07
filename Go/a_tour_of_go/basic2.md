@@ -92,6 +92,74 @@ func main() {
 // 1.7320508075688772 2i
 ```
 
+## If with a short statement
+
+`if`ステートメントは、`for`のように、条件の前に、評価するための簡単なステートメントを書くことができる。
+ここで宣言された変数は、 if のスコープ内だけで有効。
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	}
+	return lim
+}
+
+func main() {
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+}
+// 9 20
+```
+
+## If and else
+
+https://go-tour-jp.appspot.com/flowcontrol/7
+
+`if`ステートメントで宣言された変数は、`else`ブロック内でも使うことができる。
+`main`の`fmt.Println`は`pow`が実行された後に実行される。
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	} else {
+		fmt.Printf("%g >= %g\n", v, lim)
+	}
+	// can't use v here, though
+	return lim
+}
+
+func main() {
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+}
+```
+
+## Exercise: Loops and Functions
+
+https://go-tour-jp.appspot.com/flowcontrol/8
+
+
+
 
 
 
