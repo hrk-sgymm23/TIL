@@ -154,9 +154,153 @@ func main() {
 }
 ```
 
-## Exercise: Loops and Functions
+## WIP/Exercise: Loops and Functions
 
 https://go-tour-jp.appspot.com/flowcontrol/8
+
+解説: https://exmedia.jp/blog/a-tour-of-go%E3%81%AE%E7%B7%B4%E7%BF%92%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E8%AA%AC%E3%81%99%E3%82%8B%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA1-11-exercise-loops-and-functions/
+
+`Sqrt`メソッドの作成
+```go
+func Sqrt(x float64) float64 {
+	z := 1.0
+	for i := 0; i < 10; i++ {
+		z -= (z*z - x) / (2 * z)
+		fmt.Println(z)
+	}
+	return z
+}
+```
+
+## Switch
+
+https://go-tour-jp.appspot.com/flowcontrol/9
+
+```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
+func main() {
+	fmt.Print("Go runs on ")
+	switch os := runtime.GOOS; os {
+	case "darwin":
+		fmt.Println("OS X.")
+	case "linux":
+		fmt.Println("Linux.")
+	default:
+		// freebsd, openbsd,
+		// plan9, windows...
+		fmt.Printf("%s.\n", os)
+	}
+}
+// Go runs on Linux.
+```
+
+## Switch evaluation order
+
+https://go-tour-jp.appspot.com/flowcontrol/10
+
+`switch case`は、上から下へ`case`を評価。 `case`の条件が一致すれば、そこで停止(自動的に`break`)する。
+
+```go
+switch i {
+case 0:
+case f():
+}
+```
+
+`i==0`であれば、 `case 0`で`break`されるため`f`は呼び出されない
+
+## Switch with no condition
+
+https://go-tour-jp.appspot.com/flowcontrol/11
+
+条件のないswitchは、 switch true と書くことと同じ。
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	t := time.Now()
+	switch {
+	case t.Hour() < 12:
+		fmt.Println("Good morning!")
+	case t.Hour() < 17:
+		fmt.Println("Good afternoon.")
+	default:
+		fmt.Println("Good evening.")
+	}
+}
+// Good evening.
+```
+
+## Defer
+
+https://go-tour-jp.appspot.com/flowcontrol/12
+
+defer ステートメントは、 defer へ渡した関数の実行を、呼び出し元の関数の終わり(returnする)まで遅延させるもの。
+defer へ渡した関数の引数は、すぐに評価されるが、その関数自体は呼び出し元の関数がreturnするまで実行されない。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	defer fmt.Println("world")
+
+	fmt.Println("hello")
+}
+// hello
+// world
+```
+
+## Stacking defers
+
+https://go-tour-jp.appspot.com/flowcontrol/13
+
+deferへ渡した関数が複数ある場合はスタックされる。
+呼び出し元関数がreturnするとき、deferへ渡した関数がLIFOの順で実行される
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("counting")
+
+	for i := 0; i < 10; i++ {
+		defer fmt.Println(i)
+	}
+
+	fmt.Println("done")
+}
+
+// counting
+// done
+// 9
+// 8
+// 7
+// 6
+// 5
+// 4
+// 3
+// 2
+// 1
+// 0
+```
+
+
 
 
 
