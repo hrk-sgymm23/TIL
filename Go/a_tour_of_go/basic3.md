@@ -390,6 +390,217 @@ func main() {
 // nil!
 ```
 
+## Creating a slice with make
+
+https://go-tour-jp.appspot.com/moretypes/13
+
+`make`は動的なスライスを作成する方法
+`make`関数はゼロ化された配列を割り当てその配列を示すスライスを返す。
+
+```go
+a := make([]int, 5)  // len(a)=5
+```
+
+make の3番目の引数に、スライスの容量( capacity )を指定できる。 cap(b) で、スライスの容量を返す。
+
+```go
+b := make([]int, 0, 5) // len(b)=0, cap(b)=5
+
+b = b[:cap(b)] // len(b)=5, cap(b)=5
+b = b[1:]      // len(b)=4, cap(b)=4
+```
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	a := make([]int, 5)
+	printSlice("a", a)
+
+	b := make([]int, 0, 5)
+	printSlice("b", b)
+
+	c := b[:2]
+	printSlice("c", c)
+
+	d := c[2:5]
+	printSlice("d", d)
+}
+
+func printSlice(s string, x []int) {
+	fmt.Printf("%s len=%d cap=%d %v\n",
+		s, len(x), cap(x), x)
+}
+// a len=5 cap=5 [0 0 0 0 0]
+// b len=0 cap=5 []
+// c len=2 cap=5 [0 0]
+// d len=3 cap=3 [0 0 0]
+```
+
+## Slices of slices
+
+https://go-tour-jp.appspot.com/moretypes/14
+
+スライスは他のスライスを含む他の型を含むことができる。
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	// Create a tic-tac-toe board.
+	board := [][]string{
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+	}
+
+	// The players take turns.
+	board[0][0] = "X"
+	board[2][2] = "O"
+	board[1][2] = "X"
+	board[1][0] = "O"
+	board[0][2] = "X"
+
+	for i := 0; i < len(board); i++ {
+		fmt.Printf("%s\n", strings.Join(board[i], " "))
+	}
+}
+
+// X _ X
+// O _ X
+// _ _ O
+```
+
+## Appending to a slice
+
+https://go-tour-jp.appspot.com/moretypes/15
+
+スライスへ新しい要素を追加するには、`append`を使う。
+
+```go
+func append(s []T, vs ...T) []T
+```
+
+append の戻り値は、追加元のスライスと追加する変数群を合わせたスライスとなる
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var s []int
+	
+	printSlice(s)
+
+	// append works on nil slices.
+	s = append(s, 0)
+	printSlice(s)
+
+	// The slice grows as needed.
+	s = append(s, 1)
+	printSlice(s)
+
+	// We can add more than one element at a time.
+	s = append(s, 2, 3, 4)
+	printSlice(s)
+	
+
+}
+
+func printSlice(s []int) {
+	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+}
+// len=0 cap=0 []
+// len=1 cap=1 [0]
+// len=2 cap=2 [0 1]
+// len=5 cap=6 [0 1 2 3 4]
+```
+
+## Range
+
+https://go-tour-jp.appspot.com/moretypes/16
+
+`for`ループに利用する `range`は、スライスや、マップ(`map`)をひとつずつ反復処理するために使う。
+スライスをrangeで繰り返す場合、rangeは反復毎に2つの変数を返うs。 1つ目の変数はインデックス( index )で、2つ目はインデックスの場所の要素のコピー。
+
+```go
+package main
+
+import "fmt"
+
+var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+
+func main() {
+	for i, v := range pow {
+		fmt.Printf("2**%d = %d\n", i, v)
+	}
+}
+// 2**0 = 1
+// 2**1 = 2
+// 2**2 = 4
+// 2**3 = 8
+// 2**4 = 16
+// 2**5 = 32
+// 2**6 = 64
+// 2**7 = 128
+```
+
+## Range continued
+
+インデックスや値は、 " _ "(アンダーバー) へ代入することで捨てることができる。
+
+```go
+for i, _ := range pow
+for _, value := range pow
+```
+
+もしインデックスだけが必要な場合は2つ目の値を省略する
+
+```go
+for i := range pow
+```
+
+## WIP Exercise: Slices
+
+https://go-tour-jp.appspot.com/moretypes/18
+
+回答例
+https://qiita.com/rock619/items/f412d1f870a022c142d0
 
 
+```go
+package main
+
+import "golang.org/x/tour/pic"
+
+func Pic(dx, dy int) [][]uint8 {
+	pic := make([][]uint8, dy)
+	for y := range pic {
+		pic[y] = make([]uint8, dx)
+		for x := range pic[y] {
+			pic[y][x] = uint8((x + y) / 2)
+		}
+	}
+	return pic
+}
+
+func main() {
+	pic.Show(Pic)
+}
+```
+
+## Maps
+
+https://go-tour-jp.appspot.com/moretypes/19
+
+`map`はキーと値を関連づける。
+マップのゼロ値は`nil`。`nil`マップはキーをもっておらず、またキーを追加することもできない
 
