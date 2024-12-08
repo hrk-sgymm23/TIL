@@ -604,3 +604,172 @@ https://go-tour-jp.appspot.com/moretypes/19
 `map`はキーと値を関連づける。
 マップのゼロ値は`nil`。`nil`マップはキーをもっておらず、またキーを追加することもできない
 
+```go
+package main
+
+import "fmt"
+
+type Vertex struct {
+	Lat, Long float64
+}
+
+var m map[string]Vertex
+
+func main() {
+	m = make(map[string]Vertex)
+	m["Bell Labs"] = Vertex{
+		40.68433, -74.39967,
+	}
+	fmt.Println(m)	
+	fmt.Println(m["Bell Labs"])
+}
+// map[Bell Labs:{40.68433 -74.39967}]
+// {40.68433 -74.39967}
+```
+
+## Map literals
+
+https://go-tour-jp.appspot.com/moretypes/20
+
+mapリテラルは、structリテラルに似ていますが、 キー ( key )が必要。
+
+```go
+// map[Bell Labs:{40.68433 -74.39967}]
+```
+
+## Map literals continued
+
+https://go-tour-jp.appspot.com/moretypes/21
+
+もしmapに渡す型名が単純な型名である場合はリテラルの要素から推定できるため、その型名を省略できる。
+
+
+## Mutating Maps
+
+https://go-tour-jp.appspot.com/moretypes/22
+
+m へ要素(elem)の挿入や更新:
+```go
+m[key] = elem
+```
+
+要素の取得
+```go
+elem = m[key]
+```
+
+要素の削除
+```go
+delete(m, key)
+```
+
+キーに対する要素が存在するかどうかは、2つの目の値で確認
+```go
+elem, ok = m[key]
+```
+
+もし、 m に key があれば、変数 ok は true となり、存在しなければ、 ok は false となる。
+なお、mapに key が存在しない場合、 elem はmapの要素の型のゼロ値となる。
+
+tip: もし`elem`や`ok`を宣言していなければ`:=`で宣言できる
+```go
+elem, ok := m[key]
+```
+
+## WIP Exercise: Maps
+
+https://go-tour-jp.appspot.com/moretypes/23
+
+## Function values
+
+https://go-tour-jp.appspot.com/moretypes/24
+
+関数も変数。他の変数のように関数を渡すことができる。
+関数値( function value )は、関数の引数に取ることもできるし、戻り値としても利用できる。
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
+}
+
+func main() {
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
+	}
+	fmt.Println(hypot(5, 12))
+
+	fmt.Println(compute(hypot)) //　compute内でhypoot実行
+	fmt.Println(compute(math.Pow)) // math.Pow(x, y) は、x の y 乗を計算 (3の4乗)
+}
+// 13
+// 5
+// 81
+```
+
+## Function closures
+
+https://go-tour-jp.appspot.com/moretypes/25
+
+Goの関数はクロージャーである。それ自身の外部から変数を参照する間数値。
+この関数は参照された変数へアクセスして変えることができ、その関数は変数へバインドされる。
+
+```go
+package main
+
+import "fmt"
+
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+func main() {
+	pos, neg := adder(), adder()
+	for i := 0; i < 5; i++ {
+		fmt.Println(
+			pos(i),
+			neg(-2*i),
+		)
+	}
+}
+// 0 0
+// 1 -2
+// 3 -6
+// 6 -12
+// 10 -20
+```
+
+## Exercise: Fibonacci closure
+
+```go
+package main
+
+import "fmt"
+
+// fibonacci is a function that returns
+// a function that returns an int.
+func fibonacci() func() int {
+	a, b := 1, 0
+	return func() int {
+		a, b = b, a + b
+		return a 
+	}	
+}
+
+func main() {
+	f := fibonacci()
+	for i := 0; i < 10; i++ {
+		fmt.Println(f())
+	}
+}
+```
