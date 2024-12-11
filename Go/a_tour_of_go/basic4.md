@@ -77,5 +77,89 @@ https://go-tour-jp.appspot.com/methods/4
 ポインタレシーバでメソッドを宣言できる。
 これはレシーバーの型が、ある型`T`への構文`*T`があることを示す。(なお`T`は`*int`のようにポインタ自体をとることはできない)
 
+例では *Vertex に Scale メソッドが定義されている
+ポインタレシーバを持つメソッド(ここでは`Scale`)はレシーバが指す変数を変更できる。
+レシーバ自身を更新することが多いため、変数レシーバーよりポインタレシーバの方が一般的。
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func main() {
+	v := Vertex{3, 4}
+	v.Scale(10)
+	fmt.Println(v.Abs())
+}
+```
+
+# ポインタレシーバと変数レシーバの違いについて
+
+## ポインタレシーバ
+
+### コード
+
+```go
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+```
+
+- `*Vertex`...`Scale`メソッドのレシーバはポインタ型レシーバ
+- メソッド内部で`v.X`,`v.Y`を変更するとその元のオブジェクトが変更される。
+
+### 実行結果
+```go
+v := Vertex{3, 4}
+v.Scale(10)
+fmt.Println(v.Abs())
+```
+
+- `v.Scale(10)`メソッド内にて`3*10`,`4*10`が行われる
+- `v.Abs`メソッドにて`√(30² + 40²) = 50`が計算される。
+
+## 変数レシーバ
+
+### コード
+```go
+func (v Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+```
+
+- `Vertex`...`Scale`メソッドのレシーバは変数型レシーバ
+- メソッド内部で`v.X`,`v.Y`を変更するとその元のオブジェクトが変更されない。
+
+### 実行結果
+```go
+v := Vertex{3, 4}
+v.Scale(10)
+fmt.Println(v.Abs())
+```
+
+- `v.Scale(10)`メソッド内にてのx,yの値の変更はなし
+- `v.Abs`メソッドにて`√(3² + 4²) = 5`が計算される。
+
+
+
+
 
 
