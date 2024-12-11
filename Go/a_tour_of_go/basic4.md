@@ -158,7 +158,27 @@ fmt.Println(v.Abs())
 - `v.Scale(10)`メソッド内にてのx,yの値の変更はなし
 - `v.Abs`メソッドにて`√(3² + 4²) = 5`が計算される。
 
+## Methods and pointer indirection
 
+https://go-tour-jp.appspot.com/methods/6
+
+下の2つの呼び出しを比べると、ポインタを引数に取る ScaleFunc 関数は、ポインタを渡す必要があることに気がつく
+
+```go
+var v Vertex
+ScaleFunc(v, 5)  // Compile error!
+ScaleFunc(&v, 5) // OK
+```
+
+メソッドがポインタレシーバである場合、呼び出し時に変数、または、ポインタのいずれかのレシーバとして受け取ることができる。
+```go
+var v Vertex
+v.Scale(5)  // OK
+p := &v
+p.Scale(10) // OK
+```
+`v.Scale(5)`のステートメントでは`v`は変数でありポインタではない。メソッドでポインタレシーバが自動的に呼び出される。
+`Scale`メソッドはポインタレシーバを持つ場合、Goは利便性を保つため、v.Scale(5) のステートメントを (&v).Scale(5) として解釈
 
 
 
