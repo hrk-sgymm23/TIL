@@ -213,5 +213,103 @@ func main() {
 // {60 80} &{96 72}
 ```
 
+## Methods and pointer indirection (2)
+
+https://go-tour-jp.appspot.com/methods/7
+
+例のコード
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func AbsFunc(v Vertex) float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func main() {
+	v := Vertex{3, 4}
+	fmt.Println(v.Abs())
+	fmt.Println(AbsFunc(v))
+
+	p := &Vertex{4, 3}
+	fmt.Println(p.Abs())
+	fmt.Println(AbsFunc(*p))
+}
+// 5
+// 5
+// 5
+// 5
+```
+
+変数の引数を取る関数は、特定の型の引数を取る必要がある。
+```go
+var v Vertex
+fmt.Println(AbsFunc(v))  // OK
+fmt.Println(AbsFunc(&v)) // Compile error!
+```
+
+メソッドが変数レシーバである場合、呼び出し時に、変数、またはポインタのいずれかのレシーバとしてとることができる。
+```go
+var v Vertex
+fmt.Println(v.Abs()) // OK
+p := &v
+fmt.Println(p.Abs()) // OK
+```
+
+## Choosing a value or pointer receiver
+
+https://go-tour-jp.appspot.com/methods/8
+
+ポインタレシーバを使う理由は2つある。
+- 一つはメソッドがレシーバが指す先の変数を変更するため。
+- 二つ目は、メソッドの呼び出し毎に変数のコピーを避けるため。例えばレシーバがおおきな構造体である場合に効率的。
+
+
+`Abs`メソッドはレシーバ自身を変更する必要はありませんが、`Scale`と`Abs`は両方とも`*Vertex`型のレシーバです。
+> 一般的には、値レシーバ、または、ポインタレシーバのどちらかですべてのメソッドを与え、混在させるべきではありません。
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+func (v *Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func main() {
+	v := &Vertex{3, 4}
+	fmt.Printf("Before scaling: %+v, Abs: %v\n", v, v.Abs())
+	v.Scale(5)
+	fmt.Printf("After scaling: %+v, Abs: %v\n", v, v.Abs())
+}
+// Before scaling: &{X:3 Y:4}, Abs: 5
+// After scaling: &{X:15 Y:20}, Abs: 25
+```
+
 
 
