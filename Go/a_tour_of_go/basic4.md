@@ -311,5 +311,112 @@ func main() {
 // After scaling: &{X:15 Y:20}, Abs: 25
 ```
 
+## Interfaces/Interfaces are implemented implicitly
+
+https://go-tour-jp.appspot.com/methods/9
+https://go-tour-jp.appspot.com/methods/10
+
+interfacea型はメソッドのシグニチャの集まりとして定義する。
+そのメソッドの実装した値を、interface型の変数へ渡すことができる。
+
+型にメソッドを実装していくことによって、インターフェース実装になる。
+インターフェースを実装することを明示的に宣言する必要はない("implements" キーワードは必要ない)
+
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+// This method means type T implements the interface I,
+// but we don't need to explicitly declare that it does so.
+func (t T) M() {
+	fmt.Println(t.S)
+}
+
+func main() {
+	var i I = T{"hello"}
+	i.M()
+}
+// hello
+```
+
+## Interface values
+
+https://go-tour-jp.appspot.com/methods/11
+
+下記のようにインターフェースの値は、値と具体的な型のタプルのように考えられる。
+
+```go
+(value, type)
+```
+
+インターフェースの値は、特定の基底になる具体的な型の値を保持する。
+インターフェースの値のメソッドを呼び出すと、その基底型の同じ名前のメソッドが呼び出される。
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+func (t *T) M() {
+	fmt.Println(t.S)
+}
+
+type F float64
+
+func (f F) M() {
+	fmt.Println(f)
+}
+
+func main() {
+	var i I
+
+	i = &T{"Hello"}
+	describe(i)
+	i.M()
+
+	i = F(math.Pi)
+	describe(i)
+	i.M()
+}
+
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+
+```
+
+### 解説
+コード全体の流れ
+- インターフェース`I`...メソッド`M`を持つ
+- 構造体`T`と型`F`...それぞれが`I`を実装する具体的な型
+- `main`関数...インターフェーズ型`I`に`T`と`F`を代入
+
+- `describe`
+  - 引数`i`の値と型を表示する
+```go
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
 
 
