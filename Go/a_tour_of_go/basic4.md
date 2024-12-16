@@ -419,4 +419,112 @@ func describe(i I) {
 }
 ```
 
+**ポリモーフィズム**
+- インターフェース型`I`を使うことで異なる型(`*T`と`F`)を統一的に扱っている。
+
+> *T のポインタ型で M() を実装 → ポインタ型のみ I を実装。
+```go
+func (t *T) M() {
+	fmt.Println(t.S)
+}
+```
+
+> F は値レシーバで M() を実装 → 値型もポインタ型も I を実装。
+```go
+func (f F) M() {
+	fmt.Println(f)
+}
+```
+
+## Interface values with nil underlying values
+
+https://go-tour-jp.appspot.com/methods/12
+
+インターフェースの具体的な値がnilの場合、メソッドはnilをレシーバとして呼び出される。
+
+> Go では nil をレシーバーとして呼び出されても適切に処理するメソッドを記述するのが一般的です(この例では M メソッドのように)。
+> 具体的な値として nil を保持するインターフェイスの値それ自体は非 nil であることに注意してください。
+
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+func (t *T) M() {
+	if t == nil {
+		fmt.Println("<nil>")
+		return
+	}
+	fmt.Println(t.S)
+}
+
+func main() {
+	var i I
+
+	var t *T
+	i = t
+	describe(i)
+	i.M()
+
+	i = &T{"hello"}
+	describe(i)
+	i.M()
+}
+
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+// (<nil>, *main.T)
+// <nil>
+// (&{hello}, *main.T)
+// hello
+```
+
+## Nil interface values
+
+https://go-tour-jp.appspot.com/methods/13
+
+`nil`インターフェースの値は、値も具体的な型も保持しない
+呼び出す具体的なメソッドを示すかたがインターフェースないのタプルに存在しないため、nilインターフェースのメソッドを呼び出すとランタイムエラーになる。
+
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+func main() {
+	var i I
+	describe(i)
+	i.M()
+}
+
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+
+// (<nil>, <nil>)
+// panic: runtime error: invalid memory address or nil pointer dereference
+// [signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x490959]
+
+// goroutine 1 [running]:
+// main.main()
+	// /tmp/sandbox1141676745/prog.go:12 +0x19
+```
+
+`i`が`nil`の場合、インターフェースには型もメソッドも関連づけられないため`i.M()`はエラーになる
+
+
+
 
