@@ -534,6 +534,92 @@ https://go-tour-jp.appspot.com/methods/14
 interface{}
 ```
 
+空のインターフェースは任意の型の値を保持できる(全ての型は少なくともゼロ個のメソッドを実装している)
+空のインターフェースは未知の型を扱うコードで使用される
 
+> 例えば、 fmt.Print は interface{} 型の任意の数の引数を受け取ります。
 
+```go
+package main
 
+import "fmt"
+
+func main() {
+	var i interface{}
+	describe(i)
+
+	i = 42
+	describe(i)
+
+	i = "hello"
+	describe(i)
+}
+
+func describe(i interface{}) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+// (<nil>, <nil>)
+// (42, int)
+// (hello, string)
+```
+
+## Type assertions
+
+https://go-tour-jp.appspot.com/methods/15
+
+型アサーション は、インターフェースの値の基になる具体的な値を利用する手段を提供します。
+
+```go
+t := i.(T)
+```
+
+この文はインターフェースの値が`i`が具体的な型`T`を保持し基になる`T`の値を変数`t`を代入することを宣言。
+`i`が`T`を保持していない場合はこの分はpanicを起こす。
+
+インターフェースの値が特定の方を保持しているかどうかをテストするために型アサーションは2つの値を返すことができる。
+> 基になる値とアサーションが成功したかどうかを報告するブール値)
+
+```go
+t, ok := i.(T)
+```
+`i`が`T`を保持してれば、`t`は基になる値になり`ok`は`true`になる。
+そうでなければ`ok`は`false`になる。`t`は型`T`のゼロ値になりpanicは起きない。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i interface{} = "hello"
+
+	s := i.(string)
+	fmt.Println(s)
+
+	s, ok := i.(string)
+	fmt.Println(s, ok)
+
+	f, ok := i.(float64)
+	fmt.Println(f, ok)
+
+	f = i.(float64) // panic
+	fmt.Println(f)
+}
+// hello
+// hello true
+// 0 false
+// panic: interface conversion: interface {} is string, not float64
+
+// goroutine 1 [running]:
+// main.main()
+	// /tmp/sandbox299776260/prog.go:17 +0x14f
+
+```
+
+## Type switches
+
+https://go-tour-jp.appspot.com/methods/16
+
+```go
+
+```
