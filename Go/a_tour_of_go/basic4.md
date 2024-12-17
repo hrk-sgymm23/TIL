@@ -525,6 +525,15 @@ func describe(i I) {
 
 `i`が`nil`の場合、インターフェースには型もメソッドも関連づけられないため`i.M()`はエラーになる
 
+## The empty interface
+
+https://go-tour-jp.appspot.com/methods/14
+
+0個のメソッドが指定されたインターフェース型は、空のインターフェースと呼ばれる
+```go
+interface{}
+```
+
 
 
 
