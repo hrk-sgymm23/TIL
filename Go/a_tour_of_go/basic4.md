@@ -620,6 +620,90 @@ func main() {
 
 https://go-tour-jp.appspot.com/methods/16
 
+型`switch`はいくつかの型アサーションを直列に使用できる構造。
+型`switch`は通常の`switch`文と似ているが型`switch`の`case`は型を指定し、それらの値は指定されたインターフェースの値が保持する値の型と比較される。
+
 ```go
+switch v := i.(type) {
+case T:
+    // here v has type T
+case S:
+    // here v has type S
+default:
+    // no match; here v has the same type as i
+}
+```
+
+型の`switch`の宣言は、型アサーション`i.(T)`と同じ構文を持つが、特定の型`T`はキーワード`type`に置き換得られる。
+
+上記switch文はインターフェースの値`i`が型`T`または型`S`の値を保持するかどうかをテストする。
+`T`及び`S`の各`case`において、変数`v`はそれぞれ型`T`または`S`であり、`i`によって保持される値を保持される。
+defaultの場合(値が一致しない場合)、変数`v`は同じインターフェース型で値は`i`となる。
+
+```go
+package main
+
+import "fmt"
+
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
+
+func main() {
+	do(21)
+	do("hello")
+	do(true)
+}
+// Twice 21 is 42
+// "hello" is 5 bytes long
+// I don't know about type bool!
+```
+
+## Stringers
+
+https://go-tour-jp.appspot.com/methods/17
+
+> もっともよく使われているinterfaceの一つに fmt パッケージ に定義されている Stringer があります
+
+```go
+type Stringer interface {
+    String() string
+}
+```
+
+`Stringer`インターフェースは`string`として表現することができる型です。
+`fmt`パッケージでは変数を文字列で出力うるためにインターフェースがあることを確認する。
+
+```go
+package main
+
+import "fmt"
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) String() string {
+	return fmt.Sprintf("%v (%v years)", p.Name, p.Age)
+}
+
+func main() {
+	a := Person{"Arthur Dent", 42}
+	z := Person{"Zaphod Beeblebrox", 9001}
+	fmt.Println(a, z)
+}
+// Arthur Dent (42 years) Zaphod Beeblebrox (9001 years)
 
 ```
+
+
+
+
