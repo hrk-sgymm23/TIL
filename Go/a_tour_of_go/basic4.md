@@ -701,9 +701,74 @@ func main() {
 	fmt.Println(a, z)
 }
 // Arthur Dent (42 years) Zaphod Beeblebrox (9001 years)
-
 ```
 
 
+## Exercise: Stringers
+
+https://go-tour-jp.appspot.com/methods/18
+
+```go
+package main
+
+import "fmt"
+
+type IPAddr [4]byte
+
+// TODO: Add a "String() string" method to IPAddr.
+func (i IPAddr) String() string {
+	return fmt.Sprintf("%v.%v.%v.%v", i[0], i[1], i[2], i[3])
+}
+
+func main() {
+	hosts := map[string]IPAddr{
+		"loopback":  {127, 0, 0, 1},
+		"googleDNS": {8, 8, 8, 8},
+	}
+	for name, ip := range hosts {
+		fmt.Printf("%v: %v\n", name, ip)
+	}
+}
+// loopback: 127.0.0.1
+// googleDNS: 8.8.8.8
+```
+
+上記解説
+
+```go
+type IPAddr [4]byte
+```
+上記配列は4つのバイト値(0~255の整数)を保持する。IPv4の表現に適している。
+
+`String`メソッド
+```go
+func (i IPAddr) String() string {
+	return fmt.Sprintf("%v.%v.%v.%v", i[0], i[1], i[2], i[3])
+}
+```
+`IPAddr`型に紐づいたメソッド
+メソッド名が`String()`であるため、この型をフォーマット指定子(例`%v`)で出力すると`String()`の返り値が使われる。
+
+`main`関数
+```go
+hosts := map[string]IPAddr{
+	"loopback":  {127, 0, 0, 1},
+	"googleDNS": {8, 8, 8, 8},
+}
+```
+
+`map[string]IPAddr`はキーが文字列、値が`IPAddr`型のマップ(辞書)
+2つの値を変数に格納している。
+
+```go
+for name, ip := range hosts {
+	fmt.Printf("%v: %v\n", name, ip)
+}
+```
+値は`ip`だが`IPAddr`型であるが、`fmt.Printf`の`%v`フォーマット指定子を使うと自動的に`String()`メソッドが呼び出される
+上記の`String`メソッド自動呼び出しは`fmt.Stringer`(標準メソッド)によるもの
+
+> 型が String() メソッドを実装している場合、その型は Stringer インターフェースを満たしているとみなされます。
+> fmt.Printf などの関数で %v や %s を使った場合、値が Stringer を満たしていれば、String() メソッドが自動的に呼び出され、その戻り値がフォーマット出力に使われます。
 
 
