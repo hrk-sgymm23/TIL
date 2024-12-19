@@ -772,3 +772,9 @@ for name, ip := range hosts {
 > fmt.Printf などの関数で %v や %s を使った場合、値が Stringer を満たしていれば、String() メソッドが自動的に呼び出され、その戻り値がフォーマット出力に使われます。
 
 
+## Errors
+
+https://go-tour-jp.appspot.com/methods/19
+
+```go
+```
