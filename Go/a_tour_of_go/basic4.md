@@ -900,3 +900,54 @@ func main() {
 // 1.414213562373095 <nil>
 // 0 cannot Sqrt negative number: -2
 ```
+
+
+## Readers
+
+https://go-tour-jp.appspot.com/methods/21
+
+`io`パッケージは、データストリームを読むことを表現する`io.Reader`インターフェースを規定している。
+Goの標準ライブラリには、ファイル、ネットワーク接続、圧縮、暗号化などで`io`インターフェースの多くの実装がある。
+`io.Reader`インタフェースは`Reader`メソッドを持つ
+
+```go
+func (T) Read(b []byte) (n int, err error)
+```
+
+`Read`はデータを与えられたバイトスライスへ入れ、入れたバイトのサイズとエラーを返す。
+ストリームの終端は`io.EOF`のエラーを返す。
+
+
+以下コードは`Hello, Reader!`を変数に格納し8バイトごとに切り出し、バイト数とアスキー文字の配列を返す。
+```go
+package main
+
+import (
+	"fmt"
+	"io"
+	"strings"
+)
+
+func main() {
+	r := strings.NewReader("Hello, Reader!")
+
+	b := make([]byte, 8)
+	for {
+		n, err := r.Read(b)
+		fmt.Printf("n = %v err = %v b = %v\n", n, err, b)
+		fmt.Printf("b[:n] = %q\n", b[:n])
+		if err == io.EOF {
+			break
+		}
+	}
+}
+// n = 8 err = <nil> b = [72 101 108 108 111 44 32 82]
+// b[:n] = "Hello, R"
+// n = 6 err = <nil> b = [101 97 100 101 114 33 32 82]
+// b[:n] = "eader!"
+// n = 0 err = EOF b = [101 97 100 101 114 33 32 82]
+// b[:n] = ""
+
+```
+
+
