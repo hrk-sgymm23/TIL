@@ -776,5 +776,127 @@ for name, ip := range hosts {
 
 https://go-tour-jp.appspot.com/methods/19
 
+Goのプログラムは`error`値でエラーを表現する。
+`erroe`型は`fmt.Stringer`に似た組み込みインターフェース
+
 ```go
+type error interface {
+    Error() string
+}
+```
+
+`fmt.stringer`と同様に`fmt`パッケージは変数を文字列で出力する際に`error`インタフェースを確認する。
+よく関数は`error`辺数を返す。そして呼び出しもとはエラー`nil`かどうかどうか確認することでエラーハンドルを行う。
+
+```go
+i, err := strconv.Atoi("42")
+if err != nil {
+    fmt.Printf("couldn't convert number: %v\n", err)
+    return
+}
+fmt.Println("Converted integer:", i)
+```
+
+`nil`の`error`は成功したことを示し、`nil`ではない`error`は失敗したことを示す。
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+type MyError struct {
+	When time.Time
+	What string
+}
+
+func (e *MyError) Error() string {
+	return fmt.Sprintf("at %v, %s",
+		e.When, e.What)
+}
+
+func run() error {
+	return &MyError{
+		time.Now(),
+		"it didn't work",
+	}
+}
+
+func main() {
+	if err := run(); err != nil {
+		fmt.Println(err)
+	}
+}
+// at 2009-11-10 23:00:00 +0000 UTC m=+0.000000001, it didn't work
+```
+
+以下解説
+```go
+type MyError struct {
+    When time.Time
+    What string
+}
+```
+
+time型と文字列型の値を持つ構造体
+
+`Error`メソッド
+
+```go
+func (e *MyError) Error() string {
+    return fmt.Sprintf("at %v, %s",
+        e.When, e.What)
+}
+```
+
+上記メソッドは`error`インターフェースを満たすために必要
+`error`インターフェースの定義は以下
+```go
+type error interface {
+    Error() string
+}
+```
+
+- `error`メソッドは`MyError`型のメッセージをフォーマットして返す。
+  - 例えば、エラー発生時刻`When`とエラー内容`What`を整形して返す。
+
+
+## Exercise: Errors
+
+https://go-tour-jp.appspot.com/methods/20
+
+https://qiita.com/rock619/items/f412d1f870a022c142d0#exercise-errors
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type ErrNegativeSqrt float64
+
+func (e ErrNegativeSqrt) Error() string {
+	return fmt.Sprintf("cannot Sqrt negative number: %v", float64(e))
+}
+
+func Sqrt(x float64) (float64, error) {
+	if x < 0 {
+		return 0, ErrNegativeSqrt(x)
+	}
+	z := 1.0
+	for i := 0; i < 10; i++ {
+		z -= (z*z - x) / (2 * z)
+	}
+	return z, nil
+}
+
+func main() {
+	fmt.Println(Sqrt(2))
+	fmt.Println(Sqrt(-2))
+}
+// 1.414213562373095 <nil>
+// 0 cannot Sqrt negative number: -2
 ```
