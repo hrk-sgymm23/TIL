@@ -309,4 +309,258 @@ func main() {
 // BOOM!
 ```
 
+## WIP: Exercise: Equivalent Binary Trees
+
+https://go-tour-jp.appspot.com/concurrency/8
+
+```go
+package main
+
+import (
+	"fmt"
+	"golang.org/x/tour/tree"
+)
+
+// Walk walks the tree t sending all values
+// from the tree to the channel ch.
+func Walk(t *tree.Tree, ch chan int) {
+	walk(t, ch)
+	close(ch)
+}
+
+func walk(t *tree.Tree, ch chan int) {
+	if t == nil {
+		return
+	}
+	walk(t.Left, ch)
+	ch <- t.Value
+	walk(t.Right, ch)
+}
+
+// Same determines whether the trees
+// t1 and t2 contain the same values.
+func Same(t1, t2 *tree.Tree) bool {
+	c1, c2 := make(chan int), make(chan int)
+	go Walk(t1, c1)
+	go Walk(t2, c2)
+	for {
+		v1, ok1 := <-c1
+		v2, ok2 := <-c2
+		switch {
+		case !ok1, !ok2:
+			return ok1 == ok2
+		case v1 != v2:
+			return false
+		}
+	}
+}
+
+func main() {
+	ch := make(chan int)
+	go Walk(tree.New(1), ch)
+	for i := range ch {
+		fmt.Println(i)
+	}
+	fmt.Println(Same(tree.New(1), tree.New(1)))
+	fmt.Println(Same(tree.New(1), tree.New(2)))
+}
+// 1
+// 2
+// 3
+// 4
+// 5
+// 6
+// 7
+// 8
+// 9
+// 10
+// true
+// false
+```
+
+## sync.Mutex
+
+https://go-tour-jp.appspot.com/concurrency/9
+
+コンフリクトを避けるために一度に一つだけのgoroutineが変数へアクセスできるようにしたい場合はどうするか？
+排他制御(mutual exclusion)と呼ばれ、このデータ構造を指す一般的な名前は`mutex`。
+
+Goの標準ライブラリは排他制御を`sync.Mutex`と次の2つのメソッドで表す。
+- Lock
+- Unlock
+
+> Inc メソッドにあるように、 Lock と Unlock で囲むことで排他制御で実行するコードを定義できます。
+> Value メソッドのように、mutexがUnlockされることを保証するために defer を使うこともできます。
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+// SafeCounter is safe to use concurrently.
+type SafeCounter struct {
+	mu sync.Mutex
+	v  map[string]int
+}
+
+// Inc increments the counter for the given key.
+func (c *SafeCounter) Inc(key string) {
+	c.mu.Lock()
+	// Lock so only one goroutine at a time can access the map c.v.
+	c.v[key]++
+	c.mu.Unlock()
+}
+
+// Value returns the current value of the counter for the given key.
+func (c *SafeCounter) Value(key string) int {
+	c.mu.Lock()
+	// Lock so only one goroutine at a time can access the map c.v.
+	defer c.mu.Unlock()
+	return c.v[key]
+}
+
+func main() {
+	c := SafeCounter{v: make(map[string]int)}
+	for i := 0; i < 1000; i++ {
+		go c.Inc("somekey")
+	}
+
+	time.Sleep(time.Second)
+	fmt.Println(c.Value("somekey"))
+}
+// 1000
+```
+
+## Exercise: Web Crawler
+
+https://go-tour-jp.appspot.com/concurrency/10
+
+https://qiita.com/rock619/items/f412d1f870a022c142d0#exercise-web-crawler
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+type Fetcher interface {
+	// Fetch returns the body of URL and
+	// a slice of URLs found on that page.
+	Fetch(url string) (body string, urls []string, err error)
+}
+
+// Crawl uses fetcher to recursively crawl
+// pages starting with url, to a maximum of depth.
+func Crawl(url string, depth int, fetcher Fetcher) {
+	cache := struct {
+		visited map[string]bool
+		sync.Mutex
+	}{
+		visited: make(map[string]bool),
+	}
+	var wg sync.WaitGroup
+	var crawl func(string, int)
+	crawl = func(url string, depth int) {
+		if depth <= 0 {
+			return
+		}
+		cache.Lock()
+		if cache.visited[url] {
+			cache.Unlock()
+			return
+		}
+		cache.visited[url] = true
+		cache.Unlock()
+		body, urls, err := fetcher.Fetch(url)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		fmt.Printf("found: %s %q\n", url, body)
+		wg.Add(len(urls))
+		for _, u := range urls {
+			go func(u string) {
+				crawl(u, depth-1)
+				wg.Done()
+			}(u)
+		}
+	}
+	crawl(url, depth)
+	wg.Wait()
+}
+
+func main() {
+	Crawl("https://golang.org/", 4, fetcher)
+}
+
+// fakeFetcher is Fetcher that returns canned results.
+type fakeFetcher map[string]*fakeResult
+
+type fakeResult struct {
+	body string
+	urls []string
+}
+
+func (f fakeFetcher) Fetch(url string) (string, []string, error) {
+	if res, ok := f[url]; ok {
+		return res.body, res.urls, nil
+	}
+	return "", nil, fmt.Errorf("not found: %s", url)
+}
+
+// fetcher is a populated fakeFetcher.
+var fetcher = fakeFetcher{
+	"https://golang.org/": &fakeResult{
+		"The Go Programming Language",
+		[]string{
+			"https://golang.org/pkg/",
+			"https://golang.org/cmd/",
+		},
+	},
+	"https://golang.org/pkg/": &fakeResult{
+		"Packages",
+		[]string{
+			"https://golang.org/",
+			"https://golang.org/cmd/",
+			"https://golang.org/pkg/fmt/",
+			"https://golang.org/pkg/os/",
+		},
+	},
+	"https://golang.org/pkg/fmt/": &fakeResult{
+		"Package fmt",
+		[]string{
+			"https://golang.org/",
+			"https://golang.org/pkg/",
+		},
+	},
+	"https://golang.org/pkg/os/": &fakeResult{
+		"Package os",
+		[]string{
+			"https://golang.org/",
+			"https://golang.org/pkg/",
+		},
+	},
+}
+
+// found: https://golang.org/ "The Go Programming Language"
+// found: https://golang.org/pkg/ "Packages"
+// found: https://golang.org/ "The Go Programming Language"
+// found: https://golang.org/pkg/ "Packages"
+// not found: https://golang.org/cmd/
+// not found: https://golang.org/cmd/
+// found: https://golang.org/pkg/fmt/ "Package fmt"
+// found: https://golang.org/ "The Go Programming Language"
+// found: https://golang.org/pkg/ "Packages"
+// found: https://golang.org/pkg/os/ "Package os"
+// found: https://golang.org/ "The Go Programming Language"
+// found: https://golang.org/pkg/ "Packages"
+// not found: https://golang.org/cmd/
+```
+
 
