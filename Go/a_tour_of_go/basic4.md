@@ -950,4 +950,87 @@ func main() {
 
 ```
 
+## WIP: Exercise: Readers
 
+https://go-tour-jp.appspot.com/methods/22
+
+ASCII文字 'A' の無限ストリームを出力する Reader 型を実装してください。
+
+```go
+package main
+
+import "golang.org/x/tour/reader"
+
+type MyReader struct{}
+
+func (r MyReader) Read(b []byte) (int, error) {
+	for i := range b {
+		b[i] = 'A'
+	}
+	return len(b), nil
+}
+
+func main() {
+	reader.Validate(MyReader{})
+}
+```
+
+
+## WIP: Exercise: rot13Reader
+
+https://go-tour-jp.appspot.com/methods/23
+
+## WIP: Images
+
+https://go-tour-jp.appspot.com/methods/24
+
+`image`パッケージは、以下の`Image`インタフェースを定義している
+
+```go
+package image
+
+type Image interface {
+    ColorModel() color.Model
+    Bounds() Rectangle
+    At(x, y int) color.Color
+}
+// (0,0)-(100,100)
+// 0 0 0 0
+```
+
+## Exercise: Images
+
+https://go-tour-jp.appspot.com/methods/25
+
+https://qiita.com/rock619/items/f412d1f870a022c142d0#exercise-images
+
+
+```go
+package main
+
+import (
+	"golang.org/x/tour/pic"
+	"image"
+	"image/color"
+)
+
+type Image struct{}
+
+func (i Image) ColorModel() color.Model {
+	return color.RGBAModel
+}
+
+func (i Image) Bounds() image.Rectangle {
+	return image.Rect(0, 0, 256, 256)
+}
+
+func (i Image) At(x, y int) color.Color {
+	return color.RGBA{uint8(x), uint8(y), 255, 255}
+}
+
+func main() {
+	m := Image{}
+	pic.ShowImage(m)
+}
+// 画像を生成
+```
