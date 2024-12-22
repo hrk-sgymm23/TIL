@@ -119,3 +119,85 @@ fmt.Println(x, y, x+y)
 上記の計算結果が`-5 17 12`となり配列の後半の計算結果が`x`にはいるにはFIFOの影響
 
 
+## Buffered Channels
+
+https://go-tour-jp.appspot.com/concurrency/3
+
+チャネルはバッファとして使うことができる。
+バッファを持つチャネルを初期化するには`make`の２つ目の引数にバッファを与える。
+
+```go
+ch := make(chan int, 100)
+```
+
+バッファが詰まった時はチャネルへの送信をブロックする。バッファがからのときはチャネルの受信をブロックする。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int, 3)
+	ch <- 1
+	ch <- 3
+	ch <- 2 // チャネルへのデータ送信を増やすとデッドロックになる
+
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+}
+// 1
+// 3
+// 2
+```
+
+## Range and Close
+
+https://go-tour-jp.appspot.com/concurrency/4
+
+送り手はこれ以上の値の送信する値がないことを示すためチャネルを`close`できる。
+受けては受信の式にパラメータを渡すことでチャネルが``close`されているかどうかを確認することができる。
+
+```go
+v, ok := <-ch
+```
+
+受信する値がないかつチャネルが閉じているなら`ok`の変数は`false`になる。
+ループの`for i range c`はチャネルが閉じられるまでチャネルから値を繰り返し受信時続ける。
+
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func fibonacci(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c) // closeをつかわないrangeを使ったループを終了できない
+}
+
+func main() {
+	c := make(chan int, 10)
+	go fibonacci(cap(c), c) //capはバッファサイズを取得する
+	for i := range c {
+		fmt.Println(i)
+	}
+}
+// 0
+// 1
+// 1
+// 2
+// 3
+// 5
+// 8
+// 13
+// 21
+// 34
+```
