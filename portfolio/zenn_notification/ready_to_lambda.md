@@ -20,6 +20,12 @@ $ cd work/zenn_notify_app/
 $ make run
 ```
 
+自分のアカウントを用いてメッセージ送信はできたが、botから送信できなかった。
+以下を参考にbotを追加
+
+https://zenn.dev/kou_pg_0131/articles/slack-api-post-message
+
+
 ## Lambdaをローカルで実行できるようにする
 
 ## AWSアカウント用意
