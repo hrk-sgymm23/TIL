@@ -33,61 +33,67 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"math/rand"
 	"net/http"
+	"time"
+
+	"github.com/slack-go/slack"
 )
 
-// Article represents the structure of an article in the response
+// Article represents the structure of a single article.
 type Article struct {
-	ID       interface{} `json:"id"`
-	Title    string `json:"title"`
-	Path     string `json:"path"`
+	ID          interface{} `json:"id"`
+	Title       string `json:"title"`
+	Path        string `json:"path"`
 	PublishedAt string `json:"published_at"`
 }
 
-// Response represents the structure of the API response
+// Response represents the structure of the API response.
 type Response struct {
 	Articles []Article `json:"articles"`
 }
 
 func main() {
-	// API endpoint
+	// 1. Zenn API から記事情報を取得
 	url := "https://zenn.dev/api/articles?topicname=aws&order=trend"
-
-	// Create HTTP client and request
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error making GET request:", err)
-		return
+		panic(fmt.Sprintf("Error making GET request: %v", err))
 	}
 	defer resp.Body.Close()
 
-	// Check HTTP status code
 	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("HTTP request failed with status: %d\n", resp.StatusCode)
-		return
+		panic(fmt.Sprintf("Unexpected status code: %d", resp.StatusCode))
 	}
 
-	// Read response body
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading response body:", err)
-		return
-	}
-
-	// Parse JSON response
 	var response Response
-	err = json.Unmarshal(body, &response)
-	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
-		return
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		panic(fmt.Sprintf("Error parsing JSON: %v", err))
 	}
 
-	// Print articles
-	fmt.Println("Articles:")
-	for _, article := range response.Articles {
-		fmt.Printf("- Title: %s\n  Path: %s\n  PublishedAt: %s\n", article.Title, article.Path, article.PublishedAt)
+	// 2. 記事情報を配列に格納
+	articles := response.Articles
+
+	// 3. 配列からランダムに1件を選択
+	rand.Seed(time.Now().UnixNano())
+	randomArticle := articles[rand.Intn(len(articles))]
+
+	// 4. Slack に投稿
+	tkn := "xxxxxx"
+	c := slack.New(tkn)
+
+	message := fmt.Sprintf("*おすすめの記事*\nTitle: %s\nPath: https://zenn.dev%s\nPublishedAt: %s",
+		randomArticle.Title, randomArticle.Path, randomArticle.PublishedAt)
+
+	_, _, err = c.PostMessage(
+		"#zenn-ariticles-recommend", // 投稿先チャンネル
+		slack.MsgOptionText(message, false),
+	)
+	if err != nil {
+		panic(fmt.Sprintf("Error posting to Slack: %v", err))
 	}
+
+	fmt.Println("Message posted successfully!")
 }
 ```
 
