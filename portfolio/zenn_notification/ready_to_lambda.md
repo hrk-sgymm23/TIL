@@ -103,3 +103,5 @@ func main() {
 ## AWSアカウント用意
 
 ## tfコード作成&apply
+
+- https://qiita.com/_akira19/items/d929cae158be4110996d
