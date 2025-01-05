@@ -101,7 +101,13 @@ func main() {
 ## Lambdaをローカルで実行できるようにする
 
 ## AWSアカウント用意
+- spotify appのものを利用する
+
 
 ## tfコード作成&apply
+
+### backendとtfstate準備
+
+
 
 - https://qiita.com/_akira19/items/d929cae158be4110996d
