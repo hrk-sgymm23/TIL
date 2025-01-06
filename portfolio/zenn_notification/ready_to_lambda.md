@@ -106,6 +106,11 @@ func main() {
 
 ## tfコード作成&apply
 
+### モジュール化
+https://github.com/hrk-sgymm23/ass_infra/blob/main/enviroments/stg/api/lambda.tf
+上記コードを参考にラムダとイベントブリッジのモジュール化を行う
+
+
 ### backendとtfstate準備
 
 
