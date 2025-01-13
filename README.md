@@ -18,8 +18,7 @@ https://x.com/TetsuKinomura/status/1244142407278399488/photo/4
 
 https://www.hackerrank.com/dashboard
 
-## GoogleCloud PortForio
+## Lambda(Golangによるポートフォリオ)
 
-https://console.cloud.google.com/welcome/new?inv=1&invt=Abdxig&project=liverpool-fansite
-
+https://github.com/hrk-sgymm23/zenn_notify_app
 
