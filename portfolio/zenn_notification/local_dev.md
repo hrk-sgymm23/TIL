@@ -21,7 +21,6 @@ Golang で作成された Lambda 関数のコードが準備されているこ�
 2. Lambda 関数コードの準備
 以下は、簡単な Go ランタイム用 Lambda ハンドラーの例です。
 
-コードをコピーする
 ```go
 // main.go
 package main
@@ -50,7 +49,6 @@ func main() {
 3. Docker イメージの作成
 Dockerfile を作成 以下は Go ランタイム用の `Dockerfile` の例です。
 `dockerfile`
-コードをコピーする
 ```dockerfile
 FROM golang:1.20 as builder
 
@@ -74,7 +72,6 @@ CMD ["main"]
 ```
 イメージのビルド 次のコマンドで Docker イメージをビルドします。
 ```bash
-コードをコピーする
 docker build -t lambda-go-rie-example .
 ```
 
@@ -83,14 +80,12 @@ docker build -t lambda-go-rie-example .
 
 Docker コンテナを起動 以下のコマンドで Docker コンテナを起動します。
 ```bash
-コードをコピーする
 docker run -p 9000:8080 lambda-go-rie-example
 ```
 このコマンドは、9000 番ポートでリクエストを受け付けるように設定します。
 
 リクエストを送信 以下のように curl コマンドを使ってリクエストを送信できます。
 ```bash
-コードをコピーする
 curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" \
     -d '{"name": "World"}'
 ```
@@ -99,7 +94,6 @@ curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" \
 上記のリクエストを送信すると、以下のようなレスポンスが得られるはずです。
 
 ```json
-コードをコピーする
 "Hello, World!"
 ```
 
@@ -107,7 +101,6 @@ curl -X POST "http://localhost:9000/2015-03-31/functions/function/invocations" \
 環境変数を設定したい場合、`docker run`コマンドに`-e` オプションを追加します。
 
 ```bash
-コードをコピーする
 docker run -p 9000:8080 -e MY_ENV_VAR=my-value lambda-go-rie-example
 ```
 
