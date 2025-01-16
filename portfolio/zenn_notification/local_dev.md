@@ -108,3 +108,9 @@ docker run -p 9000:8080 -e MY_ENV_VAR=my-value lambda-go-rie-example
 AWS Lambda Runtime Interface Emulator GitHubリポジトリ
 AWS Lambda Docker Images公式ドキュメント
 上記を実行すると、RIE を使用してローカル環境で Lambda 関数の動作を確認できます！
+
+# RIEではなくLocalStackを使う
+
+https://future-architect.github.io/articles/20200927/
+
+
