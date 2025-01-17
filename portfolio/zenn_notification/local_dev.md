@@ -113,4 +113,24 @@ AWS Lambda Docker Images公式ドキュメント
 
 https://future-architect.github.io/articles/20200927/
 
+## LocalStackのdocker-compposeファイル
+
+https://docs.localstack.cloud/getting-started/installation/#docker-compose
+
+```yml
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+```
+
 
