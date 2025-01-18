@@ -133,4 +133,17 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
 ```
 
+```bash
+$ docker-compose up -d --build
+```
+
+localstackがアクティブか確認
+```bash
+$ curl -s "http://localhost:4566/_localstack/health" | jq .
+```
+
+localstack cliダウンロード
+```bash
+$ brew install awscli-local
+```
 
