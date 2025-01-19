@@ -200,7 +200,7 @@ root@db3e73e9873a:/opt/code/localstack# aws --version
 aws-cli/1.29.5 Python/3.10.12 Linux/5.10.104-linuxkit botocore/1.31.5
 ```
 
-- コンテ長いから実行はできた
+- コンテナ内から実行はできた
 ```bash
 $ aws lambda invoke \
     --function-name zenn-app-local \
@@ -217,6 +217,26 @@ $ aws lambda invoke \
 ```
 
 - ログを有効化して確認するところから
+
+- awslocalコンテナないから実行
+```bash
+$ awslocal lambda invoke \--function-name zenn-app-local /tmp/response_simple_function.json
+{
+    "StatusCode": 200,
+    "FunctionError": "Unhandled",
+    "ExecutedVersion": "$LATEST"
+}
+
+$ cat /tmp/response_simple_function.json
+{"errorMessage":"failed to fetch ZENN_API_URL: failed to fetch parameter ZENN_API_URL: UnrecognizedClientException: The security token included in the request is invalid.\n\tstatus code: 400, request id: 29d7fe11-413e-4f60-b4fb-ea85bb8950ea","errorType":"wrapError"}
+```
+
+- localstack内にSSMパラメータストアを作る
+```bash
+$ awslocal ssm put-parameter --name 'ZENN_API_URL' --type 'String' --value 'https://zenn.dev/api/articles?topicname=aws&order=trend'
+```
+
+- goのパラメータ取得部分見直し
 
 ## 参考
 - https://qiita.com/outerlet/items/a1b8b3e6cc1c690c6d21
