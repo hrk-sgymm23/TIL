@@ -161,9 +161,62 @@ $ aws lambda create-function --function-name zenn-app-local \
     --runtime provided.al2 --handler bootstrap \
     --architectures arm64 \
     --role arn:aws:iam::111111111111:role/lambda-runtime-role \
-    --zip-file zenn_app.zip \
-    --profile local
+    --zip-file fileb://zenn_app.zip \
+    --profile local \
+    --timeout 30
 ```
+
+- 関数を改めて確認
+```bash
+$ aws lambda --profile local --endpoint-url http://localhost:4566 list-functions
+```
+
+- 関数を呼び出す
+```bash
+$ docker-compose exec localstack /bin/bash
+
+$ awslocal lambda invoke \
+    --function-name zenn-app-local \
+    --cli-binary-format raw-in-base64-out \
+    /tmp/response_simple_function.json
+```
+
+- 以下エラーになる
+  - Localstack内のCLIのバージョンが古い
+```bash
+Note: AWS CLI version 2, the latest major version of the AWS CLI, is now stable and recommended for general use. For more information, see the AWS CLI version 2 installation instructions at: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+
+Unknown options: --cli-binary-format, /tmp/response_simple_function.json
+root@db3e73e9873a:/opt/code/localstack# aws --version
+aws-cli/1.29.5 Python/3.10.12 Linux/5.10.104-linuxkit botocore/1.31.5
+root@db3e73e9873a:/opt/code/localstack# aws --version
+aws-cli/1.29.5 Python/3.10.12 Linux/5.10.104-linuxkit botocore/1.31.5
+```
+
+- コンテ長いから実行はできた
+```bash
+$ aws lambda invoke \
+    --function-name zenn-app-local \
+    --cli-binary-format raw-in-base64-out \
+    --profile local \
+    --endpoint-url http://localhost:4566 \
+    /tmp/response_simple_function.json
+
+{
+    "StatusCode": 200,
+    "FunctionError": "Unhandled",
+    "ExecutedVersion": "$LATEST"
+}
+```
+
+- ログを有効化して確認するところから
 
 ## 参考
 - https://qiita.com/outerlet/items/a1b8b3e6cc1c690c6d21
