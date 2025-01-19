@@ -147,3 +147,25 @@ localstack cliダウンロード
 $ brew install awscli-local
 ```
 
+## 作業順序
+
+- コンテナ外から関数を確認
+```bash
+$ aws lambda --profile local --endpoint-url http://localhost:4566 list-functions
+```
+
+- コンテナ外でaws cliを使ってラムダを作成
+```bash
+$ aws lambda create-function --function-name zenn-app-local \
+    --endpoint-url http://localhost:4566 \
+    --runtime provided.al2 --handler bootstrap \
+    --architectures arm64 \
+    --role arn:aws:iam::111111111111:role/lambda-runtime-role \
+    --zip-file zenn_app.zip \
+    --profile local
+```
+
+## 参考
+- https://qiita.com/outerlet/items/a1b8b3e6cc1c690c6d21
+- 
+
