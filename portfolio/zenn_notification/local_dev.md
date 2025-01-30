@@ -233,10 +233,25 @@ $ cat /tmp/response_simple_function.json
 
 - localstack内にSSMパラメータストアを作る
 ```bash
-$ awslocal ssm put-parameter --name 'ZENN_API_URL' --type 'String' --value 'https://zenn.dev/api/articles?topicname=aws&order=trend'
+$ aws ssm put-parameter --name 'ZENN_API_URL' --type 'String' --value 'https://zenn.dev/api/articles?topicname=aws&order=trend'
+```
+
+上記をlocalstack用に書き換える
+
+```bash
+aws ssm put-parameter \
+  --name 'ZENN_API_URL'
+  --type 'String' \
+  --value 'https://zenn.dev/api/articles?topicname=aws&order=trend'
+  --profile local \
+  --endpoint-url http://localhost:4566
 ```
 
 - goのパラメータ取得部分見直し
+- 以下で解決できそう
+
+https://zenn.dev/jy8752/articles/2b81e42d4ef4f7
+https://kazuhira-r.hatenablog.com/entry/2023/07/02/222545
 
 ## 参考
 - https://qiita.com/outerlet/items/a1b8b3e6cc1c690c6d21
