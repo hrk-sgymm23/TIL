@@ -253,6 +253,12 @@ aws ssm put-parameter \
 https://zenn.dev/jy8752/articles/2b81e42d4ef4f7
 https://kazuhira-r.hatenablog.com/entry/2023/07/02/222545
 
+## 詳細なログをとる
+
+```bash
+aws --endpoint-url=http://localhost:4566 logs describe-log-groups  --query logGroups[0].logGroupName --profile local
+```
+
 ## 参考
 - https://qiita.com/outerlet/items/a1b8b3e6cc1c690c6d21
 - 
