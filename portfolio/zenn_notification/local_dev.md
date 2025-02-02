@@ -259,6 +259,9 @@ https://kazuhira-r.hatenablog.com/entry/2023/07/02/222545
 aws --endpoint-url=http://localhost:4566 logs describe-log-groups  --query logGroups[0].logGroupName --profile local
 ```
 
+## 業務のlocalstackを確認
+
+
 ## 参考
 - https://qiita.com/outerlet/items/a1b8b3e6cc1c690c6d21
 - 
