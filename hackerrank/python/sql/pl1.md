@@ -41,14 +41,26 @@ WHERE
     ID = '1661';
 ```
 
-# 5
+# https://www.hackerrank.com/challenges/weather-observation-station-3/problem?isFullScreen=true
 
 ```sql
+SELECT
+DISTINCT
+    CITY
+FROM
+    STATION
+WHERE
+    MOD(ID, 2) = 0;
+```
 
+# https://www.hackerrank.com/challenges/weather-observation-station-4/problem?isFullScreen=true
+
+```sql
+SELECT COUNT(CITY) - COUNT(DISTINCT CITY) FROM STATION;
 ```
 
 
-# https://www.hackerrank.com/challenges/weather-observation-station-1/problem?isFullScreen=true
 
-```SQL
-```
+
+
+
