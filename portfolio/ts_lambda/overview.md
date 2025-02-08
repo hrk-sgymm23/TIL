@@ -9,3 +9,21 @@ $ npm init
 $ npm install -D @types/aws-lambda esbuild
 ```
 
+## jest導入
+
+https://qiita.com/mktu/items/d36416baba155dfecc00
+
+```bash
+$ npm install --save-dev jest @types/jest ts-jest
+$ npx ts-jest config:init
+```
+
+`package.json`
+
+```bash
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild index.ts --bundle --minify --sourcemap --platform=node --target=es2020 --outfile=dist/index.js",
+    "unit": "jest" // 追加
+  },
+```
