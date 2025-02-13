@@ -27,3 +27,16 @@ $ npx ts-jest config:init
     "unit": "jest" // 追加
   },
 ```
+
+```bash
+$ npm set-script unit "jest"
+$ npm run unit
+```
+
+## 環境変数を読み込ませる
+
+```bash
+$ npm install dotenv
+```
+
+
