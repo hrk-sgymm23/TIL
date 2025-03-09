@@ -84,6 +84,47 @@
 
 <img width="873" alt="スクリーンショット 2025-03-08 17 10 25" src="https://github.com/user-attachments/assets/2a63ce4b-ac08-4495-a8fa-0df4d9e9d2a2" />
 
+## 単一ブローカー(プライベートアクセス)
+
+<img width="746" alt="スクリーンショット 2025-03-08 17 19 55" src="https://github.com/user-attachments/assets/483f4b85-75ff-4b14-aed1-4fa5933b7d7d" />
+
+## クラスターブローカー
+- 3つのノードを異なるAZに配置
+
+### クラスターブローカーの耐久性
+- プロデューサー及びコンシューマー向けの単一エンドポイントを提供
+- AmazonMQが`ha-mode=all`及び`ha-sync-mode=automatic`を全てのrabbitMQポリシーに設定することでmirroed queue構成を実現する
+- ノードの交換時には
+  - AmazonMQは自動的にリプレースされる
+  - コンシューマは切断されるため、再接続が必要
+  - 新たなMirrorが接続されるとキューは自動的に同期される
+ 
+## AmazonMQ for RabbitMQの管理
+- rabbitmqadmin
+  - コマンドラインから利用可能なrabbitMQ REST API client
+  - ブローカー作成後よりRabbitMQのバージョンに即したものを取得する
+  - `-p 443` Amazon MQ Rabbit Webコンソールのポートを指定
+
+## AmazonMQの主な制限
+- ブローカー
+  - ブローカー数: 20
+  - ブローカー設定履歴の深さ: 10
+  - ブローカーあたりのセキュリティグループ数: 5
+  - CloudWatchでモニタリングされる送信先
+    - RabbitMQ: コンシューマ数の上位500(キュー) 
+- データストレージ
+  - ブローカあたりのストレージ容量: 200GB
+
+## 料金
+- ブローカーインスタンスの料金
+  - メッセージブローカの使用量に基づいた時間単位で課金(1秒ごと)
+  - 料金はメッセージブローカーインスタンスのサイズ、選択する構成(単一,アクティブ/スタンバイ、クラスター)による
+- ブローカーストレージの料金
+  - 月単位での平均ストレージ使用量に基づいた課金
+  - EFSの場合: GB-Monthあたり0.36USD
+  - EBSの場合: GB-Monthあたり0.12USD
+- データ転送料金
+  - AmazonMQで送受信されたデータに対して通常のAWSのデータ転送料金が
 
 
 
