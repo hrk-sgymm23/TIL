@@ -39,5 +39,15 @@ $ npm run unit
 $ npm install dotenv
 ```
 
-# Macのnodenvのバージョンを切り替える
+## TypeScript Dockerの環境構築
+
+https://qiita.com/Yasushi-Mo/items/789871a7f3eb86b01a62
+
+```bash
+$ npm init -y
+$ npm install typescript ts-node @types/node --save-dev
+$ npx tsc --init
+```
+
+
 
