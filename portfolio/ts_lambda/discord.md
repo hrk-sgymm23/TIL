@@ -15,6 +15,9 @@ $ npm install discord.js dotenv
 
 - ルートの`.node-version`を削除
 
+- https://qiita.com/turara/items/6b7f4a8e3770a7074072
+- https://zenn.dev/donchan922/articles/b08a66cf3cbbc5
+
 # botの実装
 
 https://qiita.com/spore0814/items/f2597be62431c0888fcc
