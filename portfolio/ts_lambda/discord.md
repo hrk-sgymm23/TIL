@@ -23,3 +23,29 @@ $ npm install discord.js dotenv
 https://qiita.com/spore0814/items/f2597be62431c0888fcc
 
 上記を参考に
+
+# 実装例
+
+```ts
+import { Client, Events, GatewayIntentBits, BaseGuildTextChannel } from 'discord.js';
+import * as config from '../config.json';
+
+const client: Client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+client.once(Events.ClientReady, async (c) => {
+    console.log(`Ready! Logged in as ${c.user.tag}`);
+
+    // クライアントが完全に準備できた後にチャンネルを取得
+    const channel = await client.channels.fetch('1350506981621764186');
+
+    // チャンネルがテキストチャンネルならメッセージを送信
+    if (channel && channel.isTextBased()) {
+        (channel as BaseGuildTextChannel).send('Hello!');
+    } else {
+        console.error('チャンネルが見つからないか、テキストチャンネルではありません。');
+    }
+});
+
+client.login(config.token);
+
+```
