@@ -22,3 +22,9 @@
 | データのスキーマ | user_id (string), session_id (string), ... |
 | 注意事項 | access_timeはUTC。JSTに変換が必要。 |
 | 最終更新日 | 2025-04-12 |
+
+
+### データカタログの管理例
+- ツールやクラウドのマネージドサービスを使う
+- Google Cloudの場合
+  - [Data Catalog の概要](https://cloud.google.com/data-catalog/docs/concepts/overview?hl=ja)
