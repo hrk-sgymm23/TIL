@@ -28,3 +28,6 @@
 - ツールやクラウドのマネージドサービスを使う
 - Google Cloudの場合
   - [Data Catalog の概要](https://cloud.google.com/data-catalog/docs/concepts/overview?hl=ja)
+
+
+## データクレンジングとは
