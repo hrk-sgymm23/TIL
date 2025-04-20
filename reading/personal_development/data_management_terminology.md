@@ -63,8 +63,21 @@
 - 全角は数値として認識されないため、半角に修正が必要
 
 
+## Snowflake
 
+## ELT/ETL
 
+## データレイク
+
+## データマート
+
+## BIツール
+
+### LockerStudio
+
+### tableau
+
+### RedShift
 
 
 
