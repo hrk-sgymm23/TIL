@@ -31,5 +31,7 @@ https://www.hackerrank.com/dashboard
 - https://www.school.ctc-g.co.jp/columns/nakai2/nakai212.html
 - https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/dataflow/flex-templates/streaming_beam/streaming_beam.py
 
-
-
+## 興味のある職種の募集要項を見てみる
+- https://open.talentio.com/r/1/c/pepabo/pages/45346
+- https://www.recruit.co.jp/employment/mid-career/position/jobid-a022w00000qOSUmAAO/
+- https://www.lycorp.co.jp/ja/recruit/career/job-categories/ly00056/
