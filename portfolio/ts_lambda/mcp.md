@@ -38,5 +38,33 @@
 - [[https://zenn.dev/nozomi_cobo/articles/start-genkit-mcp#%E3%81%82%E3%82%8F%E3%81%9B%E3%81%A6%E8%AA%AD%E3%81%BF%E3%81%9F%E3%81%84-(genkit-%E3%81%AB%E8%88%88%E5%91%B3%E3%82%92%E6%8C%81%E3%81%A3%E3%81%9F%E6%96%B9%E5%90%91%E3%81%91)](https://zenn.dev/nozomi_cobo/articles/start-genkit-mcp)](https://zenn.dev/nozomi_cobo/articles/start-genkit-mcp)
 
 
+## genkit cliのインストール
+
+```bash
+$ npm install -D genkit-cli
+```
+
+## 実行
+```
+$ npx genkit start -o -- tsx --watch src/index.ts
+```
+
+## gemini aiモデルリスト
+- https://ai.google.dev/gemini-api/docs/models?hl=ja
+
+## 上の記事が動かなかったため公式チュートリアルを試す
+- https://firebase.google.com/docs/genkit/get-started?hl=ja
+
+
+
+
+
+
+
+
+
+
+
+
 
 
