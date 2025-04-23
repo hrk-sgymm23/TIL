@@ -63,7 +63,76 @@
 - `kubectl run nginx`
   - 自動的にPodを作成しNginxのDockerイメージのインスタンスをデプロイする
 - `kubectl get pods`
-  - クラスタ内のpodリスト確認　
+  - クラスタ内のpodリスト確認
+ 
+## インストール
+
+### kubectl
+
+```
+$ brew install kubectl
+$ kubectl version --client
+```
+
+### minikube
+
+```
+$ brew install minikube
+$ minikube version
+```
+
+#### `minikube start`できない
+- docker desctopを利用しているためrestartし
+```
+$ minikube delete
+minikube start --driver=docker
+😄  Darwin 11.3.1 (arm64) 上の minikube v1.35.0
+✨  ユーザーの設定に基づいて docker ドライバーを使用します
+📌  root 権限を持つ Docker Desktop ドライバーを使用
+👍  Starting "minikube" primary control-plane node in "minikube" cluster
+🚜  Pulling base image v0.0.46 ...
+🔥  Creating docker container (CPUs=2, Memory=4000MB) ...
+🐳  Docker 27.4.1 で Kubernetes v1.32.0 を準備しています...
+    ▪ 証明書と鍵を作成しています...
+    ▪ コントロールプレーンを起動しています...
+    ▪ RBAC のルールを設定中です...
+🔗  bridge CNI (コンテナーネットワークインターフェース) を設定中です...
+🔎  Kubernetes コンポーネントを検証しています...
+    ▪ gcr.io/k8s-minikube/storage-provisioner:v5 イメージを使用しています
+🌟  有効なアドオン: storage-provisioner, default-storageclass
+🏄  終了しました！kubectl がデフォルトで「minikube」クラスターと「default」ネームスペースを使用するよう設定されました
+```
+
+### クラスタ起動
+
+https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Farm64%2Fstable%2Fbinary+download
+
+```
+$ kubectl get nodes
+NAME       STATUS   ROLES           AGE    VERSION
+minikube   Ready    control-plane   3m7s   v1.32.0
+```
+
+```
+$ kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
+deployment.apps/hello-minikube created
+```
+
+```
+$ kubectl expose deployment hello-minikube --type=NodePort --port=8080
+```
+
+```
+$ minikube service hello-minikube --url
+http://127.0.0.1:62934
+```
+
+クリーンアップ
+```
+$ service "hello-minikube" deleted
+$ kubectl delete deployment hello-minikube
+```
+
 
 
 
