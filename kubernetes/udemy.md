@@ -133,6 +133,26 @@ $ service "hello-minikube" deleted
 $ kubectl delete deployment hello-minikube
 ```
 
+## ポッド起動
+
+```
+$ kubectl run nignx --image=nginx
+$ kubectl get pods
+NAME    READY   STATUS    RESTARTS   AGE
+nignx   1/1     Running   0          15s
+
+$ kubectl describe pod nignx
+
+$ kubectl get pods -o wide
+NAME    READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+nignx   1/1     Running   0          3m42s   10.244.0.4   minikube   <none>           <none>
+```
+
+## ポッド YAML
+
+
+
+
 
 
 
