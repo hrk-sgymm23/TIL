@@ -150,6 +150,58 @@ nignx   1/1     Running   0          3m42s   10.244.0.4   minikube   <none>     
 
 ## ポッド YAML
 
+### YAML in kubernetes
+
+`pod-defnition.yml`
+```
+apiVersion: v1
+kind: Pod
+metaData:
+  name: myapp-pod
+  labls:
+    app: myapp
+    type: front-end
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+```
+
+- 上記作成後`kubectl create -f pod-defnition.yml`実行でkubernetsがPodを作成する
+
+### 利用するコマンド
+- `kubectl get pods`
+  - 作成されているポッド一覧を取得する
+- `kubectl describe pod (ポッド名)`
+  - 指定したポッドの詳細情報を表示する
+
+
+### 一連の流れ
+
+- 以下yamlファイル作成
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+    type: frontend
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+```
+
+- 以下実行
+```
+$ kubectl apply -f nginx-def.yml
+pod/nginx created
+
+$ kubectl get pods
+NAME        READY   STATUS    RESTARTS   AGE
+nginx       1/1     Running   0          18s
+```
 
 
 
