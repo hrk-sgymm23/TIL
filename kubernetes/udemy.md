@@ -324,7 +324,98 @@ selector:
 - 1つ目は`replicas: 3`を編集する方法
 - 2つ目は`kubectl scale --reprilas=6 replicaset myapp-rs`を実行
 
+## デプロイメント
 
+### デプロイの定義に関して
+
+`kind`を`Deployment`へ変更する
+```yaml
+kind: Deployment
+```
+
+### コマンド
+
+```bahs
+kubctl get all
+```
+
+### 実装
+
+`deployment.yml`
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    tier: frontend
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 3
+  template:
+    metadata:
+      name: nginx-2
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+```
+
+`kubectl create -f deployment.yml`を実行しデプロイメント作成
+
+- デプロイメント一覧取得
+```
+$ kubectl get deployments
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+myapp-deployment   3/3     3            3           21s
+```
+
+- 指定したデプロイメントの詳細情報を確認
+```
+$ kubectl describe deployment myapp-deployment
+Name:                   myapp-deployment
+Namespace:              default
+CreationTimestamp:      Sun, 27 Apr 2025 19:11:04 +0900
+Labels:                 app=nginx
+                        tier=frontend
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=myapp
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=myapp
+  Containers:
+   nginx:
+    Image:        nginx
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   myapp-deployment-5655d5f56f (3/3 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  5m1s   deployment-controller  Scaled up replica set myapp-deployment-5655d5f56f from 0 to 1
+  Normal  ScalingReplicaSet  4m57s  deployment-controller  Scaled down replica set myapp-rs from 3 to 2
+  Normal  ScalingReplicaSet  4m57s  deployment-controller  Scaled up replica set myapp-deployment-5655d5f56f from 1 to 2
+  Normal  ScalingReplicaSet  4m54s  deployment-controller  Scaled down replica set myapp-rs from 2 to 1
+  Normal  ScalingReplicaSet  4m54s  deployment-controller  Scaled up replica set myapp-deployment-5655d5f56f from 2 to 3
+  Normal  ScalingReplicaSet  4m51s  deployment-controller  Scaled down replica set myapp-rs from 1 to 0
+```
 
 
 
