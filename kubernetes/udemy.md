@@ -213,6 +213,119 @@ nginx       1/1     Running   0          18s
   - 負荷分散の際レプリケーションコントローラはクラスタ内の複数のノードにまたがっている
 - またレプリケーションコントローラとレプリケーションセットがある
   - 目的は一緒だが全くの別物
+ 
+### レプリケーションコントローラの定義
+
+`rc-def.yml`
+```
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: myapp-rc
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+        type: frontend
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  replicas: 3
+```
+
+`kubectl create -f rc-def.yml`を実行
+
+- レプリケーションコントローラ一覧取得
+
+```
+$ kubectl get replicationcontrollers
+NAME       DESIRED   CURRENT   READY   AGE
+myapp-rc   3         3         3       2m57s
+```
+
+- ポッド一覧取得
+
+```
+$ kubectl get pods
+NAME             READY   STATUS    RESTARTS   AGE
+myapp-pod        1/1     Running   0          82m
+myapp-rc-4f26j   1/1     Running   0          4m43s
+myapp-rc-5dtr2   1/1     Running   0          4m43s
+nginx            1/1     Running   0          62m
+```
+
+### レプリケーションセット定義
+
+```
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-rs
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: front-end
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  replicas: 3
+  selector:
+    matchLabels:
+      type: front-end
+```
+
+- 以下を実行してレプリカセット確認
+
+```bash
+$ kubectl get replicaset
+NAME       DESIRED   CURRENT   READY   AGE
+myapp-rs   3         3         3       105s
+```
+
+
+### レプリカセットのラベルとセレクターについて
+
+- レプリカセットはパーツを監視するためのプロセス
+- クラスタ内には数百のアプリケーションを実行しているパーツがある可能性
+- 上記の際に便利なのが作成時にポッドにラベルをつけること
+
+ポッド
+```
+metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: front-end
+```
+
+レプリカセット
+```
+selector:
+    matchLabels:
+      type: front-end
+```
+
+### レプリカセットのスケーリング
+
+- スケーリングする方法は複数ある
+- 1つ目は`replicas: 3`を編集する方法
+- 2つ目は`kubectl scale --reprilas=6 replicaset myapp-rs`を実行
+
+
+
 
 
 
