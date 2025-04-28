@@ -417,7 +417,109 @@ Events:
   Normal  ScalingReplicaSet  4m51s  deployment-controller  Scaled down replica set myapp-rs from 1 to 0
 ```
 
+- `kubectl get all`でポッド、コントローラーなどの情報一覧取得
 
+### ロールアウトとバージョニング
+
+- revision1、revison2のようにデプロイバージョンごとにバージョンをつける
+
+#### コマンド
+- ロールアウトのステータスを確認
+```
+$ kubectl rollout status deployment.apps/myapp-deployment
+deployment "myapp-deployment" successfully rolled out
+```
+
+- デプロイ直後のステータス
+```
+kubectl rollout status deployment.apps/myapp-deployment
+Waiting for deployment "myapp-deployment" rollout to finish: 0 of 6 updated replicas are available...
+Waiting for deployment "myapp-deployment" rollout to finish: 1 of 6 updated replicas are available...
+Waiting for deployment "myapp-deployment" rollout to finish: 2 of 6 updated replicas are available...
+Waiting for deployment "myapp-deployment" rollout to finish: 3 of 6 updated replicas are available...
+Waiting for deployment "myapp-deployment" rollout to finish: 4 of 6 updated replicas are available...
+Waiting for deployment "myapp-deployment" rollout to finish: 5 of 6 updated replicas are available...
+deployment "myapp-deployment" successfully rolled out
+```
+
+- ロールアウトの履歴を確認
+  - 以下は--recordをつけてクリエイトした場合
+```
+kubectl rollout history deployment.apps/myapp-deployment
+deployment.apps/myapp-deployment
+REVISION  CHANGE-CAUSE
+1         kubectl create --filename=deployment.yml --record=true
+```
+
+#### デプロイメントストラテジー
+- Recreate
+  - 1つ目の方法は全てのインスタンスを全て削除し、一気に新しいインスタンスをデプロイすること
+    - この方法はデフォルトではない
+- RollingUpdate
+  - 2つ目の方法は一気に全てのインスタンスは削除しない方法
+    - 一つのインスタンスずつ古いバージョンから新しいバージョンへ切り替えていく
+    - デフォルト
+
+ #### デプロイメントの更新方法
+ - `kubectl apply -f 定義ファイル名`
+または
+```
+$ kubectl set image deployment/myapp-deployment \
+  nignx-container=nignx:1.9.1
+```
+setの場合だと定義ファイルとデプロイされたものが異なることに注意
+
+- `kubectl rollout undo deployment/myapp`
+
+### 流れ
+
+- editでnginxのバージョン変更
+```
+$ kubectl edit deployment myapp-deployment --record
+Flag --record has been deprecated, --record will be removed in the future
+deployment.apps/myapp-deployment edited
+```
+
+- statusでローリングアップデートの流れを確認
+```
+$ kubectl rollout status deployment.apps/myapp-deployment
+Waiting for deployment "myapp-deployment" rollout to finish: 3 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 3 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 3 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 4 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 4 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 4 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 4 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 4 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 5 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 5 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 5 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 5 out of 6 new replicas have been updated...
+Waiting for deployment "myapp-deployment" rollout to finish: 2 old replicas are pending termination...
+Waiting for deployment "myapp-deployment" rollout to finish: 2 old replicas are pending termination...
+Waiting for deployment "myapp-deployment" rollout to finish: 2 old replicas are pending termination...
+Waiting for deployment "myapp-deployment" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "myapp-deployment" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "myapp-deployment" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "myapp-deployment" rollout to finish: 5 of 6 updated replicas are available...
+deployment "myapp-deployment" successfully rolled out
+```
+上記の方法以外でもset imageでも変更可能
+
+- 改めてデプロイ履歴確認
+```
+$ kubectl rollout history deployment.apps/myapp-deployment
+deployment.apps/myapp-deployment
+REVISION  CHANGE-CAUSE
+1         kubectl create --filename=deployment.yml --record=true
+2         kubectl edit deployment myapp-deployment --record=true
+```
+
+- ロールバック
+```
+$ kubectl rollout undo deployment/myapp-deployment
+deployment.apps/myapp-deployment rolled back
+```
 
 
 
