@@ -521,8 +521,53 @@ $ kubectl rollout undo deployment/myapp-deployment
 deployment.apps/myapp-deployment rolled back
 ```
 
+- コンテナイメージを存在しないものにし、デプロイを失敗させる
+```
+$ kubectl edit deployment myapp-deployment --record
+Flag --record has been deprecated, --record will be removed in the future
+deployment.apps/myapp-deployment edited
 
+$ kubectl rollout status deployment.apps/myapp-deployment
+Waiting for deployment "myapp-deployment" rollout to finish: 3 out of 6 new replicas have been updated...
+^C%                                                                                                                
 
+$ kubectl get deployment myapp-deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+myapp-deployment   5/6     3            5           20m
+```
+
+- ポッドが5つ起動していることを確認
+```
+kubectl get pod
+NAME                                READY   STATUS             RESTARTS   AGE
+myapp-deployment-5655d5f56f-jwsgw   1/1     Running            0          8m23s
+myapp-deployment-5655d5f56f-kdg2n   1/1     Running            0          8m27s
+myapp-deployment-5655d5f56f-tqsvv   1/1     Running            0          8m31s
+myapp-deployment-5655d5f56f-vfv9x   1/1     Running            0          8m31s
+myapp-deployment-5655d5f56f-xfczc   1/1     Running            0          8m31s
+myapp-deployment-7cf497cfd9-cfm9w   0/1     ImagePullBackOff   0          3m51s
+myapp-deployment-7cf497cfd9-fjsgs   0/1     ImagePullBackOff   0          3m51s
+myapp-deployment-7cf497cfd9-t4j48   0/1     ImagePullBackOff   0          3m51s
+```
+
+- ロールアウトで元に戻す
+```
+$ kubectl rollout undo deployment/myapp-deployment
+deployment.apps/myapp-deployment rolled back
+```
+
+## ネットワーキング
+- ポッドはコンテナをホストする
+- Dockerコンテナには必ずIPが割り振られるがkubernetesは異なり、IPアドレスはポッドに振られる
+- kubernetesの各ポッドはそれぞれ内部IPを取得する
+
+- ノードが同じクラスタの場合、パーツには同じIPアドレスが振られるため、ネットワーク上でIPの競合が発生する
+- 全てのノードがコンテナと通信でき、全てのコンテナがクラスタ内のノード通信できる必要がある
+  - CISCOなどの既存のソリューションを利用して上記問題を解決できる
+  - 全てのポッドとノードに一位のIPアドレスが振られ仮想ネットワークが構築される
+
+## サービス
+- 
 
 
 
