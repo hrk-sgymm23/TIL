@@ -609,6 +609,77 @@ labels:
   app: myapp
 ```
 - ポッドがクラスター内の複数に跨っているとき、ターゲットポートをクラスタ内の全てのノードで同じノードにマッピングする
+- 一度作成すれば追加で設定を変更する必要はない
+
+### クラスターIP
+- kubernetesのサービスを利用することでポッドをグループ化しグループ内のポッドにアクセスするための単一のインターフェースを提供する
+- リクエストはサービス下にあるポッドの一つにランダムに提供される
+- 上記によりkubernetesクラスタ上にマイクロサービスベースのアプリケーションを簡単かつ効率的に展開できる
+- 各レイヤーは各サービス間の通信に影響を与えることなく必要に応じて拡張や移動ができるようになった
+- 各サービスにはクラスタ内でIPと名前が振られそれが他のパスからサービスにアクセスする際に使用されるべき名前になる
+
+サービス(デプロイメント)
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    tier: frontend
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 6
+  template:
+    metadata:
+      name: nginx-2
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+```
+
+クラスターIP
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: ClusterIP
+  ports:
+    - targetPort: 80
+      port: 80
+  selector:
+    app: myapp
+    type: backend
+```
+
+### ロードバランサー
+- ノードポート型のサービスはノードのポート上でトラフィックを受信しそれぞれのポッドへルーティングするのに役立つ
+- エンドユーザーがアプリケーションへアクセスする場合、どのようなURLを渡せば良いか
+- ノードのIP、ポートごとにパスが存在するがエンドユーザーは単一のURLを必要としている
+  - 例の場合
+    - Vote app: IP下2桁70,71 ポート30035
+    - Result app:  IP下2桁72,73 ポート31061
+- 上記を実現するにはロードバランサー用にVMを用意し、そこにnginxやプロキシなどをインストールする
+- GCPやAWSなどのクラウドサービスを使うことも可能
+
+## マイクロサービス
+
+```
+$ docker run --links redis:redis
+```
+- 各サービスを繋ぐために`links`オプションを追加
+  - 上記方法は非推奨
+- サービスが必要なのはアプリケーションにプロセスやデータベースサービス、webサービスなど後悔する必要があるもの
+  - 他のポッドのアクセスが必要ないもの
+
+## Deploy Voting App
 
 
 
