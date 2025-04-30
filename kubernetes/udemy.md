@@ -681,11 +681,54 @@ $ docker run --links redis:redis
 
 ## Deploy Voting App
 
+https://github.com/hrk-sgymm23/k8s_udemy/tree/main/voting-app
+```
+$ kc create -f deployfile
+$ kc create -f servicefile
+```
+
+```
+$ kc scale deployment voting-app-deploy --replicas=3
+deployment.apps/voting-app-deploy scaled
+
+$ kc get deployment voting-app-deploy
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+voting-app-deploy   3/3     3            3           45m
+```
+
+## kubernetes on cloud
+- GKE...GCP
+- AKS...Azure
+- EKS...AWS
+
+### EKSの場合
+EKSの回を手元で動かす
+https://www.udemy.com/course/learn-kubernetes/learn/lecture/21126624#search
 
 
+## VirtualBoxとVargant
 
+```
+$ cd certified-kubernetes-administrator-course/kubeadm-clusters/virtualbox/
+$ vi Vagrantfile
+```
 
+```
+$ vagrant status
+Current machine states:
 
+controlplane              not created (virtualbox)
+node01                    not created (virtualbox)
+node02                    not created (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`.
+```
+
+`vargant up`できない問題発生
+GPTより
+> 結論から言うと、GKE（Google Kubernetes Engine）や EKS（Elastic Kubernetes Service）を使っているプロダクトの開発において、VirtualBox や Vagrant を使うのは「よくある」ことではありません。
 
 
 
