@@ -730,6 +730,10 @@ VM, run `vagrant status NAME`.
 GPTより
 > 結論から言うと、GKE（Google Kubernetes Engine）や EKS（Elastic Kubernetes Service）を使っているプロダクトの開発において、VirtualBox や Vagrant を使うのは「よくある」ことではありません。
 
+## Minikube
+- Minikubeは異なるコンポーネント(kubelet, コントローラーなど)を全て1つのイメージにバンドルしあらかじめ設定されたシングルノードのkubernetesクラスタを提供
+- Minikubeを動かす上で必要なもの
+  - ハイパーバイザー、kubectl, Minikube実行ファイル
 
 
 
