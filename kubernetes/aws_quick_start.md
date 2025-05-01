@@ -17,4 +17,19 @@ https://qiita.com/SAITO_Keita/items/b29e1eb4792bab2d5f57#awsconfig%E3%81%A8awscr
   - 上記で作成したアカウントIDを許可するassume付与
   - administoratoraccessを付与
 
+### ロール用の信頼ポリシー
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::{IAMユーザーID}:user/runtarou_developer"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+```
 
