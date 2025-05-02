@@ -33,3 +33,25 @@ https://qiita.com/SAITO_Keita/items/b29e1eb4792bab2d5f57#awsconfig%E3%81%A8awscr
 }
 ```
 
+### クラスター作成
+
+```bash
+$ eksctl create cluster -f cluster-config.yaml
+```
+
+### ingressclass作成
+
+```bash
+$ kubectl apply -f ingressclass.yaml
+```
+
+### 2048 ゲームサンプルアプリケーションをデプロイする
+
+https://zenn.dev/yuta28/articles/eks-quickstart-tutorial
+
+```
+$ kubectl create namespace game-2048 --save-config
+$ kubectl apply -n game-2048 -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.8.0/docs/examples/2048/2048_full.yaml
+
+$ kubectl get ingress -n game-2048
+```
