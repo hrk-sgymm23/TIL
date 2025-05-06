@@ -272,6 +272,37 @@ persistentvolume/efs-pv created
 persistentvolumeclaim/efs-claim created
 ```
 
+## EFSでストレージを永続化する
+
+- `update-batch-job.yaml`作成
+- 上記適用
+```
+$ kubectl apply -f update-batch-job.yaml
+
+job.batch/new-batch-job created
+```
+
+- `update-batch-job-queue.yaml`作成
+- 上記適用
+```
+$ kubectl apply -f update-batch-job-queue.yaml
+
+job.batch/new-batch-processing-job-queue created
+```
+
+### 実行結果確認
+
+- ポッド名取得
+
+```
+$ kubectl get pods --selector=job-name=new-batch-job -o wide
+```
+
+- ポッドの実行詳細確認
+
+```
+$ kubectl describe pod new-batch-job-r8ts9
+```
 
 ## クリーンアップ
 
