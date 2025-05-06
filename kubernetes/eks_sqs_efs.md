@@ -89,6 +89,67 @@ push:
 	docker push $$ACCOUNT_ID.dkr.ecr.$(REGION).amazonaws.com/$(ECR_REPO_NAME):latest
 ```
 
+## マルチアーキテクチャイメージ作成
+
+- マルチアーキテクチャとは
+  - > M1/M2 Mac でビルドした Docker イメージが、x86_64 環境（EC2, ECR, CIなど）で動かない問題を防ぐ
+- ビルダーインスタンス作成
+```
+$ docker buildx create --name batchBuilder
+$ docker buildx use batchBuilder
+$ docker buildx inspect --bootstrap
+```
+
+## kubernetesジョブをデプロイする
+
+- ECR URLを取得
+```
+$ echo ${ACCOUNT_ID}.dkr.ecr.${CLUSTER_REGION}.amazonaws.com/batch-processing-repo:latest
+```
+- `batch-job.yaml`を改修
+  - 上記で得たURLを指定
+- ジョブマニフェストを適用
+```
+$ kubectl apply -f batch-job.yaml
+```
+- ジョブの実行を確認
+```
+$ kubectl get jobs
+
+NAME                      COMPLETIONS   DURATION   AGE
+my-batch-processing-job   0/1           13s        13s
+```
+
+## SQS準備
+
+- SQS作成
+```
+$ aws sqs create-queue --queue-name eks-batch-job-queue
+}
+    "QueueUrl": "https://sqs.ap-northeast-1.amazonaws.com/321699386584/eks-batch-job-queue"
+}
+```
+
+- EKSのサービスアカウントへ権限付
+```
+$ eksctl create iamserviceaccount \
+  --region ${CLUSTER_REGION} \
+  --cluster async-batch-quickstart \
+  --namespace default \
+  --name ecr-sa \
+  --attach-policy-arn arn:aws:iam::aws:policy/AmazonSQSFullAccess \
+  --override-existing-serviceaccounts \
+  --approve
+
+Assume Role MFA token code: 
+2025-05-06 18:45:40 [ℹ]  3 existing iamserviceaccount(s) (default/ecr-sa,kube-system/cluster-autoscaler,kube-system/efs-csi-controller-sa) will be excluded
+2025-05-06 18:45:40 [ℹ]  1 iamserviceaccount (default/ecr-sa) was excluded (based on the include/exclude rules)
+2025-05-06 18:45:40 [!]  metadata of serviceaccounts that exist in Kubernetes will be updated, as --override-existing-serviceaccounts was set
+2025-05-06 18:45:40 [ℹ]  no tasks
+```
+
+## kubernetesシークレットの作成
+
 
 ## クリーンアップ
 
