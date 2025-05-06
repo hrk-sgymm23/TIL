@@ -290,6 +290,19 @@ $ kubectl apply -f update-batch-job-queue.yaml
 job.batch/new-batch-processing-job-queue created
 ```
 
+- 上記ログ確認の際EFSのパスがおかしくpv,pvcを作成し直す必要があったその際に実行したコマンドが以下
+
+```
+$ kubectl patch pv efs-pv --type=json -p='[{"op": "remove", "path": "/spec/claimRef"}]'
+$ kubectl patch pvc efs-claim -p '{"metadata":{"finalizers":null}}'
+```
+
+- さいどpv, pvc作成
+
+```
+$ kubectl apply -f batch-pv-pvc.yaml
+```
+
 ### 実行結果確認
 
 - ポッド名取得
@@ -301,7 +314,11 @@ $ kubectl get pods --selector=job-name=new-batch-job -o wide
 - ポッドの実行詳細確認
 
 ```
-$ kubectl describe pod new-batch-job-r8ts9
+$ kubectl describe pod new-batch-job-94bfc
+$ kubectl logs new-batch-job-94bfc -c batch-processor
+
+Starting batch task...
+Batch task completed.
 ```
 
 ## クリーンアップ
