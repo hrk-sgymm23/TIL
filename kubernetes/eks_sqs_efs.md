@@ -150,6 +150,128 @@ Assume Role MFA token code:
 
 ## kubernetesシークレットの作成
 
+- kubernetesクrスターがプライベートECRリポジトリから必要なコンテナイメージをぷるできるようにするためのもの
+
+```
+$ ECR_TOKEN=$(aws ecr get-login-password --region ${CLUSTER_REGION})
+$ kubectl create secret docker-registry regcred \
+  --docker-server=${ACCOUNT_ID}.dkr.ecr.${CLUSTER_REGION}.amazonaws.com \
+  --docker-username=AWS \
+  --docker-password="${ECR_TOKEN}" \
+  -n default
+```
+
+## キュー統合を利用しkubernetesジョブをデプロイする
+
+- `batch-job-queue.yaml`作成
+- 上記適用
+```
+$ kubectl apply -f batch-job-queue.yaml
+```
+
+## EFSを作成する
+
+https://community.aws/content/2iCiQb70sP9wWcOLgG67jLVqK53/navigating-amazon-eks-eks-with-efs-add-on
+
+### EFSファイルシステムを作成する
+
+- CIDR範囲を環境変数へ
+```
+$ export CIDR_RANGE=$(aws ec2 describe-vpcs \
+    --vpc-ids $CLUSTER_VPC \
+    --query "Vpcs[].CidrBlock" \
+    --output text \
+    --region $CLUSTER_REGION)
+```
+
+- クラスターを配置するVPCを環境変数へ設定
+```
+$ export CLUSTER_VPC=$(aws eks describe-cluster --name ${CLUSTER_NAME} --region ${CLUSTER_REGION} --query "cluster.resourcesVpcConfig.vpcId" --output text)
+```
+
+- セキュリティグループ作成
+
+```
+$ export SECURITY_GROUP_ID=$(aws ec2 create-security-group \
+    --group-name MyEfsSecurityGroup \
+    --description "My EFS security group" \
+    --vpc-id $CLUSTER_VPC \
+    --region $CLUSTER_REGION \
+    --output text)
+```
+
+```
+# CIDR範囲が正しくなかったため修正
+$ export CIDR_RANGE="192.168.0.0/16"
+$ aws ec2 authorize-security-group-ingress \
+    --group-id $SECURITY_GROUP_ID \
+    --protocol tcp \
+    --port 2049 \
+    --cidr $CIDR_RANGE \
+    --region $CLUSTER_REGION
+```
+
+- EKS自体を作成
+
+```
+export FILE_SYSTEM_ID=$(aws efs create-file-system \
+--region $CLUSTER_REGION \
+--performance-mode generalPurpose \
+--query 'FileSystemId' \
+--output text)
+```
+
+## EFSファイルシステムのマウントターゲットを構成する
+
+
+- サブネットが所属するVPCの特定
+
+```
+$ aws ec2 describe-subnets \ 
+    --filters "Name=vpc-id,Values=$CLUSTER_VPC" \ 
+    --region $CLUSTER_REGION \ 
+    --query 'Subnets[*].{SubnetId: SubnetId,AvailabilityZone: AvailabilityZone,CidrBlock: CidrBlock}' \ 
+    --output table
+
+|                          DescribeSubnets                          |
++------------------+-------------------+----------------------------+
+| AvailabilityZone |     CidrBlock     |         SubnetId           |
++------------------+-------------------+----------------------------+
+|  ap-northeast-1c |  192.168.32.0/19  |  subnet-07b2e35aba1068ca0  |
+|  ap-northeast-1a |  192.168.0.0/19   |  subnet-0f5e821d4cbc9c100  |
+|  ap-northeast-1a |  192.168.64.0/19  |  subnet-08e79bcb3ec95bbf5  |
+|  ap-northeast-1c |  192.168.96.0/19  |  subnet-052ef1403c24b9472  |
++------------------+-------------------+----------------------------+
+```
+
+### ノードをホストするマウントターゲットを追加
+
+- 上記サブネット分実行
+
+```
+$ aws efs create-mount-target \
+    --file-system-id $FILE_SYSTEM_ID \
+    --subnet-id subnet-xxx \
+    --security-groups $SECURITY_GROUP_ID \
+    --region $CLUSTER_REGION
+```
+
+
+## EFSのPersistentVolumeとPersistentVolumeClaimを作成する
+
+- EFS URLを取得
+```
+$ echo $FILE_SYSTEM_ID.efs.$CLUSTER_REGION.amazonaws.com
+```
+
+- `batch-pv-pvc.yaml`作成
+- 上記適用
+```
+$ kubectl apply -f batch-pv-pvc.yaml
+persistentvolume/efs-pv created
+persistentvolumeclaim/efs-claim created
+```
+
 
 ## クリーンアップ
 
