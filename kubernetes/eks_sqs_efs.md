@@ -323,9 +323,16 @@ Batch task completed.
 
 ## クリーンアップ
 
+- EKSクラスター削除
 ```
 $ eksctl delete cluster -f ./cluster-config.yaml
 
 # クラスタ起動
 $ eksctl create cluster -f cluster-config.yaml
+```
+
+- ECR, SQS削除
+```
+$ aws sqs delete-queue --queue-url YOUR_SQS_QUEUE_URL
+$ aws ecr delete-repository --repository-name YOUR_ECR_REPO_NAME --force
 ```
