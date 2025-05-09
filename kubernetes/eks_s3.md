@@ -1,36 +1,32 @@
-# Mountpoint for Amazon S3 CSI ドライバーを使用して Amazon S3 オブジェクトにアクセスする
+# クイックスタートで作った向き先がEFSのものをS3へ変更する
 
-https://docs.aws.amazon.com/ja_jp/eks/latest/userguide/s3-csi.html
+## 改修が必要なもの
+- yamlファイル
+  - pvc
+  - ジョブ
+  - ジョブキュー
+- IAMロール
+  - EKSのサービスアカウント用
 
-## IAMポリシーを作成
+ ## yamlファイル
+ 
+- `k8s/update-batch-job.yaml`
+  - pvcマウント削除、環境変数追加
 
 ```
-{
-   "Version": "2012-10-17",
-   "Statement": [
-        {
-            "Sid": "MountpointFullBucketAccess",
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket"
-            ],
-            "Resource": [
-                "arn:aws:s3:::{バケット名}"
-            ]
-        },
-        {
-            "Sid": "MountpointFullObjectAccess",
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetObject",
-                "s3:PutObject",
-                "s3:AbortMultipartUpload",
-                "s3:DeleteObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::{バケット名}/*"
-            ]
-        }
-   ]
-}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: new-batch-job
+  namespace: default
+spec:
+  template:
+    spec:
+      serviceAccountName: ecr-sa
+      containers:
+      - name: batch-processor
+        image: xxx
+      env:
+        - name: AWS_REGION
+          value: ap-northeast-1
 ```
