@@ -73,3 +73,23 @@ spec:
             - name: AWS_REGION
               value: ap-northeast-1
 ```
+
+
+### 設定したクロンジョブを確認
+```
+$ kubectl get cronjob new-batch-job
+
+NAME            SCHEDULE     SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+new-batch-job   10 1 * * *   False     0        <none>          9m42s
+```
+
+### 実行ログの確認
+
+```
+$ kubectl create job --from=cronjob/new-batch-job test-job-now
+job.batch/test-job-now created
+$ kubectl get pods
+NAME                 READY   STATUS   RESTARTS     AGE
+test-job-now-hv87k   0/1     Error    1 (6s ago)   6s
+$ kubectl logs test-job-now-hv87k
+```
