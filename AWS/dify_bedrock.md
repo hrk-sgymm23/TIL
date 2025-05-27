@@ -67,6 +67,3 @@ $ npx cdk deploy
 ```
 
 
-```
-
-##
