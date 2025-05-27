@@ -1,16 +1,33 @@
 # Dify x Bedrock
 
-## 参考
-
-- https://github.com/aws-samples/dify-self-hosted-on-aws
-- https://dev.classmethod.jp/articles/dify-self-hosting-aws/
-
 ## Difyをローカル環境で起動させる
 
+### 参考
 
+- https://zenn.dev/tuzuminami/articles/9c8a814859af58
+- https://github.com/langgenius/dify
+
+
+### 以下実行
+
+```
+$ cd dify
+$ cd docker
+$ cp .env.example .env
+$ docker compose up -d
+```
+
+http://localhost/installにアクセス
+
+### Difyの使い方調査
 
 
 ## Dify on ECS
+
+### 参考
+
+- https://github.com/aws-samples/dify-self-hosted-on-aws
+- https://dev.classmethod.jp/articles/dify-self-hosting-aws/
 
 ### clone
 
