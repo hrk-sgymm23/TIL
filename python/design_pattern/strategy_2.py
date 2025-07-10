@@ -42,7 +42,16 @@ class SnakeToCamelCaseStrategy(ProcessingStrategy):
             return parts[0] + ''.join(p.title() for p in parts[1:])
 
         return {snake_to_camel(k): v for k, v in data.items()}
-
+    
+class SeparateNameStrategy(ProcessingStrategy):
+    """ 名前を分割して、first_nameとlast_nameに格納する """
+    def process(self, data):
+        if 'name' in data:
+            name = data['name']
+            parts = name.split(' ')
+            data['first_name'] = parts[0]
+            data['last_name'] = parts[1]
+        return data
 
 # --- パイプラインの本体 ---
 class JsonProcessor:
@@ -60,7 +69,7 @@ class JsonProcessor:
 if __name__ == "__main__":
     data = {
         'date': '2025-01-01',
-        'name': 'John Doe',
+        'name': 'John Smith',
         'age': 30,
         'address': '123 Main St, Anytown, USA',
         'debug_info': 'This is a debug message'
@@ -70,6 +79,7 @@ if __name__ == "__main__":
     processor.add_strategy(RemoveKeysStrategy(["debug_info"]))
     processor.add_strategy(SnakeToCamelCaseStrategy())
     processor.add_strategy(DateFormatStrategy())
+    processor.add_strategy(SeparateNameStrategy())
 
     result = processor.process(data)
 
