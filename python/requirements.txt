@@ -2,3 +2,4 @@ mypy
 pytest
 numpy
 ruff
+mypy

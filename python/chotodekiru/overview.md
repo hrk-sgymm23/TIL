@@ -21,3 +21,12 @@ $ source .venv/bin/activate
 $ cd chotodekiru/
 $ uv pip install -r requirements.txt
 ```
+
+numpy練習
+```
+$ cd chotodekiru/
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install -r requirements.txt
+$ python3 numpy/q1.py
+```
