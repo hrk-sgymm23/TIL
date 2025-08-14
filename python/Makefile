@@ -11,3 +11,6 @@ down:
 
 exec:
 	docker-compose exec sand-box /bin/bash
+
+ruff:
+	docker-compose exec sand-box ruff check .
