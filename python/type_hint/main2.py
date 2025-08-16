@@ -43,6 +43,7 @@ def do_something2(a: int) -> int:
     return something(a)
 
 d = do_something2(3) 
+print(d)
 
 def do_something3(a: int) -> float:
     # x: int
@@ -51,3 +52,9 @@ def do_something3(a: int) -> float:
     return x * 0.5
 
 e = do_something3(5)
+print(e)
+
+# TODO: dockerのボリュームが効いていない件を調べる
+
+"""
+"""
