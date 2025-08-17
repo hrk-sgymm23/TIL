@@ -31,8 +31,26 @@ class DynamicClass:
 """
 
 """
-dataclasss
+dataclass
 """
 
+from dataclasses import dataclass
+
+@dataclass
+class Myclass:
+    x: int
+    y: float
+
+    def cry(self):
+        print(f"x: {self.x}, y: {self.y}")
+
+Valid = Myclass(1, 2.0)
+Invalid = Myclass(1.0, 2.0)
 
 
+"""
+- __init__メソッドの役割
+  - メンバー変数を定義し代入する役割にとどめておく
+  - なぜならインスタンスの初期化方法は一つとは限らず今後も増える可能性があるため
+  もし初期化ロジックを複雑にしたい場合、classmethodとし処理を外出しする 
+"""
