@@ -3,3 +3,4 @@ pytest
 numpy
 ruff
 mypy
+jupyter
