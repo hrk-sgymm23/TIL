@@ -4,3 +4,7 @@ numpy
 ruff
 mypy
 jupyter
+matplotlib
+jupyter_contrib_nbextensions==0.7.0
+jupyter_nbextensions_configurator==0.6.3
+notebook<7,>=6.4

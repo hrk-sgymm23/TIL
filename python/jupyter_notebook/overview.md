@@ -41,4 +41,9 @@ print("Hello, Jupyter!")
 上記入力し、shfit + Enterで実行
 
 
-### グラフを作成
+### グラフを作成(matplotlib)
+
+```python
+$ pip3 install matplotlib
+```
+

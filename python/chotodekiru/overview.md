@@ -30,3 +30,15 @@ $ source .venv/bin/activate
 $ pip install -r requirements.txt
 $ python3 numpy/q1.py
 ```
+
+# 各ツール
+
+## Ruff
+```sh
+$ pip install ruff
+```
+- フォーマッター
+
+
+
+
