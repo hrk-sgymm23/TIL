@@ -80,6 +80,11 @@ id,name,distance,moving_time,elapsed_time,total_elevation_gain,type,start_date,s
 15960258117,Afternoon Trail Run,26934.7,11557,19264,1168.6,Run,2025-09-28T01:17:29Z,2025-09-28T10:17:29Z,(GMT+09:00) Asia/Tokyo,32400.0,2.331,9.8,,,,
 ```
 
+## OAuthの認証を自動化
+- 通常認証は6時間で切れる
+- しかしstravalibを使えば初回のみの認証でそれ以降は自動化可能
+https://stravalib.readthedocs.io/en/latest/get-started/authenticate-with-strava.html
+
 ## CSVを読み込んで表を作成
 
 
