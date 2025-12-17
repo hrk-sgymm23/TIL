@@ -85,4 +85,32 @@ ORDER BY
   - DELETEよりも高速
   - 使用しているディスク領域が解放される
 
+### NULLのデータを取り出す
+- NULLは直接=では取り出せない
+- NULLのものを取り出すには`IS NULL`, `IS NOT NULL`を使う
+
+### `BETWEEN`
+- 範囲指定
+｀``sql
+SELECT
+	*
+FROM
+	users
+WHERE	
+	age 
+BETWEEN
+	5 AND 10;
+```
+
+### `LIKE`
+- 部分一致
+```sql
+SELECT
+	*
+FROM
+	users
+WHERE	
+	name
+LIKE "%郎";
+```
 
