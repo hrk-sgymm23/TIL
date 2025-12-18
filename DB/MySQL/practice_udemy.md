@@ -91,7 +91,7 @@ ORDER BY
 
 ### `BETWEEN`
 - 範囲指定
-｀``sql
+```sql
 SELECT
 	*
 FROM
@@ -112,5 +112,42 @@ FROM
 WHERE	
 	name
 LIKE "%郎";
+```
+
+### `IN`,`NOT IN`
+- 引数に該当する値を持つレコードを抽出
+  - `NOT IN`は該当外
+```sql
+SELECT
+	*
+FROM
+	users
+WHERE	
+	age IN (12, 24, 36);
+```
+
+
+### `ANY`
+- 下記ではageが取り出されたもののどれかと等しいものだけ取り出せる
+
+```sql
+SELECT
+	*
+FROM
+	users
+WHERE
+	age = ANY(SELECT age FROM employees WHERE salary > 5000000);
+```
+
+### `ALL`
+- 単独では意味を持たず、比較演算子と合わせて使う
+- 下記SQLは取り出したageの一番大きいもので比較を行う
+```sql
+SELECT
+	*
+FROM
+	users
+WHERE
+	age > ALL(SELECT age FROM employees WHERE salary > 5000000);
 ```
 
