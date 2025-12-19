@@ -151,3 +151,13 @@ WHERE
 	age > ALL(SELECT age FROM employees WHERE salary > 5000000);
 ```
 
+### 算術演算子
+- 文字の結合はCONCATを使う
+```sql
+SELECT
+	department,
+	`name`,
+	salary*1.1
+FROM
+	employees;
+```
