@@ -161,3 +161,37 @@ SELECT
 FROM
 	employees;
 ```
+
+## 数学関数
+
+### `ROUND`
+
+桁数指定なしは第一位切り捨て
+```sql
+SELECT ROUND(3.14);
+
+3
+```
+
+整数指定は小数点第xi位で切り捨て
+```sql
+SELECT ROUND(3.14, 1);
+
+3.1
+```
+
+負の数指定は整数第xi位で切り捨て
+```sql
+SELECT ROUND(987, -1);
+
+990
+```
+
+### `FLOOR`
+
+### `CEILING`
+
+
+
+
+
