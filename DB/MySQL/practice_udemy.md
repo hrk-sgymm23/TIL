@@ -189,8 +189,29 @@ SELECT ROUND(987, -1);
 
 ### `FLOOR`
 
+切り捨て
+```sql
+SELECT FLOOR(3.14);
+
+3
+```
+
 ### `CEILING`
 
+切り上げ
+```sql
+SELECT CEILING(3.14);
+
+4
+```
+
+### `POWER`
+累乗
+```sql
+SELECT POWER(3,4);
+
+81
+```
 
 
 
