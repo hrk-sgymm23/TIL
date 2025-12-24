@@ -225,5 +225,88 @@ SELECT COALESCE(NULL,'B','C') # B
 SELECT COALESCE(カラム１,カラム2,カラム3) FROM users # usersテーブルから取得してカラム１,カラム2,カラム3のうちNULLではない最初の文字を取得する
 ```
 
+### `IF`
+条件をチェックして真と偽の場合で表示内容を変える
+```sql
+SELECT IF(100 < 200, "真"、"偽") # 真
+```
+
+```sql
+SELECT *,IF(birth_place="日本","日本人","その他") AS "国籍" FROM users;
+```
+
+```sql
+SELECT name, age, IF(age < 20, "未成年", "成人") FROM users;
+```
+
+```sql
+SELECT *, IF(class_no=6 AND height > 170, "6組の170cm以上の人", "その他") FROM students;
+```
+
+
+### `CASE`
+
+複数の条件式をチェックして条件に応じて表示する値を変える(IFの上位互換)
+```sql
+CASE式1
+CASE 評価する列
+	WHEN 値1 THEN 値１の時に返す
+	WHEN 値2 THEN 値２の時に返す
+	ELSE デフォルト値
+END
+```
+
+```sql
+SELECT
+	*,
+	CASE birth_place
+	WHEN "日本" THEN "日本人"
+	WHEN "Iraq" THEN "イラク人"
+	ELSE "外国人"
+	END AS "国籍"
+FROM
+	users;
+```
+
+```sql
+SELECT
+	name,
+	CASE
+		WHEN name IN("香川県","愛媛県","徳島県","高知県") THEN "四国"
+		ELSE "その他"
+	END AS "地域名"
+FROM
+	prefectures;
+```
+
+-　閏年計算
+  - 閏年は4で割り切れるかつ100で割り切れない値
+```sql
+SELECT
+	name,
+	birth_day,
+	CASE
+		WHEN DATE_FORMAT(birth_day, "%Y") % 4 = 0 AND DATE_FORMAT(birth_day, "%Y")% 100 <> 0 THEN "閏年"
+		ELSE "閏年でない"
+	END AS "閏年か"
+FROM
+	users;
+```
+
+
+
+
+
+　
+
+
+
+
+
+
+
+
+
+
 
 
