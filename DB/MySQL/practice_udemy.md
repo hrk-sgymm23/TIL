@@ -213,6 +213,17 @@ SELECT POWER(3,4);
 81
 ```
 
+### `COALESCE`
+-　最初に登場するNULLではない値を返す
+```sql
+COALESCE(列1, 列2, ...)
+```
+
+```sql
+SELECT COALESCE('A','B','C') # A
+SELECT COALESCE(NULL,'B','C') # B
+SELECT COALESCE(カラム１,カラム2,カラム3) FROM users # usersテーブルから取得してカラム１,カラム2,カラム3のうちNULLではない最初の文字を取得する
+```
 
 
 
