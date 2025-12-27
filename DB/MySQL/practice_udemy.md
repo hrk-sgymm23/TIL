@@ -293,6 +293,94 @@ FROM
 	users;
 ```
 
+### `ORDER BY`で`CASE`
+
+```sql
+ORDER BY CASE  ...END ASC(DESC)
+```
+
+### `UPDATE`で`CASE`
+- 香川を四国という名前へ更新
+```sql
+UPDATE
+  prefectures
+SET
+  name = CASE
+    WHEN name IN ("愛媛", "香川", "高知", "徳島") THEN "四国"
+    ELSE "その他"
+  END
+WHERE
+  name = "香川";
+```
+
+### `CASE`で`NULL`
+```sql
+	SELECT
+		CASE
+			WHEN country="Japan" THEN "日本人"
+			WHEN country IS NULL THEN "不明"
+	FROM
+		users;
+```
+
+## 43 演習問題
+1
+```sql
+SELECT
+	name,
+	age
+FROM
+	customers
+WHERE
+	age BETWEEN 28 AND 40
+	AND name LIKE "%子%"
+ORDER BY
+	age ASC
+LIMIT 5;
+```
+
+5
+```sql
+UPDATE customers
+	SET age = age + 1
+WHERE
+	id BETWEEN 20 AND 50;
+```
+
+7
+```sql
+SELECT 
+	*
+FROM
+	students
+WHERE
+	class_no = 1
+	AND height < ALL(
+		SELECT height + 10
+		FROM students
+		WHERE class_no IN (3,4)
+	)
+```
+
+８
+```sql
+UPDATE employees SET department = TRIM(department); 
+```
+
+### `TRIM`
+空白削除
+```sql
+TRIM(文字列)
+```
+
+特定の文字を削除
+
+```sql
+SELECT TRIM(BOTH '-' FROM '----abc----')
+
+abc
+```
+
 
 
 
