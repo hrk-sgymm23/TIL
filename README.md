@@ -13,9 +13,12 @@ https://creationlinejp.udemy.com/course/3sqlmysql/learn/lecture/30893046#overvie
 
 ## Python uvについて学ぶ
 
+## TCP/IPの本読み切る
+
 ## AWS DOP取得
 
 ## Claude Code GitLab テスト引き続き
 
 ## TypeScriptについて学ぶ
 - npm, pmpm, bunなど周辺ツール含め
+
