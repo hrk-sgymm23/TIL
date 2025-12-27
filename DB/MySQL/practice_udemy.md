@@ -381,6 +381,72 @@ SELECT TRIM(BOTH '-' FROM '----abc----')
 abc
 ```
 
+9
+https://qiita.com/rickeysan95/items/554079d4dc543b2dd062
+```sql
+UPDATE 
+	employees 
+SET
+	salary =  
+	CASE
+		WHEN salary >= 5000000 THEN salary*0.9
+		WHEN salary < 5000000 THEN salary*1.1
+	END;
+```
+
+10
+```sql
+INSERT INTO customers
+    (id, name, age, birth_day)
+VALUES
+    (101,'名無し権平', 0, NOW());
+```
+
+11
+```
+ALTER TABLE customers ADD name_length INT AFTER birth_day;
+
+UPDATE customers SET name_length = LENGTH(name)
+```
+
+12
+
+```sql
+ALTER TABLE tests_score ADD score INT AFTER test_score_3;
+UPDATE 
+	tests_score
+SET score =
+		CASE
+			WHEN COALESCE(test_score_1, test_score_2, test_score_3) IS NULL THEN NULL
+			WHEN COALESCE(test_score_1, test_score_2, test_score_3) >= 900 
+				THEN FLOOR(COALESCE(test_score_1, test_score_2, test_score_3)*1.2)
+			WHEN COALESCE(test_score_1, test_score_2, test_score_3) <= 600
+				THEN CEIL(COALESCE(test_score_1, test_score_2, test_score_3)*0.8)
+		END
+```
+
+13
+```sql
+SELECT *
+FROM employees
+ORDER BY FIELD(
+  department,
+  'マーケティング部',
+  '研究部',
+  '開発部',
+  '総務部',
+  '営業部',
+  '経理部'
+);
+```
+
+### `ORDER BY FIELD`
+
+(列, 値1, 値2...)となり値1,2,3...の順番で出力がソートされる
+
+https://note.com/nhsykym/n/n30d6fd3b3198
+
+
 
 
 
