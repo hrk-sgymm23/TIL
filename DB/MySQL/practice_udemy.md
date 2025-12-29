@@ -638,8 +638,23 @@ HAVING AVG(salary) > 3980000;
 - HAVINGは実行結果に対するWHERE
 - 集計した後の結果に条件をかけるための句
 
+```sql
+SELECT
+	department,
+	AVG(salary)
+FROM
+	employees
+GROUP BY
+	department
+HAVING
+	AVG(salary) > 3980000;
+```
 
-
+```sql
+SELECT birth_place, age, COUNT(*) FROM users
+GROUP BY birth_place, age
+HAVING COUNT(*)>2;
+```
 
 
 
