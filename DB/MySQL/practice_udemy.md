@@ -540,6 +540,74 @@ LOCK TABLE {テーブル名} WRITE
 UNLOCK TABLES
 ```
 
+## デッドロック
+- 2つのセッションが互いの更新対象のテーブルをロックしていて、処理が進まない状態のこと
+
+## アプリケーションとロックとトランザクション
+
+## アプリケーションでのトランザクション処理
+- アプリケーションでトランザクションの処理を記述することでトランザクションを実行することができる
+
+## 集合演算子
+- 構造のよく似た複数のテーブルに対してSELECTでレコードを取得して取得結果を組み合わせるSQL
+<img width="893" height="353" alt="スクリーンショット 2025-12-29 16 38 37" src="https://github.com/user-attachments/assets/267fa05b-d7ac-4a8b-84d0-2f6cbb277889" />
+
+
+### `UNION`
+- 検索結果の和集合を求めるSQL分
+- UNIONは重複する行はひとつにまとめ、UNION ALLは重複する行は重複したまま表示する
+
+### `EXPECT`(MINUS)
+- ある集合と別の集合の輪を求めるSQL
+- SQL1とSQL2を比較してSQL1の結果のうちSQL2の結果に存在するものを差し引く
+  - 2つの結果の差を表示
+
+### `INTERSECT`
+- ある集合と別の集合の積集合を求めるSQL
+- SQL1とSQL2の結果を比較して2つの結果に共通する行を表示する
+
+## 各SQL
+
+### `UNION`
+```sql
+SELECT * FROM table1
+UNION
+SELECT * FROM table2
+```
+- 集合演算子を使う際の注意点
+  - 各SQLの取得するカラム数を合わせること
+  - ORDERBYを利用する場合はひとつめのSQLのカラム名を用いいること
+
+## `INTERSECT`, `EXPECT`
+- 重複の削除
+```sql
+SELECT * FROM new_students
+INTERSECT
+SELECT * FROM students;
+```
+- new_studentsに存在してstudentsに存在しない
+```sql
+SELECT * FROM new_students
+EXPECT
+SELECT * FROM students;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
