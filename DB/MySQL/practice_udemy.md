@@ -593,12 +593,37 @@ SELECT * FROM students;
 ```
 
 
+## 集計関数
+- `SUM`,`AVG`,`MIN`,`MAX`,`COUNT`
 
+- 何行データが入っているか
+```sql
+SELECT COUNT(*) FROM customers;
+```
+- 列指定（この列に何行入っているかNULLはカウントしない）
+```sql
+SELECT COUNT(name) FROM customers;
+```
 
+## グループに分ける(`GROUPBY`)
+- `GROUPBY`を使うと要素ごとにグループ分けして集計できる
 
+```sql
+SELECT カラム名 FROM テーブル名 GROUP BY カラム1
+```
 
+年齢別で集計を行う
+```sql
+SELECT age, COUNT(*), MAX(birth_day), MIN(birth_day) FROM users
+WHERE birth_place="日本"
+GROUP BY age;
+```
 
+- GROUP BY xx...xxごとに集計する
+- 複数のGROUP BY...xxとyyの組み合わせごとの集計
 
+## `HAVING`
+- グループ化した集計に対して絞り込みをする場合に利用するSQL
 
 
 
