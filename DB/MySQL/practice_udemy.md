@@ -625,6 +625,26 @@ GROUP BY age;
 ## `HAVING`
 - グループ化した集計に対して絞り込みをする場合に利用するSQL
 
+```sql
+SELECT
+	department,
+	AVG(salary)
+FROM
+	employees
+GROUP BY
+	department
+HAVING AVG(salary) > 3980000;
+```
+- HAVINGは実行結果に対するWHERE
+- 集計した後の結果に条件をかけるための句
+
+
+
+
+
+
+
+
 
 
 
