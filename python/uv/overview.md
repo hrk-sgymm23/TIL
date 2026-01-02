@@ -51,6 +51,25 @@ $ uv lock
 $ uv tree
 ```
 
+また既存のrewuirements.txtからもインストール可能
+```bash
+$ uv add -r requirements.txt 
+```
+
+`--dev`で開発環境のパッケージとして追加も可能
+```bash
+$ uv add numpy --dev
+```
+
+`pyproject.toml`には以下形式で追加されている
+```toml
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.5.1",
+    "numpy>=2.4.0",
+]
+```
+
 ## pythonのバージョン管理
 インストール
 ```bash
@@ -92,8 +111,14 @@ uvx cowsay -t "Hello, uv!"
 ```
 
 pytestを実行
-```sql
-uvx pytest
+```bash
+$ uvx pytest
+```
+
+ruffを実行
+```
+$ uvx ruff check .
+All checks passed!
 ```
 
 ### `uvx`の主なオプション
@@ -101,11 +126,32 @@ uvx pytest
 `--with`...追加パッケージも同時にインストールして実行
 `--isolated`...完全に新しい一時環境で実行(既存ツール無視)
 
+## `pip互換コマンド`
+`uv pip install`...パッケージのインストール
+`uv pip uninstall`...パッケージのアンインストール
+`uv pip list`...インストールずみのパッケージ一覧
+`uv pip freeze`...バージョン固定用リスト出力
+`uv pip check`...依存関係の整合性チェック
+
+## 依存関係のエクスポート
+```
+$ uv export --format=requirements.txt
+```
+
+既存のpip/venvから移行する際も簡単
 
 
+## 他のツールとの統合
+GitHubActionsやDocker統合は以下を参照
+https://docs.astral.sh/uv/guides/integration/
 
 
-
+# まとめ
+- uvは仮想環境、パッケージ、Pythonバージョン、CLIツール管理を一元化
+  - uvが高速なのはRust製である点、並列処理が得意でありpip(製)と差異がでる
+- `uv run`で仮想環境を意識せず安全/高速にスクリプトやコマンドを実行
+- `uvx`で一時的なCLIツール実行も可能
+- 他ツールとの統合の容易にできる
 
 
 
