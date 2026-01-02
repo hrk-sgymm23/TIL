@@ -656,6 +656,16 @@ GROUP BY birth_place, age
 HAVING COUNT(*)>2;
 ```
 
+# SQLの評価される順番に関して
+
+```
+FROM
+ → WHERE      （行を削る）
+ → GROUP BY   （まとめる）
+ → HAVING     （グループを削る）
+ → SELECT
+```
+
 
 
 
