@@ -666,6 +666,146 @@ FROM
  → SELECT
 ```
 
+## 副問い合わせの構文1(INで使う)
+INの後に()で囲いその中にSELECTを記述するとSELECTの結果に含まれるレコードだけを取り出すことができる
+```sql
+SELECT 
+	last_name, first_name
+FROM
+	employees
+WHERE
+	office_code IN(SELECT 
+		office_code
+	FROM
+		offices
+	WHERE
+		country = 'USA'
+	);
+```
+
+## 副問い合わせの構文2(INで複数のカラムを使う)
+INの後に()で囲いその中にSELECTを記述し複数のカラムを取得する
+```sql
+SELECT 
+	last_name, first_name
+FROM
+	employees
+WHERE
+	(office_code, office_name) IN(SELECT 
+		office_code, office_name
+	FROM
+		offices
+	WHERE
+		country = 'USA'
+	);  
+```
+
+## 副問い合わせの構文3(集計関数と使う)
+WHERE句の比較式に()で囲ったSELECT文を記述し副問い合わせで集計した値と比較する
+
+```sql
+SELECT
+	customerNumber,
+	checkNumber,
+	amount
+FROM
+	payments
+WHERE
+	amount = (SELECT MAX(amount) FROM payments);
+```
+
+## 副問い合わせの構文4(FROMの取得先に用いる)
+FROMの取得対象のテーブルの代わりに()でSELECTを記述
+
+```sql
+SELECT
+	MAX(lineItems.items),
+	MIN(lineItems.items),
+	FLOOR(AVG((lineItems.items))
+FROM
+	(SELECT
+		order_number, COUNT(order_number) AS items
+	 FROM
+		order_details
+	GROUP BY
+		orderNumber) AS lineitems
+	)
+```
+
+## 副問い合わせの構文5(SELECTの行に用いる)
+SELECTで取得する対象の行に含める
+```sql
+SELECT
+	p1.site_name,
+	(
+	 SELECT
+		MAX(file_zize)
+	 FROM
+		page2 AS p2
+	 WHERE
+		p2.site_id = p1.site_id
+	) AS max_file_size
+FROM
+	pages1 AS p1;
+```
+
+```sql
+SELECT
+	cs.first_name,
+	cs.last_name,
+	(SELECT
+		MAX(order_date) FROM orders AS order_max WHERE cs.id = order_max.customer_id
+	) AS "最新注文日",
+	(SELECT
+		SUM(order_amount * order_price) FROM orders AS order_temp WHERE cs.id = order_temp.customer_id
+	) AS "全支払い金額"
+FROM
+	customers AS cs
+WHERE
+	cs.id < 10;
+```
+
+## 副問い合わせの構文6(CASEとともに使う)
+SELECTで対象の行に含める
+
+```sql
+SELECT
+	employee_id,
+	last_name,
+	(
+	 CASE
+	 	WHEN department_id = (
+			SELECT
+				department_id
+			FROM
+			 	departments
+			WHERE
+				location_id = 2500
+		) THEN 'Canada'
+		ELSE 'USA'
+	 END
+	) location
+FROM
+	employees;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
