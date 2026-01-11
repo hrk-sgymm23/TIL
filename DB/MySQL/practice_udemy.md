@@ -827,7 +827,75 @@ WHERE
 );
 ```
 
+```sql
+SELECT
+	*
+FROM
+	employees AS em
+WHERE
+	EXISTS(
+		SELECT * FROM departments AS dt WHERE em.department_id = dt.id
+	);
+```
 
+INと組み合わせ
+```sql
+SELECT
+	*
+FROM
+	employees AS em
+WHERE
+	EXISTS(
+		SELECT
+			*
+		FROM
+			departments AS dt
+		WHERE
+			dt.name IN ("営業部","開発部")
+			AND em.department_id = dt.id
+	);
+```
+
+- EXISTSにおける`SELECT 1`
+  - 値を取りたいわけではない
+  - 行が存在するか知りたい
+  - 1は値は使わないという意思表示
+
+## NULLとEXISTS
+- EXISTS句ではサブクエリで値が返されるレコードのみを取得する
+  - NULLにものは変えされない
+
+## INTERSECTとEXEPCTをEXISTSで実現する
+
+### EXPECTを実現
+
+```sql
+SELECT * FROM b_table WHERE
+NOT EXISTS(
+SELECT * FROM a_table
+WHERE
+	a_table.columm_1 = b_table.columm_1 AND
+	a_table.columm_2 = b_table.columm_2 AND
+	:
+)
+```
+
+### INTERSECTを実現
+- customers と customers_2 に「完全一致する顧客」がいるかどうかをチェックする
+- phone_numberだけ書き方が特殊
+  - 両方NULLの場合に一致と反映されないため
+```sql
+SELECT * FROM customers AS c1 
+	WHERE EXISTS(
+		SELECT * FROM customers_2 AS c2
+		WHERE
+			c1.id = c2.id AND
+			c1.first_name = c2.first_name AND
+			c1.last_name = c2.last_name AND
+			(c1.phone_number = c2.phone_number OR (c1.phone_number IS NULL AND c2.phone_number IS NULL )) AND
+			c1.age = c2.age
+	);
+```
 
 
 
