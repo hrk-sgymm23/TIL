@@ -790,6 +790,43 @@ FROM
 ```
 
 
+## `INSERT INTO SELECT`
+- SELECTの処理結果をテーブルに挿入する
+
+## `CREATE TABLE SELECT`
+- 別のテーブルを作成して、SELECTの結果を挿入する
+
+# `EXITS`
+- 他のテ－ブルに値の存在する行のみを抽出するSQL
+- サブクエリ内でメインクエリの表や列を利用する副問い合わせ
+
+```sql
+SELECT
+	*
+FROM
+	a_table
+WHERE
+	[NOT] EXISTS(sunquery);
+```
+
+## EXISTSの構文
+- EXISTSのEXISTSの後ではサブクエリが何らかの値を返すレコードだけ取り出す(NO EXISTSの場合は値を返さないレコードだけ取り出す)
+```sql
+SELECT
+	*
+FROM
+	customers AS ct
+WHERE
+	EXISTS(
+		SELECT
+			*
+		FROM
+			order AS or
+		WHERE
+			ct.cusomer_id = or.customer_id
+);
+```
+
 
 
 
