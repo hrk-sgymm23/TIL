@@ -914,7 +914,62 @@ SELECT * FROM customers AS c1
 - 本に対して本_著書が1対多で著者に対して本_著書が多対1で紐づく
 - 本_著書は中間テーブル
 
+## JOINとは
+- 特定のカラム同士が等しいレコード同士をテーブル間で結合するSQL
+- `INNER JOIN`...条件が一致する行のみ表示
+```sql
+INNER JOIN 接続するテーブル名 ON 接続する条件
+```
 
+## 内部結合
+```sql
+SELECT
+	*
+FROM
+	employees AS emp
+INNER JOIN
+	departments as dep
+ON
+	emp.department_id = dep.id;
+```
+
+- `=`以外で紐付ける
+```sql
+SELECT
+	*
+FROM
+	employees AS emp
+INNER JOIN
+	students as std
+ON
+	emp.id < std.id;
+```
+
+## 外部結合`LEFT(OUTER) JOIN`
+- 複数のテーブルを結合して左のテーブルは全てのレコードを取得して、右のテーブルからは紐付けできたレコードのみを取り出す、それ以外はNULL
+
+```sql
+SELECT
+	emp.id, emp.first_name, emp.last_name, dt.id, dt.name AS department_name
+FROM
+	employees AS emp
+LEFT JOIN
+	departments as dt
+ON
+	emp.department_id = dt.id;
+```
+
+`COALESCE`で該当なし表示
+```sql
+SELECT
+	emp.id, emp.first_name, emp.last_name, COALESCE(dt.id, "該当なし") AS department_id,  dt.name AS department_name
+FROM
+	employees AS emp
+LEFT JOIN
+	departments as dt
+ON
+	emp.department_id = dt.id;
+```
 
 
 
