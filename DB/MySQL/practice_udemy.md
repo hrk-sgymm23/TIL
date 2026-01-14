@@ -971,7 +971,47 @@ ON
 	emp.department_id = dt.id;
 ```
 
+### 複雑なクエリ
+```sql
+SELECT
+ *
+FROM
+ customers AS ct
+INNER JOIN orders AS od
+ON ct.id = od.customer_id
+INNER JOIN items AS it
+ON od.item_id = it.id
+INNER JOIN stores AS st
+ON it.store_id = st.id
+ORDER BY ct.id; 
+```
 
+```sql
+SELECT
+ *
+FROM
+ (SELECT * FROM customers WHERE id=10) AS ct
+INNER JOIN (SELECT * FROM orders WHERE order_date > "2020-08-01") AS od
+ON ct.id = od.customer_id
+INNER JOIN items AS it
+ON od.item_id = it.id
+INNER JOIN stores AS st
+ON it.store_id = st.id
+ORDER BY ct.id; 
+```
+
+```sql
+SELECT * FROM customers AS ct
+INNER JOIN 
+(SELECT
+	customer_id, SUM(order_amount * order_price) AS summary_price
+FROM
+	orders
+GROUP BY
+	customer_id) AS order_summary
+ON ct.id = order_summary.customer_id
+ORDER BY ct.age;
+```
 
 
 
