@@ -1083,7 +1083,27 @@ GROUP BY
 - WITHの後に記述したSQLの実行結果を一時的なテーブルに格納する。可読性の高い構文。
 
 
+`INNER JOIN`の場合
+```sql
+SELECT
+	*
+FROM
+	employees as e
+INNER JOIN
+	departments as d
+ON
+	e.department_id = d.id
+WHERE
+	d.name = "営業部";
+```
 
+`WITH`の場合
+```sql
+WITH tmp_deparments AS(
+	SELECT * FROM departments WHERE name = "営業部"
+)
+SELECT * FROM employees as e INNER JOIN tmp_deparments ON e.department_id = tmp_deparments.id;
+```
 
 
 
