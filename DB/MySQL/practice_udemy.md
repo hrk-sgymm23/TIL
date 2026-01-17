@@ -1014,6 +1014,33 @@ ORDER BY ct.age;
 ```
 
 
+## 自己結合`SELF JOIN`
+- 同一のテーブルを結合する結合方法
+
+```sql
+SELECT
+	*
+FROM
+	employees AS emp1
+INNER JOIN 
+	employees AS emp2
+ON
+	emp1.manager_id = emp2.id;
+```
+
+```sql
+SELECT
+	CONCAT(emp1.last_name, emp1.first_name) AS "部下の名前",
+	CONCAT(emp2.last_name, emp2.first_name) AS "上司の名前"
+FROM
+	employees AS emp1
+INNER JOIN 
+	employees AS emp2
+ON
+	emp1.manager_id = emp2.id;
+```
+
+
 
 
 
