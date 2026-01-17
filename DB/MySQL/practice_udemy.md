@@ -1041,6 +1041,46 @@ ON
 ```
 
 
+## 交差結合`CROSS JOIN`
+- 2つのテーブルのデータの全ての組み合わせを取得するSQL
+
+```sql
+SELECT
+	emp.id, AVG(payment)
+FROM
+	employees AS emp
+INNER JOIN
+	salaries AS sa
+ON
+	emp.id = sa.employee_id
+CROSS JOIN
+	(SELECT AVG(payment) AS avg_payment FROM salaries) AS summary
+GROUP BY
+	emp.id;
+```
+
+```sql
+SELECT
+	emp.id,
+	CASE
+		WHEN AVG(payment) >= summary.avg_payment THEN "◯"
+		ELSE "×" 
+	END AS "平均月収以上か"
+FROM
+	employees AS emp
+INNER JOIN
+	salaries AS sa
+ON
+	emp.id = sa.employee_id
+CROSS JOIN
+	(SELECT AVG(payment) AS avg_payment FROM salaries) AS summary
+GROUP BY
+	emp.id,
+	summary.avg_payment;
+```
+
+## `WITH`
+- WITHの後に記述したSQLの実行結果を一時的なテーブルに格納する。可読性の高い構文。
 
 
 
