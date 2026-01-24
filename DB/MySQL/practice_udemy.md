@@ -1105,6 +1105,34 @@ WITH tmp_deparments AS(
 SELECT * FROM employees as e INNER JOIN tmp_deparments ON e.department_id = tmp_deparments.id;
 ```
 
+```sql
+WITH tmp_store AS(
+	SELECT * FROM stores WHERE id IN(1,2,3)
+)
+SELECT * FROM tmp_store;
+```
+
+特定の店舗に属する商品の注文情報を取得するクエリ
+```sql
+WITH tmp_store AS(
+	SELECT * FROM stores WHERE id IN(1,2,3)
+),
+tmp_items_orders AS (
+	SELECT
+		tmp_store.id AS store_id,
+		tmp_store.name,
+		items.id AS item_id,
+		orders.id AS order_id,
+		orders.order_amount,
+		orders.order_price
+	FROM tmp_store
+	INNER JOIN items
+	ON tmp_store.id = items.store_id
+	INNER JOIN orders
+	ON items.id = orders.item_id
+)
+SELECT * FROM tmp_items_orders;
+```
 
 
 
