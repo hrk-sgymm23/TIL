@@ -1172,10 +1172,51 @@ ON
 - 現在の行を基準として集計する対象の行(フレーム)を変更する
 - 集計する対象の行を直前の行と現在の行にする
 
+- order_price * order_amountの合計の7日間の平均を求める
+```sql
+SELECT
+	*,
+	SUM(order_price * order_amount) OVER(ORDER BY order_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS "SUM"
+FROM
+	orders
+ORDER BY
+	order_date;
+```
+
 ### `RANGE BETWEEN`
 - 現在の行の値を基準として集計する対象の行（フレーム）を変更する(ORDER BYと一緒に使う)
 
+```sql
+SELECT
+	*,
+	SUM(summary_salary.payment) OVER(ORDER BY age RANGE BETWEEN 3 PRECEDING AND CURRENT ROW) as p_summary
+FROM
+	employees as emp
+INNER JOIN
+	(SELECT
+		employee_id,
+		SUM(payment) AS payment
+	FROM
+		salaries
+	GROUP BY
+		employee_id) AS summary_salary
+```
 
+## SQLの実行順序
+```
+1. FROM JOIN
+2. WHERE
+3. GROUP BY
+4. 集計関数(SUM)
+5. HAVING
+6. ウィンドウ関数
+7. SELECT(レコードの取得)
+8. DISTINCT
+9. UNION/INTERSECT/EXCEPT
+10. ORDER BY
+11. OFFSET
+12. LIMIT
+```
 
 
 
