@@ -1152,15 +1152,28 @@ SUM(給料) OVER(PARTITION BY 部署)
 ### `ORDER BY`
 - 指定した行で昇順か降順に順番を変えて(デフォルトでは)パーティションの初めから現在の行と同じ値の行までフレームを集計する
 
+### `PARTITION BY`と`ORDER BY`を併用する
+- `PARTITION BY`で分割してパーティション化する対象を決めて`ORDER BY`で並べ替ええて集計する
+
+```sql
+SELECT
+	*,
+	MAX(payment) OVER(PARTITION BY emp.id)
+FROM
+	employees as emp
+INNER JOIN
+	salaries as sal
+ON
+	emp.id = sal.id
+```
 
 
+### `ROWS BETWEEN`
+- 現在の行を基準として集計する対象の行(フレーム)を変更する
+- 集計する対象の行を直前の行と現在の行にする
 
-
-
-
-
-
-
+### `RANGE BETWEEN`
+- 現在の行の値を基準として集計する対象の行（フレーム）を変更する(ORDER BYと一緒に使う)
 
 
 
