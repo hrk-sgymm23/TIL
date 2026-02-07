@@ -1219,6 +1219,49 @@ INNER JOIN
 ```
 
 
+14日目
+
+問題1
+
+```sql
+SELECT
+	CONCAT(first_name, last_name)
+FROM
+	customers
+WHERE
+	id < 10
+
+UNION
+
+SELECT
+	CONCAT(first_name, last_name)
+FROM
+	employees
+WHERE
+	id < 10
+```
+
+問題2
+```
+SELECT
+	MAX(s.payment) as "max",
+	MIN(s.payment) as "min",
+	AVG(s.payment) as "avg",
+	SUM(s.payment) as "sum"
+FROM
+	employees e
+JOIN
+	departments d
+ON
+	d.id = e.department_id
+JOIN
+	salaries s
+ON
+	s.employee_id = e.id
+WHERE
+	d.name = "営業部"
+```
+
 
 
 
