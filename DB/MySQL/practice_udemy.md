@@ -1279,7 +1279,10 @@ FROM
 	customers c
 ```
 
+問題6
+```sql
 
+```
 
 
 
