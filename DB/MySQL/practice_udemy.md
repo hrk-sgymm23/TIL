@@ -1262,7 +1262,22 @@ WHERE
 	d.name = "営業部"
 ```
 
+問題5
 
+```sql
+SELECT
+	c.id as customerid,
+	(
+	SELECT
+		SUM(o.order_amount)
+	FROM
+		orders o
+	WHERE
+		o.customer_id = c.id
+	)as total_amount
+FROM
+	customers c
+```
 
 
 
