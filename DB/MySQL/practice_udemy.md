@@ -1281,8 +1281,96 @@ FROM
 
 問題6
 ```sql
+SELECT
+	CONCAT(c.first_name, c.last_name) as 'fullname',
+	COUNT(*) as 'count'
+FROM
+	customers c
+JOIN
+	orders o
+ON
+	o.customer_id = c.id
+JOIN
+	items i
+ON
+	o.item_id = i.id
+JOIN
+	stores s
+ON
+	i.store_id = s.id
+WHERE
+	c.last_name LIKE '%田%'
+AND
+	o.order_date >= '2020-12-01'
+AND
+	s.name = '山田商店'
+GROUP BY
+	CONCAT(c.first_name, c.last_name)
+```
+
+問題7
+`JOIN`
+```sql
+SELECT
+	*
+FROM
+	salaries s
+INNER JOIN
+	employees e	
+ON
+	e.id = s.employee_id
+WHERE
+	payment > 9000000
+```
+
+問題8
+```sql
+SELECT
+	e.*
+FROM
+	employees e
+WHERE
+	NOT EXISTS (
+	SELECT
+		1
+	FROM
+		salaries s
+	WHERE
+		s.employee_id = e.id
+	)
+```
+
+
+問題9　WIP
+```sql
+WITH customer_age_stats AS (
+  SELECT
+    MIN(age) AS min_age,
+    AVG(age) AS avg_age,
+    MAX(age) AS max_age
+  FROM customers
+)
+SELECT
+  e.id,
+  e.age,
+  CASE
+    WHEN e.age < s.min_age THEN '最小未満'
+    WHEN e.age >= s.min_age AND e.age < s.avg_age THEN '平均未満'
+    WHEN e.age >= s.avg_age AND e.age < s.max_age THEN '最大未満'
+    ELSE 'その他'
+  END AS age_category
+FROM employees e
+CROSS JOIN customer_age_stats s;
 
 ```
+
+
+
+```
+
+
+
+
 
 
 
