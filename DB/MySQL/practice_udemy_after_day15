@@ -1,0 +1,11 @@
+## 副問い合わせによる更新
+
+```sql
+UPDATE
+	employees as emp
+LEFT JOIN
+	departments as dt
+ON
+	emp.department_id = dt.id
+SET emp.department_name = COALESCE(dt.name, "不明")
+```
