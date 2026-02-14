@@ -60,3 +60,6 @@ flowchart TD
 
 <img width="1470" height="828" alt="スクリーンショット 2026-02-14 21 33 19" src="https://github.com/user-attachments/assets/de3cf37c-b582-4c5b-83a9-b1982f3e07a0" />
 
+
+## TODO:フローチャート以外も作ってみる
+https://help.docbase.io/posts/3719897
