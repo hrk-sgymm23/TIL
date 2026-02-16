@@ -5,9 +5,6 @@
 v24.10.0
 ```
 
-## そもそもMCPとは
-- AIがほかツールを安全に呼び出すための共通規格
-
 ## mcp インストール
 ```bash
 $ npm install -g mermaid-mcp-server
@@ -32,6 +29,14 @@ $ npm install -g mermaid-mcp-server
   }
 }
 ```
+
+### Clineを使う理由
+- ClineはMCP対応型クライアント
+- つまり
+  - Mermaid MCP
+  - Git MCP
+  - Database MCP
+などと接続できる。
 
 ## とりあえず使ってみる
 プロンプト
