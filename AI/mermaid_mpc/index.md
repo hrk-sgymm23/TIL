@@ -164,3 +164,80 @@ erDiagram
 ```
 <img width="1470" height="824" alt="スクリーンショット 2026-02-16 23 46 14" src="https://github.com/user-attachments/assets/6f3bb71b-4bc9-439c-b272-d6eff9eb0bc6" />
 
+
+## ガントチャート
+プロンプト
+```
+以下のプロジェクト説明から Mermaid の gantt 図を生成してください。
+
+【要件】
+- 必ず gantt 構文を使用する
+- dateFormat は YYYY-MM-DD にする
+- title を必ず付ける
+- todayMarker を有効にする
+- タスクは section でグルーピングする
+- 各タスクは開始日と期間（d単位）を明示する
+- 依存関係があれば after を使用する
+- コードブロックは mermaid 形式で出力する
+- 構文エラーがないか自己チェックする
+
+【プロジェクト説明】
+
+・2026-04-01 から要件定義を10日間実施  
+・要件定義完了後、基本設計を14日間  
+・基本設計完了後、詳細設計を10日間  
+・詳細設計と並行して環境構築を7日間（開始日は基本設計完了後）  
+・詳細設計完了後、実装を30日間  
+・実装完了後、単体テストを14日間  
+・単体テスト完了後、結合テストを14日間  
+・結合テスト完了後、リリース準備を7日間  
+```
+
+```mermaid
+gantt
+    title プロジェクトスケジュール
+    dateFormat YYYY-MM-DD
+    todayMarker off
+
+    section 要件定義
+    要件定義 : req_def, 2026-04-01, 10d
+
+    section 設計フェーズ
+    基本設計 : basic_design, after req_def, 14d
+    詳細設計 : detail_design, after basic_design, 10d
+
+    section 準備フェーズ
+    環境構築 : env_setup, after basic_design, 7d
+
+    section 開発フェーズ
+    実装 : implementation, after detail_design, 30d
+
+    section テストフェーズ
+    単体テスト : unit_test, after implementation, 14d
+    結合テスト : integration_test, after unit_test, 14d
+
+    section リリース準備
+    リリース準備 : release_prep, after integration_test, 7d
+```
+
+<img width="1470" height="830" alt="スクリーンショット 2026-02-16 23 51 23" src="https://github.com/user-attachments/assets/1315fe2b-e4b4-416b-ac31-f9e4237d628a" />
+
+## なぜ直接LLMにプロンプトを渡さずに`mermaid-mcp-server`を利用するのか
+
+- 通常の生成AIの場合
+  - 会話の延長線上としてコードをそれっぽく書く
+  - Mermaid文法・制約は守ろうとするが保証はない
+- mermaid-mcp-server
+  - LLMは「Mermaidを直接作文する」のではなく、“Mermaid生成ツール”を呼ぶ形に寄せられる
+  - ここでのポイントは、MCPが「Mermaidを作る処理」を 外部ツール（サーバ）側の責務 として切り出すこと
+
+### 大きい差
+**再現性と安定性**
+
+- 通常プロンプト：
+  - 「Mermaidで」と言っても、毎回微妙に違う書き方になりがち
+  - チームの規約（例えばflowchartは必ずTD、ノード命名規則、subgraph構造、色など）を守らせ続けるのが難しい
+- MCPツール：
+  - サーバ側で「この種類の図はこのテンプレ・この規約」という 強制力 を持たせやすい
+  - “出力が壊れたらエラーにする”など 機械的な品質管理 を入れやすい
+  - 結果として「同じ入力には同じ構造の図」が出やすく、レビューや差分管理がしやすい
