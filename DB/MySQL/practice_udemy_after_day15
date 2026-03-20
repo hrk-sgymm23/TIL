@@ -54,6 +54,21 @@ colmun_name_2 CHAR(10)
 
 
 ### `TEXT` 
+- 基本的な使い方はVARCHAR(可変長文字列)と同じだが、VARCHARで格納できないサイズの文字列を格納する場合に用いる
+- 実際に格納されたデータが65535バイトより少ない場合ディスク使用量は少なくなる
+- インデックスを作成することができない
+
+
+## インデックスについて
+- インデックスとは...テーブルの特定のカラムに対する索引
+- インデックスを用いることで特定のレコードへのアクセスを高速で行うことができるようになる
+
+使用例
+```sql
+CREATE INDEX {index_name} ON {table_name}(column1, column2)
+DROP INDEX {index_name}
+SHOW INDEX FROM {table_name}
+```
 
 
 
