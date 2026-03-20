@@ -70,12 +70,21 @@ DROP INDEX {index_name}
 SHOW INDEX FROM {table_name}
 ```
 
-
+- 関数インデックス
+  - 関数に対するインデックス。関数の結果を用いた処理を高速化する場合に用いる
 ```sql
 SHOW INDEX FROM students
 CREATE INDEX idx_students_lower_name ON students((LOWER(name))) #関数インデックスの作成
 ```
 
+- 複数カラムに対するインデックス
+  - 複数のカラムや関数に対してインデックスを作成することができる
+```sql
+CREATE INDEX index_name ON table_name(column1, (function_name(column1, column2, ...)
+```
+
+- ユニークインデックス
+  - カラムの組み合わせに対してインデックス+ユニーク制約をつける
 ```sql
 CREATE UNIQUE INDEX idx_users_uniq_first_name ON users(first_name)
 INSERT INTO users(id, first_name) VALUES(2, "ABC");
