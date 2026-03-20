@@ -71,7 +71,18 @@ SHOW INDEX FROM {table_name}
 ```
 
 
+```sql
+SHOW INDEX FROM students
+CREATE INDEX idx_students_lower_name ON students((LOWER(name))) #関数インデックスの作成
+```
 
+```sql
+CREATE UNIQUE INDEX idx_users_uniq_first_name ON users(first_name)
+INSERT INTO users(id, first_name) VALUES(2, "ABC");
+
+INSERT INTO users(id, first_name) VALUES(3, "ABC"); #同じ値を入れることができない
+Query 1 ERROR at Line 1: : Duplicate entry 'ABC' for key 'users.idx_users_uniq_first_name'
+```
 
 
 
