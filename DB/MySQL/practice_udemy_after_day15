@@ -155,7 +155,15 @@ SELECT * FROM stores_name_view
 - もし実行計画が以前に作成されている場合は最適化、実行計画の作成を飛ばしてそのまま実行される、
 - そのことをソフトパースという
 
-- SQLを初めて実行する場合はハードパー
+- SQLを初めて実行する場合はハードパースとなり時間がかかる
+
+->バインド変数を使って意図しないハードパースを避ける
+
+バインド変数例
+```sql
+SET @customer_id=7;
+SELECT * FROM customers WHERE id =@customer_id
+```
 
 ###
 
