@@ -266,9 +266,41 @@ SELECT * FROM users where age = 50;
 
 ## SQLチューニングの基本的な内容
 
+### SELECTで取得するカラムは必要なものだけにする
 
+### テーブル結合時には別名を省略せずにつける
 
+```sql
+SELECT
+	*
+FROM
+	employees
+INNER JOIN
+	departments
+ON
+	department_id = id;
+```
 
+パースにじかんがかかるため、以下のように別名をつけた方が良い
+```sql
+SELECT
+	*
+FROM
+	employees AS emp
+INNER JOIN
+	departments AS dt
+ON
+	emp.department_id = dt.id;
+```
+
+### チューニングの流れ
+
+- 1:実際に運用していて処理速度の遅いSQLを出力してなぜ遅いのかの実行計画を調べる
+- 2:実行計画を見てSQLの改善案を作成する
+- 3:改善案に効果があるのか他のSQLに影響はないかを確認する
+- 4:改善案を適用して改善されたかを確認する
+
+- 
 
 
 
